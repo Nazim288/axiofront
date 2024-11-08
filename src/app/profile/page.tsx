@@ -64,7 +64,11 @@ const Survey = () => {
             Отправь запрос на анализ <br /> совместимости и получи <br />
             результаты.
           </p>
-          <Input type="email" placeholder="qwerty@gmail.com" className="h-10" />
+          <Input
+            type="email"
+            placeholder="qwerty@gmail.com"
+            className="h-12 bg-[#F3F1F1]"
+          />
           <Button variant="default" className="rounded-[40px] mt-5">
             Отправить запрос
           </Button>

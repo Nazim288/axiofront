@@ -50,9 +50,19 @@ const Header: React.FC = () => {
               Пройти опрос
             </Button>
           </Link>
-          <Link href="/profile">
+          <Link href="/signIn">
             <Button variant="outline" className="rounded-[40px]">
               Войти
+            </Button>
+          </Link>
+          <Link href="/profile">
+            <Button variant="outline" className="rounded-[40px]">
+              Профиль
+            </Button>
+          </Link>
+          <Link href="/signUp">
+            <Button variant="outline" className="rounded-[40px]">
+              Регистрация
             </Button>
           </Link>
         </div>
