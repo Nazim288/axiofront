@@ -2,6 +2,7 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import Link from "next/link";
 
 const Survey = () => {
   return (
@@ -19,30 +20,34 @@ const Survey = () => {
 
       <div className="flex flex-col gap-4 mt-20">
         <h2 className=" text-3xl font-semibold mb-5">Отчеты</h2>
-        <div className="relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full h-fi hover:scale-105 transition-transform duration-300 ease-in-out">
-          <p className="text-xl font-semibold">Мои ценности</p>
-          <p className="text-xl font-light">Краткий</p>
-          <p className="text-xl font-light">05.07.24</p>
-          <Image
-            src={"/icons/profileArrow.svg"}
-            alt="arrow right"
-            width={24}
-            height={24}
-            className="absolute right-5 bottom-5"
-          />
-        </div>
-        <div className="relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full h-fi hover:scale-105 transition-transform duration-300 ease-in-out">
-          <p className="text-xl font-semibold">Мои ценности</p>
-          <p className="text-xl font-light">Краткий</p>
-          <p className="text-xl font-light">05.07.24</p>
-          <Image
-            src={"/icons/profileArrow.svg"}
-            alt="arrow right"
-            width={24}
-            height={24}
-            className="absolute right-5 bottom-5"
-          />
-        </div>
+        <Link href={"/freeReport"}>
+          <div className="relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out ">
+            <p className="text-xl font-semibold">Мои ценности</p>
+            <p className="text-xl font-light">Краткий</p>
+            <p className="text-xl font-light">05.07.24</p>
+            <Image
+              src={"/icons/profileArrow.svg"}
+              alt="arrow right"
+              width={24}
+              height={24}
+              className="absolute right-5 bottom-5"
+            />
+          </div>
+        </Link>
+        <Link href={"/standartReport"}>
+          <div className="relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out ">
+            <p className="text-xl font-semibold">Мои ценности</p>
+            <p className="text-xl font-light">Полный</p>
+            <p className="text-xl font-light">05.07.24</p>
+            <Image
+              src={"/icons/profileArrow.svg"}
+              alt="arrow right"
+              width={24}
+              height={24}
+              className="absolute right-5 bottom-5"
+            />
+          </div>
+        </Link>
       </div>
 
       <div className="flex justify-between gap-10 mt-36">

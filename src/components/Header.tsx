@@ -1,7 +1,10 @@
+"use client";
+
 import React from "react";
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { SignInModal } from "./modals/signInModal";
 const Header: React.FC = () => {
   return (
     <header className="text-black p-4 shadow-lg">
@@ -50,11 +53,7 @@ const Header: React.FC = () => {
               Пройти опрос
             </Button>
           </Link>
-          <Link href="/signIn">
-            <Button variant="outline" className="rounded-[40px]">
-              Войти
-            </Button>
-          </Link>
+          <SignInModal />
           <Link href="/profile">
             <Button variant="outline" className="rounded-[40px]">
               Профиль
