@@ -1,8 +1,20 @@
+"use client";
+
 import StandartReportCard from "@/components/freeReport/standartReportCard";
 import Matches from "@/components/standartReport/matches";
 import { Button } from "@/components/ui/button";
+import { zodResolver } from "@hookform/resolvers/zod";
 import Image from "next/image";
-import { FC } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormMessage,
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
 const paragraphs = [
   "Думать над своими убеждениями — та ещё работа. Вы отлично справились! Пришло время разобраться в результатах.",
@@ -136,7 +148,22 @@ const data = {
   date: "2024-01-01",
 };
 
-const StandartReportPage: FC = () => {
+const formSchema = z.object({
+  email: z.string().email({ message: "Неверный формат почты" }),
+});
+
+const StandartReportPage = () => {
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  function onSubmit(values: z.infer<typeof formSchema>) {
+    console.log(values);
+  }
+
   return (
     <div className="flex flex-col gap-10">
       <p className="text-md font-normal">{data.date}</p>
@@ -212,6 +239,41 @@ const StandartReportPage: FC = () => {
           "Самостоятельность",
         ]}
       />
+      <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
+          <p className="text-2xl font-semibold text-[#388E3C]">
+            Убедительность
+          </p>
+          <p>
+            Стремиться полностью соответствовать ожиданиям общества – это «путь
+            в никуда», общество слишком разное, угодить всем не получится.
+            Сдерживание своих побуждений, которые могут причинить вред
+            окружающим –необходимо, но иногда то, что считается вредным в
+            текущий момент, со временем оказывается пользой. Дисциплина в
+            выполнении правил, принятых в обществе – недостижима.
+          </p>
+        </div>
+        <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
+          <p className="text-2xl font-semibold text-[#FF9800]">
+            На что обращать внимание при общении с людими
+          </p>
+          <p>
+            Стремиться полностью соответствовать ожиданиям общества – это «путь
+            в никуда», общество слишком разное, угодить всем не получится.
+            Сдерживание своих побуждений, которые могут причинить вред
+            окружающим –необходимо, но иногда то, что считается вредным в
+            текущий момент, со временем оказывается пользой. Дисциплина в
+            выполнении правил, принятых в обществе – недостижима, т.к. слишком
+            часто меняются правила. Стремиться полностью соответствовать
+            ожиданиям общества – это «путь в никуда», общество слишком разное,
+            угодить всем не получится. Сдерживание своих побуждений, которые
+            могут причинить вред окружающим –необходимо, но иногда то, что
+            считается вредным в текущий момент, со временем оказывается пользой.
+            Дисциплина в выполнении правил, принятых в обществе – недостижима,
+            т.к. слишком часто меняются правила.
+          </p>
+        </div>
+      </div>
       <p>
         Представляете, у каждой ценности есть свой цвет! Есть даже наука —
         психология цвета. Мы сделали для вас комбинацию цветов из наиболее
@@ -228,6 +290,38 @@ const StandartReportPage: FC = () => {
             Скачать
           </Button>
         </div>
+      </div>
+      <div className="flex flex-col gap-4 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
+        <p className="text-4xl font-semibold">
+          Отправь запрос на анализ <br /> совместимости и получи результаты.
+        </p>
+        <Form {...form}>
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <FormField
+              control={form.control}
+              name="email"
+              render={({ field }) => (
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      placeholder="email@example.com"
+                      className="pr-10 h-12 bg-[#F3F1F1]"
+                      {...field}
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            <Button
+              variant={"default"}
+              color="primary"
+              className="w-full rounded-3xl text-lg font-md h-[60px]"
+            >
+              Отправить заявку
+            </Button>
+          </form>
+        </Form>
       </div>
     </div>
   );

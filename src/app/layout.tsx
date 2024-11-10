@@ -31,7 +31,7 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <Header />
-        <div className="p-10 max-w-[1200px] min-h-[calc(100vh-160px)] mx-auto">
+        <div className="p-10 max-w-[1100px] min-h-[calc(100vh-160px)] mx-auto">
           {children}
         </div>
         <Footer />
