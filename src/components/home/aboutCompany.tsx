@@ -1,6 +1,6 @@
-const AboutCompany = () => {
+const AboutCompany = ({ id }: { id: string }) => {
   return (
-    <div className="flex flex-col gap-5 mt-32">
+    <div id={id} className="flex flex-col gap-5 mt-32">
       <h1 className="text-4xl font-semibold">О компании</h1>
       <div className="flex justify-between gap-4">
         <div className="flex flex-col gap-2">

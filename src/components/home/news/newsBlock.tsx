@@ -7,9 +7,9 @@ import {
   CarouselPrevious,
 } from "@/components/ui/carousel";
 
-const NewsBlock = () => {
+const NewsBlock = ({ id }: { id: string }) => {
   return (
-    <div className="flex flex-col gap-6 mt-20">
+    <div id={id} className="flex flex-col gap-6 mt-20">
       <p className="text-3xl font-semibold">Новости</p>
 
       <Carousel className="w-full">

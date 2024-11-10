@@ -3,10 +3,13 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-const Tariffs = () => {
+const Tariffs = ({ id }: { id: string }) => {
   const router = useRouter();
   return (
-    <div className="flex gap-4 justify-start h-[600px] rounded-[20px] baseShadow mt-20 p-10">
+    <div
+      id={id}
+      className="flex gap-4 justify-start h-[600px] rounded-[20px] baseShadow mt-20 p-10"
+    >
       <div className="flex flex-col gap-4 w-[50%] justify-center">
         <p>
           В мире всё стремится к гармонии - ценности тоже. Вы узнаете больше о

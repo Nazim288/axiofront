@@ -1,6 +1,6 @@
-const Contacts = () => {
+const Contacts = ({ id }: { id: string }) => {
   return (
-    <div className="flex justify-start gap-40 mt-32 mb-20">
+    <div id={id} className="flex justify-start gap-40 mt-32 mb-20">
       <div>
         <h1 className="text-4xl font-semibold mb-4">Техническая поддержка</h1>
         <p className="font-semibold">

@@ -27,9 +27,9 @@ const cards = [
   },
 ];
 
-const TeamBlock = () => {
+const TeamBlock = ({ id }: { id: string }) => {
   return (
-    <div className="flex flex-col gap-5 mt-32">
+    <div id={id} className="flex flex-col gap-5 mt-32">
       <h1 className="text-4xl font-semibold">Консультации проводят </h1>
       <div className="flex gap-4 p-5 justify-center">
         {cards.map((card, index) => (

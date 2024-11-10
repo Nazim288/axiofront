@@ -11,13 +11,13 @@ export default function Home() {
   return (
     <>
       <MainBanner />
-      <CardsBlock />
-      <TeamBlock />
-      <Tariffs />
-      <Faq />
-      <AboutCompany />
-      <NewsBlock />
-      <Contacts />
+      <CardsBlock id="about" />
+      <TeamBlock id="team" />
+      <Tariffs id="tariffs" />
+      <Faq id="faq" />
+      <AboutCompany id="company" />
+      <NewsBlock id="news" />
+      <Contacts id="contacts" />
     </>
   );
 }

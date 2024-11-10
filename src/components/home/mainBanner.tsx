@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const MainBanner = () => {
   return (
@@ -62,12 +63,14 @@ const MainBanner = () => {
           height={535}
         />
       </div>
-      <Button
-        variant="default"
-        className="w-full mt-5 rounded-[40px] h-[60px] text-lg"
-      >
-        Пройти опрос
-      </Button>
+      <Link href="/survey">
+        <Button
+          variant="default"
+          className="w-full mt-5 rounded-[40px] h-[60px] text-lg"
+        >
+          Пройти опрос
+        </Button>
+      </Link>
     </div>
   );
 };

@@ -28,9 +28,9 @@ const cards = [
   },
 ];
 
-const CardsBlock = () => {
+const CardsBlock = ({ id }: { id: string }) => {
   return (
-    <div className="flex flex-col gap-16 mt-32">
+    <div id={id} className="flex flex-col gap-16 mt-32">
       <div className="flex flex-col gap-4">
         <h1 className="text-4xl font-semibold">
           Опрос подойдет, когда вы хотите

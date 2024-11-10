@@ -5,9 +5,9 @@ import {
   AccordionTrigger,
 } from "@/components/ui/accordion";
 
-const Faq = () => {
+const Faq = ({ id }: { id: string }) => {
   return (
-    <div className="flex flex-col gap-10 mt-20">
+    <div id={id} className="flex flex-col gap-10 mt-20">
       <p className="text-3xl font-semibold">Часто задаваемые вопросы</p>
       <div className="flex flex-col gap-6">
         <Accordion type="single" collapsible>
