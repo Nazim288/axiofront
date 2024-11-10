@@ -39,7 +39,7 @@ const formSchema = z
     message: "Пароли не совпадают",
   });
 
-export function SignUp() {
+const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
@@ -266,6 +266,6 @@ export function SignUp() {
       </Form>
     </div>
   );
-}
+};
 
 export default SignUp;

@@ -4,15 +4,6 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { FC } from "react";
 
-interface IStandartReportPage {
-  date: string;
-  img: string;
-  report: {
-    title: string;
-    description: string;
-  }[];
-}
-
 const paragraphs = [
   "Думать над своими убеждениями — та ещё работа. Вы отлично справились! Пришло время разобраться в результатах.",
   "Определимся в понятиях: Ценности — это убеждения, которые возникли в процессе жизненного опыта. Основные ценности закладываются в раннем детстве в процессе воспитания, затем на формирование персональной системы ценностей влияют жизненные потери и приобретения. Ценности определяют решения и, следовательно, поведение людей. Современный человек стремится знать свою систему ценностей для прогноза поведения своего и людей из ближнего окружения.",
@@ -145,7 +136,7 @@ const data = {
   date: "2024-01-01",
 };
 
-const StandartReportPage: FC<IStandartReportPage> = () => {
+const StandartReportPage: FC = () => {
   return (
     <div className="flex flex-col gap-10">
       <p className="text-md font-normal">{data.date}</p>

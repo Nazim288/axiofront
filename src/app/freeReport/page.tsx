@@ -4,15 +4,6 @@ import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { FC } from "react";
 
-interface IFreeReportPage {
-  date: string;
-  img: string;
-  report: {
-    title: string;
-    description: string;
-  }[];
-}
-
 const paragraphs = [
   "Вы прекрасно потрудились, когда заполняли опросник! Пришло время разобраться в результатах.",
   "Сначала определимся в понятиях. Ценности — это убеждения, которые возникли в процессе жизненного опыта. Ценности определяют решения и поведение людей.",
@@ -43,7 +34,7 @@ const data = {
   date: "2024-01-01",
 };
 
-const FreeReportPage: FC<IFreeReportPage> = () => {
+const FreeReportPage: FC = () => {
   return (
     <div className="flex flex-col gap-10">
       <p className="text-md font-normal">{data.date}</p>
