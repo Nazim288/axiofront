@@ -1,8 +1,34 @@
 import Image from "next/image";
+import { useState, useEffect } from "react";
 
 const SurveyTitle = () => {
+  const [gapSize, setGapSize] = useState(28); // Начальное значение gap в пикселях
+
+  useEffect(() => {
+    const handleScroll = () => {
+      const scrollPosition = window.scrollY;
+      const newGapSize = scrollPosition > 100 ? 16 : 28;
+
+      setGapSize(newGapSize);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   return (
-    <div className="flex flex-col justify-between gap-7 baseShadow rounded-3xl p-8">
+    <div
+      style={{
+        gap: `${gapSize}px`,
+        transition: "gap 0.3s ease, padding 0.3s ease",
+        paddingTop: `${gapSize}px`,
+        paddingBottom: `${gapSize}px`,
+      }}
+      className="flex flex-col justify-between baseShadow rounded-3xl px-8 bg-white z-20 max-w-[1020px]"
+    >
       <h1 className="text-4xl font-bold text-start max-w-[70%]">
         Оцените насколько важны для вас ценности, как руководство в жизни
       </h1>

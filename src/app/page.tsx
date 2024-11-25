@@ -1,6 +1,6 @@
 import MainBanner from "@/components/home/mainBanner";
 import CardsBlock from "@/components/home/cards/cardsBlock";
-import TeamBlock from "@/components/home/team/teamBlock";
+// import TeamBlock from "@/components/home/team/teamBlock";
 import AboutCompany from "@/components/home/aboutCompany";
 import Contacts from "@/components/home/contacts";
 import Tariffs from "@/components/home/tariffs";
@@ -12,7 +12,7 @@ export default function Home() {
     <>
       <MainBanner />
       <CardsBlock id="about" />
-      <TeamBlock id="team" />
+      {/* <TeamBlock id="team" /> */}
       <Tariffs id="tariffs" />
       <Faq id="faq" />
       <AboutCompany id="company" />

@@ -11,10 +11,7 @@ const Footer: React.FC = () => {
           <Link href="/">
             <Image src={"/icons/logo.svg"} alt="Logo" width={43} height={43} />
           </Link>
-          <p>
-            Совместимость <br />
-            Ценностей
-          </p>
+          <p>Open-me.online</p>
         </div>
         <nav>
           <ul className="flex justify-between gap-4 ">

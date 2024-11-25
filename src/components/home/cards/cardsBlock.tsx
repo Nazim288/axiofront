@@ -3,27 +3,27 @@ import Card from "./card";
 const cards = [
   {
     src: "/images/homePgae/changeYourLife.png",
-    title: "изменить свою жизнь",
+    title: "стать ещё эффективней",
     description: "и найти в себе силы сделать это быстрее.",
   },
   {
     src: "/images/homePgae/partnerСompatibility.png",
     title: "узнать совместимость ценностей",
-    description: "и укрепить долгосрочные отношения.",
+    description: "и создать или укрепить долгосрочные отношения.",
   },
   {
     src: "/images/homePgae/values.png",
-    title: "свои наиболее важные ценности",
-    description: "которыми руководствуйтесь, когда делаете выбор.",
+    title: "свои ценности",
+    description: "которые определяют ваши решения и действия.",
   },
   {
     src: "/images/homePgae/harmony.png",
     title: "насколько гармоничны ваши ценности между собой",
-    description: "узнаете, какие противоречащие ценности затрудняют выбор.",
+    description: "узнаете, какие ценности затрудняют выбор.",
   },
   {
     src: "/images/homePgae/mainValues.png",
-    title: "наиболее важные ценности партнёра",
+    title: "ценности партнёра",
     description: "для того чтобы «обходить острые углы» в общении.",
   },
 ];
