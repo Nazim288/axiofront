@@ -4,71 +4,24 @@ import SurveyTitle from "@/components/survey/surveyTitle";
 import Question from "@/components/survey/question";
 import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
+import { IQuestion, ISurveyData } from "@/types/survey";
+import { surveyData } from "@/mocks/survey";
 
 const Survey = () => {
+  const [data, setData] = useState<ISurveyData>(surveyData);
+  const [questions, setQuestions] = useState<IQuestion[]>([]);
+  const [activeQuestion, setActiveQuestion] = useState(1);
+  const [allAnswered, setAllAnswered] = useState(false);
+  const [currentStep, setCurrentStep] = useState(() => {
+    const savedStep = localStorage.getItem("currentStep");
+    return savedStep ? parseInt(savedStep, 10) : 1;
+  });
   const [answers, setAnswers] = useState<
     { value: number; questionPosition: number }[]
   >([]);
-  const [activeQuestion, setActiveQuestion] = useState(1);
-  const [allAnswered, setAllAnswered] = useState(false);
-
-  const questions = [
-    {
-      id: 0,
-      text: "Как часто вы?",
-      position: 0,
-    },
-    {
-      id: 1,
-      text: "Как вы оцениваете?",
-      position: 1,
-    },
-    {
-      id: 2,
-      text: "Как часто вы?",
-      position: 2,
-    },
-    {
-      id: 3,
-      text: "Как вы оцениваете?",
-      position: 3,
-    },
-    {
-      id: 4,
-      text: "Как часто вы?",
-      position: 4,
-    },
-    {
-      id: 5,
-      text: "Как вы оцениваете?",
-      position: 5,
-    },
-    {
-      id: 6,
-      text: "Как часто вы?",
-      position: 6,
-    },
-    {
-      id: 7,
-      text: "Как часто вы?",
-      position: 7,
-    },
-    {
-      id: 8,
-      text: "Как вы оцениваете?",
-      position: 8,
-    },
-    {
-      id: 9,
-      text: "Как часто вы?",
-      position: 9,
-    },
-    {
-      id: 10,
-      text: "Как вы оцениваете?",
-      position: 10,
-    },
-  ];
+  const [answersStep, setAnswersStep] = useState<
+    { value: number; questionPosition: number }[]
+  >([]);
 
   const handleAnswer = (questionNumber: number, answer: number) => {
     setAnswers((prevAnswers) => {
@@ -82,47 +35,111 @@ const Survey = () => {
       return newAnswers;
     });
 
-    // Переход к следующему вопросу
-    if (questionNumber < questions.length) {
-      setActiveQuestion(questionNumber + 1);
-      const nextQuestionElement = document.getElementById(
-        `question-${questionNumber + 1}`
+    setAnswersStep((prevAnswers) => {
+      const updatedAnswers = prevAnswers.filter(
+        (a) => a.questionPosition !== questionNumber
       );
-      if (nextQuestionElement) {
-        nextQuestionElement.scrollIntoView({
-          behavior: "smooth",
-          block: "center",
-        });
+      const newAnswers = [
+        ...updatedAnswers,
+        { value: answer, questionPosition: questionNumber },
+      ];
+      return newAnswers;
+    });
+    // Переход к следующему вопросу
+    setActiveQuestion(questionNumber + 1);
+    const nextQuestionElement = document.getElementById(
+      `question-${questionNumber + 1}`
+    );
+    if (nextQuestionElement) {
+      nextQuestionElement.scrollIntoView({
+        behavior: "smooth",
+        block: "center",
+      });
+    }
+  };
+
+  const handleSubmit = (currentStep: number) => {
+    if (!allAnswered) {
+      // Находим первый неотвеченный вопрос
+      const unansweredQuestion = questions.find(
+        (question) =>
+          !answers.some(
+            (answer) => answer.questionPosition === question.position
+          )
+      );
+
+      if (unansweredQuestion) {
+        // Получаем элемент вопроса
+        const questionElement = document.getElementById(
+          `question-${unansweredQuestion.position}`
+        );
+
+        // Проверяем, существует ли элемент и выполняем к нему скролл
+        if (questionElement) {
+          questionElement.scrollIntoView({
+            behavior: "smooth",
+            block: "center",
+          });
+        }
       }
+      return;
+    }
+    if (currentStep < 3) {
+      setCurrentStep(currentStep + 1);
+      scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "smooth",
+      });
+    } else {
+      console.log("Collected Answers:", answers);
     }
   };
 
   useEffect(() => {
     const allQuestionsAnswered =
-      questions.length === Object.keys(answers).length &&
-      Object.keys(answers).every((key) => answers[+key] !== undefined);
+      questions.length === Object.keys(answersStep).length &&
+      Object.keys(answersStep).every((key) => answersStep[+key] !== undefined);
     setAllAnswered(allQuestionsAnswered);
-  }, [answers, questions.length]);
-
-  const handleSubmit = () => {
-    console.log("Collected Answers:", answers);
-  };
+  }, [answersStep, questions, currentStep]);
 
   useEffect(() => {
-    console.log("All questions answered:", allAnswered);
-    console.log("Active question:", activeQuestion);
-  }, [allAnswered, activeQuestion]);
+    setAnswersStep([]);
+    switch (currentStep) {
+      case 1:
+        setQuestions(data.questionGroups[0].questions);
+        break;
+      case 2:
+        setQuestions(data.questionGroups[1].questions);
+        break;
+      case 3:
+        setQuestions(data.questionGroups[2].questions);
+        break;
+    }
+    // Сохранение текущего шага в localStorage при его изменении
+    localStorage.setItem("currentStep", currentStep.toString());
+  }, [currentStep, data, questions]);
+
+  useEffect(() => {
+    setData(surveyData);
+  }, []);
+
+  useEffect(() => {
+    return () => {
+      localStorage.removeItem("currentStep");
+    };
+  }, []);
 
   return (
     <div className="flex flex-col">
       <div className="sticky top-4 z-50 h-[271px]">
-        <SurveyTitle />
+        <SurveyTitle data={data} step={currentStep} />
       </div>
       <div className="flex flex-col gap-10 z-10">
         {questions.map((question) => (
           <div
             key={question.id}
-            id={`question-${question.position}`}
+            id={`question-${question.id}`}
             className={`p-4 transition-opacity duration-300 ease-in-out ${
               allAnswered || question.position === activeQuestion
                 ? "opacity-100"
@@ -141,7 +158,7 @@ const Survey = () => {
         <Button
           variant="default"
           className="w-full rounded-[40px] h-[60px] text-lg my-20"
-          onClick={handleSubmit}
+          onClick={() => handleSubmit(currentStep)}
         >
           Пройти опрос
         </Button>

@@ -1,8 +1,12 @@
 import Image from "next/image";
 import { useState, useEffect } from "react";
+import { ISurveyData } from "@/types/survey";
 
-const SurveyTitle = () => {
-  const [gapSize, setGapSize] = useState(28); // Начальное значение gap в пикселях
+const SurveyTitle = ({ data, step }: { data: ISurveyData; step: number }) => {
+  const [gapSize, setGapSize] = useState(28);
+  const { header, leftText, rightText } = data.questionGroups.find(
+    (group) => group.position === step
+  ) ?? { header: "", leftText: "", rightText: "" };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -29,12 +33,10 @@ const SurveyTitle = () => {
       }}
       className="flex flex-col justify-between baseShadow rounded-3xl px-8 bg-white z-20 max-w-[1020px]"
     >
-      <h1 className="text-4xl font-bold text-start max-w-[70%]">
-        Оцените насколько важны для вас ценности, как руководство в жизни
-      </h1>
+      <h1 className="text-2xl font-bold">{header}</h1>
       <div className="flex justify-between">
-        <p>Абсолютно не важная ценность</p>
-        <p>Исключительно важная ценность</p>
+        <p>{leftText}</p>
+        <p>{rightText}</p>
       </div>
       <Image
         src={"/icons/surveyTitle.svg"}
