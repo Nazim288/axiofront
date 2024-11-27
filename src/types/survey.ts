@@ -21,3 +21,13 @@ export type IQuestion = {
   text: string;
   position: number;
 };
+
+export type ISendAnswersBody = {
+  answers: [
+    {
+      value: number;
+      questionPosition: number;
+    }
+  ];
+  personTestId: number;
+};
