@@ -12,10 +12,7 @@ const Survey = () => {
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [activeQuestion, setActiveQuestion] = useState(1);
   const [allAnswered, setAllAnswered] = useState(false);
-  const [currentStep, setCurrentStep] = useState(() => {
-    const savedStep = localStorage.getItem("currentStep");
-    return savedStep ? parseInt(savedStep, 10) : 1;
-  });
+  const [currentStep, setCurrentStep] = useState(1);
   const [answers, setAnswers] = useState<
     { value: number; questionPosition: number }[]
   >([]);
@@ -117,7 +114,7 @@ const Survey = () => {
         break;
     }
     // Сохранение текущего шага в localStorage при его изменении
-    localStorage.setItem("currentStep", currentStep.toString());
+    // localStorage.setItem("currentStep", currentStep.toString());
   }, [currentStep, data, questions]);
 
   useEffect(() => {
@@ -125,8 +122,20 @@ const Survey = () => {
   }, []);
 
   useEffect(() => {
+    const handleBeforeUnload = (event: BeforeUnloadEvent) => {
+      // Сообщение, которое будет показано в диалоговом окне
+      const message =
+        "Вы уверены, что хотите покинуть страницу? Все несохраненные изменения будут потеряны.";
+      event.returnValue = message; // Стандарт для некоторых браузеров
+      return message; // Стандарт для других браузеров
+    };
+
+    // Добавляем слушатель события
+    window.addEventListener("beforeunload", handleBeforeUnload);
+
+    // Функция очистки, которая удаляет слушатель события
     return () => {
-      localStorage.removeItem("currentStep");
+      window.removeEventListener("beforeunload", handleBeforeUnload);
     };
   }, []);
 

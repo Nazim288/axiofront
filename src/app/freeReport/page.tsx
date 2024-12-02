@@ -1,26 +1,18 @@
 import FreeReportCard from "@/components/freeReport/freeReportCard";
 import ReportTariffs from "@/components/freeReport/reportTariffs";
 import { Button } from "@/components/ui/button";
+import {
+  Dialog,
+  DialogTrigger,
+  DialogTitle,
+  DialogDescription,
+  DialogContent,
+  DialogHeader,
+} from "@/components/ui/dialog";
+import { InfoIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
-
-const paragraphs = [
-  "Отчет « Мои самые важные ценности».",
-  "Теперь давайте разберемся, что получилось.",
-  "Ценности — это то , во что люди верят и что важно для них . Они формируются в течение всей жизни, начиная с детства, когда воспитывают родители, и заканчивая взрослыми годами, когда мы сталкиваемся с разными ситуациями и потерями. Ценности определяют решения и поведение людей.",
-  "Учёные выделяют 10 основных ценностей для кого- то , какие- то ценности являются важными, а для кого-то нет. Краткие определения основных ценностей современных людей",
-  "Гибкость - когда важно влиться в команду, сообща и быть её частью",
-  "Традиционность - когда важно принятие традиционных канонов",
-  "Сопереживание - когда важно помогать и обеспечивать благополучие близким людям",
-  "Толерантность - когда важно стремиться к пониманию людей и быть без опасного общения с ними",
-  "Самодостаточность - когда важно сохранять самостоятельность во всем",
-  "Энергичность - когда важно быть активным человеком",
-  "Гедонизм - когда важно находить удовольствие во всём. Чем бы не пришлось заниматься",
-  "Успешность — когда важно стремиться к достижению успеха и вызывать восторг у окружающих людей",
-  "Власть — когда важно достижение лидерства и контроль над людьми",
-  "Защищённость — когда важно обеспечить безопасность себя и близких людей",
-];
 
 const data = {
   reports: [
@@ -89,23 +81,72 @@ const FreeReportPage: FC = () => {
   return (
     <div className="flex flex-col gap-10">
       <p className="text-md font-normal">{data.date}</p>
-      <h1 className="text-4xl font-bold">Мои ценности</h1>
-      <div>
-        {paragraphs.map((paragraph, index) => (
-          <p key={index}>
-            <br />
-            {paragraph}
-            <br />
-          </p>
-        ))}
+      <h1 className="text-4xl font-bold">Мои самые важные ценности</h1>
+      <div className="flex flex-col gap-3">
+        <p>Теперь давайте разберемся, что получилось.</p>
+        <p>
+          Ценности — это то, во что люди верят и что важно для них. Они
+          формируются в течение всей жизни, начиная с детства, когда воспитывают
+          родители, и заканчивая взрослыми годами, когда мы сталкиваемся с
+          разными ситуациями и потерями. Ценности определяют решения и поведение
+          людей.
+        </p>
+        <p>
+          Учёные выделяют 10 основных ценностей для кого- то, какие- то ценности
+          являются важными, а для кого-то нет. Краткие определения основных
+          ценностей современных людей.
+        </p>
+        <p>
+          <span className="font-bold">Гибкость</span> - когда важно влиться в
+          команду, сообща и быть её частью
+        </p>
+        <p>
+          <span className="font-bold">Традиционность</span> - когда важно
+          принятие традиционных канонов
+        </p>
+        <p>
+          <span className="font-bold">Сопереживание</span> - когда важно
+          помогать и обеспечивать благополучие близким людям
+        </p>
+        <p>
+          <span className="font-bold">Толерантность</span> - когда важно
+          стремиться к пониманию людей и быть без опасного общения с ними
+        </p>
+        <p>
+          <span className="font-bold">Самодостаточность</span> - когда важно
+          сохранять самостоятельность во всем
+        </p>
+        <p>
+          <span className="font-bold">Энергичность</span> - когда важно быть
+          активным человеком
+        </p>
+        <p>
+          <span className="font-bold">Гедонизм</span> - когда важно находить
+          удовольствие во всём. Чем бы не пришлось заниматься
+        </p>
+        <p>
+          <span className="font-bold">Успешность</span> — когда важно стремиться
+          к достижению успеха и вызывать восторг у окружающих людей
+        </p>
+        <p>
+          <span className="font-bold">Власть</span> — когда важно достижение
+          лидерства и контроль над людьми
+        </p>
+        <p>
+          <span className="font-bold">Защищённость</span> — когда важно
+          обеспечить безопасность себя и близких людей
+        </p>
       </div>
       <div className="flex flex-col gap-3">
+        <p className="font-bold text-xl mb-4">
+          В результате обработки ответов опросника, мы рассчитали наиболее
+          важные ценности для Вас:
+        </p>
         {data.reports?.map((item) => (
           <FreeReportCard
             key={item.title}
             title={item.title}
             description={item.description}
-            color={item.color}
           />
         ))}
       </div>
@@ -116,12 +157,12 @@ const FreeReportPage: FC = () => {
         целей в жизни..
       </p>
       <p>
-        Как применить это знание Понаблюдайте за поступками близкого вам
-        человека. Обратите внимание на те , которые соответствуют вашим
-        ценностям, и на те , которые не попали в список ваших ценностных
-        приоритетов. Сравните, каких поступков больше: тех , что соответствуют
-        вашим ценностям, или тех , что не так важны для вас . Это поможет
-        понять, насколько ваши ценности схожи.
+        <span className="font-bold">Как применить это знание</span> <br />
+        Понаблюдайте за поступками близкого вам человека. Обратите внимание на
+        те , которые соответствуют вашим ценностям, и на те , которые не попали
+        в список ваших ценностных приоритетов. Сравните, каких поступков больше:
+        тех , что соответствуют вашим ценностям, или тех , что не так важны для
+        вас . Это поможет понять, насколько ваши ценности схожи.
       </p>
       <p>
         Чем больше у вас общих ценностей, тем легче вам будет понимать друг
@@ -139,12 +180,108 @@ const FreeReportPage: FC = () => {
           Оформить подписку
         </Link>
       </p>
-      <p>
-        Вы знали, что у каждой ценности есть свой цвет? Существует даже наука,
-        которая изучает, как цвета влияют на нас . Мы подобрали для вас
-        комбинацию цветов, которые отражают ваши самые важные ценности. Скачайте
-        эту картинку и сделайте её фоном на своих устройствах.
-      </p>
+      {/* добавить аккардион */}
+      <div className="flex flex-col gap-1 bg-white rounded-3xl p-5 border-primary border relative pr-10">
+        <Dialog>
+          <DialogTrigger>
+            <InfoIcon
+              className="absolute top-5 right-5 h-7 w-7"
+              color="green"
+            />
+          </DialogTrigger>
+          <DialogContent className="rounded-2xl">
+            <DialogHeader>
+              <DialogTitle>Психология цвета</DialogTitle>
+              <DialogDescription>
+                <DialogDescription>
+                  <div className="flex flex-col gap-2 mt-5">
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Энергичность</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#FF4500" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Самодостаточность</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#FF8C00" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Успешность</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#FFD700" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Сопереживание</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#008000" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Защищённость</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#0000FF" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Толерантность</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#4B0082" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Традиционность</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#EE82EE" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Гедонизм</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#FFC0CB" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Гибкость</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#808080" }}
+                      ></div>
+                    </div>
+                    <div className="flex gap-2 items-center justify-between">
+                      <p className="text-lg font-bold">Власть</p>
+                      <div
+                        className="w-20 h-10 rounded-full"
+                        style={{ backgroundColor: "#000000" }}
+                      ></div>
+                    </div>
+                  </div>
+                </DialogDescription>
+              </DialogDescription>
+            </DialogHeader>
+          </DialogContent>
+        </Dialog>
+        <p>
+          <span className="font-bold">
+            Вы знали, что у каждой ценности есть свой цвет?
+          </span>{" "}
+          <br />
+          Существует даже наука, которая изучает, как цвета влияют на нас . Мы
+          подобрали для вас комбинацию цветов, которые отражают ваши самые
+          важные ценности. Скачайте эту картинку и сделайте её фоном на своих
+          устройствах.
+        </p>
+      </div>
       <div className="w-full flex justify-center">
         <div className="flex flex-col gap-5 w-fit">
           <Image src={data.img} alt="report" width={900} height={400} />

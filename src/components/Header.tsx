@@ -34,7 +34,7 @@ const Header: React.FC = () => {
           <Link href="/">
             <Image src={"/icons/logo.svg"} alt="Logo" width={43} height={43} />
           </Link>
-          <p>Open-me.online</p>
+          <p>Open-me</p>
         </div>
         <nav>
           <ul className="flex justify-between gap-4 ">
