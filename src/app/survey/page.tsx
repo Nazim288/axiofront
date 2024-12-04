@@ -77,6 +77,7 @@ const Survey = () => {
             behavior: "smooth",
             block: "center",
           });
+          setAllAnswered(true);
         }
       }
       return;
