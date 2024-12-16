@@ -22,12 +22,7 @@ export type IQuestion = {
   position: number;
 };
 
-export type ISendAnswersBody = {
-  answers: [
-    {
-      value: number;
-      questionPosition: number;
-    }
-  ];
+export interface ISendAnswersBody {
+  answers: { value: number; questionPosition: number }[];
   personTestId: number;
-};
+}

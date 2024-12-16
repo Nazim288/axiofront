@@ -2,9 +2,15 @@ import Image from "next/image";
 import { useState, useEffect } from "react";
 import { ISurveyData } from "@/types/survey";
 
-const SurveyTitle = ({ data, step }: { data: ISurveyData; step: number }) => {
+const SurveyTitle = ({
+  data,
+  step,
+}: {
+  data: ISurveyData | undefined;
+  step: number;
+}) => {
   const [gapSize, setGapSize] = useState(28);
-  const { header, leftText, rightText } = data.questionGroups.find(
+  const { header, leftText, rightText } = data?.questionGroups.find(
     (group) => group.position === step
   ) ?? { header: "", leftText: "", rightText: "" };
 
@@ -30,6 +36,7 @@ const SurveyTitle = ({ data, step }: { data: ISurveyData; step: number }) => {
         transition: "gap 0.3s ease, padding 0.3s ease",
         paddingTop: `${gapSize}px`,
         paddingBottom: `${gapSize}px`,
+        // borderRadius: `${gapSize}px`,
       }}
       className="flex flex-col justify-between baseShadow rounded-3xl px-8 bg-white z-20 max-w-[1020px]"
     >

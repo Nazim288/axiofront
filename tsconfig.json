@@ -26,7 +26,8 @@
     "**/*.ts",
     "**/*.tsx",
     ".next/types/**/*.ts",
-    "src/app/survey.js"
+    "src/app/survey.js",
+    "src/components/standartReport/сolorPsychology.tsч"
   ],
   "exclude": ["node_modules"]
 }

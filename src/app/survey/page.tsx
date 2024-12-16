@@ -6,9 +6,13 @@ import { Button } from "@/components/ui/button";
 import { useEffect, useState } from "react";
 import { IQuestion, ISurveyData } from "@/types/survey";
 import { surveyData } from "@/mocks/survey";
+import { getSurvey, sendAnswers } from "@/api/survey";
+import Loader from "@/components/loader/loader";
 
 const Survey = () => {
-  const [data, setData] = useState<ISurveyData>(surveyData);
+  const [data, setData] = useState<ISurveyData>();
+  const [isLoading, setIsLoading] = useState(true);
+
   const [questions, setQuestions] = useState<IQuestion[]>([]);
   const [activeQuestion, setActiveQuestion] = useState(1);
   const [allAnswered, setAllAnswered] = useState(false);
@@ -19,6 +23,22 @@ const Survey = () => {
   const [answersStep, setAnswersStep] = useState<
     { value: number; questionPosition: number }[]
   >([]);
+
+  useEffect(() => {
+    const fetchSurvey = async () => {
+      setIsLoading(true); // Устанавливаем состояние загрузки в true перед запросом
+      try {
+        const response = await getSurvey("1"); // Здесь нужно передать правильный id
+        setData(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке опроса:", error);
+      } finally {
+        setIsLoading(false); // Устанавливаем состояние загрузки в false после завершения запроса
+      }
+    };
+
+    fetchSurvey();
+  }, []);
 
   const handleAnswer = (questionNumber: number, answer: number) => {
     setAnswers((prevAnswers) => {
@@ -90,6 +110,10 @@ const Survey = () => {
         behavior: "smooth",
       });
     } else {
+      sendAnswers({
+        answers: answers,
+        personTestId: 1,
+      });
       console.log("Collected Answers:", answers);
     }
   };
@@ -105,13 +129,13 @@ const Survey = () => {
     setAnswersStep([]);
     switch (currentStep) {
       case 1:
-        setQuestions(data.questionGroups[0].questions);
+        setQuestions(data?.questionGroups[0].questions || []);
         break;
       case 2:
-        setQuestions(data.questionGroups[1].questions);
+        setQuestions(data?.questionGroups[1].questions || []);
         break;
       case 3:
-        setQuestions(data.questionGroups[2].questions);
+        setQuestions(data?.questionGroups[2].questions || []);
         break;
     }
     // Сохранение текущего шага в localStorage при его изменении
@@ -142,37 +166,48 @@ const Survey = () => {
 
   return (
     <div className="flex flex-col">
-      <div className="sticky top-4 z-50 h-[271px]">
-        <SurveyTitle data={data} step={currentStep} />
-      </div>
-      <div className="flex flex-col gap-10 z-10">
-        {questions.map((question) => (
-          <div
-            key={question.id}
-            id={`question-${question.id}`}
-            className={`p-4 transition-opacity duration-300 ease-in-out ${
-              allAnswered || question.position === activeQuestion
-                ? "opacity-100"
-                : "opacity-50 blur-sm hover:opacity-100 hover:blur-none"
-            }`}
-            onMouseEnter={() => setActiveQuestion(question.position)}
-          >
-            <Question
-              key={question.id}
-              questionText={question.text}
-              questionNumber={question.position}
-              onSelect={(answer) => handleAnswer(question.position, answer)}
-            />
-          </div>
-        ))}
-        <Button
-          variant="default"
-          className="w-full rounded-[40px] h-[60px] text-lg my-20"
-          onClick={() => handleSubmit(currentStep)}
+      {isLoading ? (
+        <div
+          className="flex flex-col items-center justify-center"
+          style={{ height: "calc(100vh - 320px)" }}
         >
-          Пройти опрос
-        </Button>
-      </div>
+          <Loader />
+        </div>
+      ) : (
+        <>
+          <div className="sticky top-0 z-50 h-[271px]">
+            <SurveyTitle data={data} step={currentStep} />
+          </div>
+          <div className="flex flex-col gap-10 z-10">
+            {questions.map((question) => (
+              <div
+                key={question.id}
+                id={`question-${question.id}`}
+                className={`p-4 transition-opacity duration-300 ease-in-out ${
+                  allAnswered || question.position === activeQuestion
+                    ? "opacity-100"
+                    : "opacity-50 blur-sm hover:opacity-100 hover:blur-none"
+                }`}
+                onMouseEnter={() => setActiveQuestion(question.position)}
+              >
+                <Question
+                  key={question.id}
+                  questionText={question.text}
+                  questionNumber={question.position}
+                  onSelect={(answer) => handleAnswer(question.position, answer)}
+                />
+              </div>
+            ))}
+            <Button
+              variant="default"
+              className="w-full rounded-[40px] h-[60px] text-lg my-20"
+              onClick={() => handleSubmit(currentStep)}
+            >
+              Пройти опрос
+            </Button>
+          </div>
+        </>
+      )}
     </div>
   );
 };

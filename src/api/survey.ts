@@ -3,7 +3,7 @@ import api from "./api";
 import { Urls } from "./urls";
 
 export const getSurvey = (id: string) =>
-  api.get<ISurveyData>(Urls.surveyUrls.getSurvey.replace("{id}", id));
+  api.get<ISurveyData>(Urls.surveyUrls.getSurvey(id));
 
-export const sendAnswers = (id: string, body: ISendAnswersBody) =>
+export const sendAnswers = (body: ISendAnswersBody) =>
   api.post(Urls.surveyUrls.sendAnswers, body);

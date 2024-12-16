@@ -57,6 +57,19 @@ body {
   transition: transform 0.3s ease-in-out;
 }
 
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.animation {
+  animation: spin 1s linear infinite;
+}
+
 @layer base {
   :root {
     --background: 0 0% 100%;

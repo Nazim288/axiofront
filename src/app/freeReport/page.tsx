@@ -1,15 +1,7 @@
 import FreeReportCard from "@/components/freeReport/freeReportCard";
 import ReportTariffs from "@/components/freeReport/reportTariffs";
+import ColorPsychology from "@/components/standartReport/сolorPsychology";
 import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogTrigger,
-  DialogTitle,
-  DialogDescription,
-  DialogContent,
-  DialogHeader,
-} from "@/components/ui/dialog";
-import { InfoIcon } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { FC } from "react";
@@ -180,108 +172,7 @@ const FreeReportPage: FC = () => {
           Оформить подписку
         </Link>
       </p>
-      {/* добавить аккардион */}
-      <div className="flex flex-col gap-1 bg-white rounded-3xl p-5 border-primary border relative pr-10">
-        <Dialog>
-          <DialogTrigger>
-            <InfoIcon
-              className="absolute top-5 right-5 h-7 w-7"
-              color="green"
-            />
-          </DialogTrigger>
-          <DialogContent className="rounded-2xl">
-            <DialogHeader>
-              <DialogTitle>Психология цвета</DialogTitle>
-              <DialogDescription>
-                <DialogDescription>
-                  <div className="flex flex-col gap-2 mt-5">
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Энергичность</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#FF4500" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Самодостаточность</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#FF8C00" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Успешность</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#FFD700" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Сопереживание</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#008000" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Защищённость</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#0000FF" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Толерантность</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#4B0082" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Традиционность</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#EE82EE" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Гедонизм</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#FFC0CB" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Гибкость</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#808080" }}
-                      ></div>
-                    </div>
-                    <div className="flex gap-2 items-center justify-between">
-                      <p className="text-lg font-bold">Власть</p>
-                      <div
-                        className="w-20 h-10 rounded-full"
-                        style={{ backgroundColor: "#000000" }}
-                      ></div>
-                    </div>
-                  </div>
-                </DialogDescription>
-              </DialogDescription>
-            </DialogHeader>
-          </DialogContent>
-        </Dialog>
-        <p>
-          <span className="font-bold">
-            Вы знали, что у каждой ценности есть свой цвет?
-          </span>{" "}
-          <br />
-          Существует даже наука, которая изучает, как цвета влияют на нас . Мы
-          подобрали для вас комбинацию цветов, которые отражают ваши самые
-          важные ценности. Скачайте эту картинку и сделайте её фоном на своих
-          устройствах.
-        </p>
-      </div>
+      <ColorPsychology />
       <div className="w-full flex justify-center">
         <div className="flex flex-col gap-5 w-fit">
           <Image src={data.img} alt="report" width={900} height={400} />

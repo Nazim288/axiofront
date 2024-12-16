@@ -1,6 +1,6 @@
 import axios from "axios";
 
 const api = axios.create({
-  baseURL: process.env.PUBLIC_API_URL,
+  baseURL: "https://open-me.onrender.com/",
 });
 export default api;
