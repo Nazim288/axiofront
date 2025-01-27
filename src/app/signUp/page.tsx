@@ -18,12 +18,13 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-
+import { registerUser } from "@/api/auth";
+import Loader from "@/components/loader/loader";
 const formSchema = z
   .object({
     gender: z.enum(["male", "female"]),
     yearOfBirth: z.enum(["1944-1963", "1964-1984", "1985-2002", "2003-2023"]),
-    username: z.string().min(2, {
+    login: z.string().min(2, {
       message: "Псевдоним должен быть длиннее 2 символов",
     }),
     email: z.string().email({ message: "Неверный формат почты" }),
@@ -42,21 +43,39 @@ const formSchema = z
 const SignUp = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       gender: "male",
       yearOfBirth: "1944-1963",
-      username: "",
+      login: "",
       email: "",
       password: "",
       confirmPassword: "",
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setIsSuccess(false);
+    try {
+      await registerUser({
+        email: values.email,
+        login: values.login,
+        password: values.password,
+        confirmPassword: values.confirmPassword,
+        gender: values.gender,
+        yearOfBirth: values.yearOfBirth,
+      });
+      setIsSuccess(true);
+    } catch (error) {
+      console.error("Ошибка регистрации:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   return (
@@ -142,7 +161,7 @@ const SignUp = () => {
           />
           <FormField
             control={form.control}
-            name="username"
+            name="login"
             render={({ field }) => (
               <FormItem>
                 <FormLabel className="text-lg font-semibold">
@@ -259,8 +278,15 @@ const SignUp = () => {
           <Button
             type="submit"
             className="w-full text-lg font-semibold rounded-full h-14 mt-20"
+            disabled={isLoading || isSuccess}
           >
-            Зарегистрироваться
+            {isLoading ? (
+              <Loader isFullHeight={false} />
+            ) : isSuccess ? (
+              "Успешно!"
+            ) : (
+              "Зарегистрироваться"
+            )}
           </Button>
         </form>
       </Form>

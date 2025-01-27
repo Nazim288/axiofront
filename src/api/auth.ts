@@ -2,9 +2,12 @@ import api from "./api";
 import { Urls } from "./urls";
 
 interface RegisterBody {
-  email: string;
+  gender: string;
+  yearOfBirth: string;
   login: string;
+  email: string;
   password: string;
+  confirmPassword: string;
 }
 
 interface LoginBody {
@@ -26,6 +29,7 @@ export const registerUser = async (body: RegisterBody) => {
   try {
     const response = await api.post(Urls.authUrls.register, body);
     return response.data;
+    console.log(response.data);
   } catch (error) {
     console.error("Ошибка при регистрации:", error);
     throw error;

@@ -25,6 +25,8 @@ import { Input } from "@/components/ui/input";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { loginUser } from "@/api/auth";
+import Loader from "@/components/loader/loader";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Неверный формат почты" }),
@@ -40,7 +42,9 @@ const forgotFormSchema = z.object({
 export function SignInModal() {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState(1); // 1 - вход, 2 - восстановление пароля
+  const [step, setStep] = useState(1);
+  const [isLoading, setIsLoading] = useState(false);
+  const [isSuccess, setIsSuccess] = useState(false);
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
@@ -60,8 +64,20 @@ export function SignInModal() {
     },
   });
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setIsSuccess(false);
+    try {
+      await loginUser({
+        username: values.email,
+        password: values.password,
+      });
+      setIsSuccess(true);
+    } catch (error) {
+      console.error("Ошибка входа:", error);
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   function onSubmitForgot(values: z.infer<typeof forgotFormSchema>) {
@@ -173,8 +189,18 @@ export function SignInModal() {
                     </FormItem>
                   )}
                 />
-                <Button type="submit" className="rounded-[40px] w-full">
-                  Войти
+                <Button
+                  type="submit"
+                  className="rounded-[40px] w-full"
+                  disabled={isLoading || isSuccess}
+                >
+                  {isLoading ? (
+                    <Loader isFullHeight={false} imageSize={24} />
+                  ) : isSuccess ? (
+                    "Успешно!"
+                  ) : (
+                    "Войти"
+                  )}
                 </Button>
               </form>
             </Form>
