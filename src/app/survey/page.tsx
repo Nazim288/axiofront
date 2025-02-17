@@ -165,7 +165,7 @@ const Survey = () => {
   }, []);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col max-w-[1200px] mx-auto">
       {isLoading ? (
         <div
           className="flex flex-col items-center justify-center"
@@ -175,19 +175,21 @@ const Survey = () => {
         </div>
       ) : (
         <>
-          <div className="sticky top-0 z-50 h-[271px]">
+          <div className="sticky top-0 z-20 h-auto md:h-[271px] py-4">
             <SurveyTitle data={data} step={currentStep} />
           </div>
-          <div className="flex flex-col gap-10 z-10">
+          <div className="flex flex-col gap-8 md:gap-10 z-10 mt-4 md:mt-0">
             {questions.map((question) => (
               <div
                 key={question.id}
                 id={`question-${question.id}`}
-                className={`p-4 transition-opacity duration-300 ease-in-out ${
-                  allAnswered || question.position === activeQuestion
-                    ? "opacity-100"
-                    : "opacity-50 blur-sm hover:opacity-100 hover:blur-none"
-                }`}
+                className={`p-4 transition-opacity duration-300 ease-in-out 
+                  ${
+                    allAnswered || question.position === activeQuestion
+                      ? "opacity-100"
+                      : "opacity-50 blur-sm hover:opacity-100 hover:blur-none"
+                  }
+                `}
                 onMouseEnter={() => setActiveQuestion(question.position)}
               >
                 <Question
@@ -200,7 +202,7 @@ const Survey = () => {
             ))}
             <Button
               variant="default"
-              className="w-full rounded-[40px] h-[60px] text-lg my-20"
+              className="w-full md:w-[80%] mx-auto rounded-[40px] h-[50px] md:h-[60px] text-base md:text-lg my-10 md:my-20"
               onClick={() => handleSubmit(currentStep)}
             >
               Пройти опрос

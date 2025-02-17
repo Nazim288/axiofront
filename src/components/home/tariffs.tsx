@@ -8,9 +8,9 @@ const Tariffs = ({ id }: { id: string }) => {
   return (
     <div
       id={id}
-      className="flex gap-4 justify-start h-[600px] rounded-[20px] baseShadow mt-20 p-10"
+      className="flex flex-col lg:flex-row gap-4 justify-start min-h-[600px] rounded-[20px] baseShadow mt-20 p-10"
     >
-      <div className="flex flex-col gap-4 w-[50%] justify-center">
+      <div className="flex flex-col gap-4 lg:w-[50%] justify-center">
         <p>
           Всё стремится к гармонии - ценности тоже. Вы узнаете о гармонии
           ценностей своих и партнёра, подписавшись на услуги сервиса
@@ -30,6 +30,7 @@ const Tariffs = ({ id }: { id: string }) => {
         alt="tariffs"
         width={535}
         height={535}
+        className="mx-auto lg:mx-0"
       />
     </div>
   );

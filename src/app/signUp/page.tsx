@@ -112,21 +112,26 @@ const SignUp = () => {
   }
 
   return (
-    <div className="max-w-[670px] mx-auto pb-20">
+    <div className="w-full max-w-[670px] mx-auto pb-10 px-4 sm:px-6 md:pb-20">
       <Form {...form}>
-        <h1 className="text-5xl font-bold text-center mb-10">Регистрация</h1>
+        <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-center mb-6 md:mb-10">
+          Регистрация
+        </h1>
         {error && (
-          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
+          <div className="bg-red-100 border border-red-400 text-red-700 px-3 py-2 sm:px-4 sm:py-3 rounded relative mb-4 md:mb-6 text-sm sm:text-base">
             {error}
           </div>
         )}
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="space-y-6 md:space-y-8"
+        >
           <FormField
             control={form.control}
             name="gender"
             render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel className="text-lg font-semibold">
+              <FormItem className="space-y-2 md:space-y-3">
+                <FormLabel className="text-base sm:text-lg font-semibold">
                   Пол<span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
@@ -149,7 +154,7 @@ const SignUp = () => {
                     </FormItem>
                   </RadioGroup>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-sm" />
               </FormItem>
             )}
           />
@@ -157,8 +162,8 @@ const SignUp = () => {
             control={form.control}
             name="yearOfBirth"
             render={({ field }) => (
-              <FormItem className="space-y-3">
-                <FormLabel className="text-lg font-semibold">
+              <FormItem className="space-y-2 md:space-y-3">
+                <FormLabel className="text-base sm:text-lg font-semibold">
                   Год рождения<span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
@@ -193,7 +198,7 @@ const SignUp = () => {
                     </FormItem>
                   </RadioGroup>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-sm" />
               </FormItem>
             )}
           />
@@ -202,17 +207,17 @@ const SignUp = () => {
             name="login"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-lg font-semibold">
+                <FormLabel className="text-base sm:text-lg font-semibold">
                   Псевдоним<span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="username123"
-                    className="pr-10 h-12 bg-[#F3F1F1]"
+                    className="pr-10 h-10 sm:h-12 bg-[#F3F1F1] text-sm sm:text-base"
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-sm" />
               </FormItem>
             )}
           />
@@ -221,17 +226,17 @@ const SignUp = () => {
             name="email"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-lg font-semibold">
+                <FormLabel className="text-base sm:text-lg font-semibold">
                   Почта<span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <Input
                     placeholder="email@example.com"
-                    className="pr-10 h-12 bg-[#F3F1F1]"
+                    className="pr-10 h-10 sm:h-12 bg-[#F3F1F1] text-sm sm:text-base"
                     {...field}
                   />
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-sm" />
               </FormItem>
             )}
           />
@@ -240,14 +245,14 @@ const SignUp = () => {
             name="password"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-lg font-semibold">
+                <FormLabel className="text-base sm:text-lg font-semibold">
                   Пароль<span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      className="pr-10 h-12 bg-[#F3F1F1]"
+                      className="pr-10 h-10 sm:h-12 bg-[#F3F1F1] text-sm sm:text-base"
                       placeholder="пароль"
                       {...field}
                     />
@@ -255,21 +260,21 @@ const SignUp = () => {
                       type="button"
                       variant="ghost"
                       size="icon"
-                      className="absolute right-0 top-0 h-full  hover:bg-transparent"
+                      className="absolute right-0 top-0 h-full hover:bg-transparent"
                       onClick={() => setShowPassword(!showPassword)}
                       aria-label={
                         showPassword ? "Hide password" : "Show password"
                       }
                     >
                       {showPassword ? (
-                        <EyeOff className="h-5 w-5" />
+                        <EyeOff className="h-4 w-4 sm:h-5 sm:w-5" />
                       ) : (
-                        <Eye className="h-5 w-5" />
+                        <Eye className="h-4 w-4 sm:h-5 sm:w-5" />
                       )}
                     </Button>
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-sm" />
               </FormItem>
             )}
           />
@@ -278,14 +283,14 @@ const SignUp = () => {
             name="confirmPassword"
             render={({ field }) => (
               <FormItem>
-                <FormLabel className="text-lg font-semibold">
+                <FormLabel className="text-base sm:text-lg font-semibold">
                   Подтверждение пароля<span className="text-red-500">*</span>
                 </FormLabel>
                 <FormControl>
                   <div className="relative">
                     <Input
                       type={showConfirmPassword ? "text" : "password"}
-                      className="pr-10 h-12 bg-[#F3F1F1]"
+                      className="pr-10 h-10 sm:h-12 bg-[#F3F1F1] text-sm sm:text-base"
                       placeholder="подтверждение пароля"
                       {...field}
                     />
@@ -302,20 +307,20 @@ const SignUp = () => {
                       }
                     >
                       {showConfirmPassword ? (
-                        <EyeOff className="h-5 w-5" />
+                        <EyeOff className="h-4 w-4 sm:h-5 sm:w-5" />
                       ) : (
-                        <Eye className="h-5 w-5" />
+                        <Eye className="h-4 w-4 sm:h-5 sm:w-5" />
                       )}
                     </Button>
                   </div>
                 </FormControl>
-                <FormMessage />
+                <FormMessage className="text-sm" />
               </FormItem>
             )}
           />
           <Button
             type="submit"
-            className="w-full text-lg font-semibold rounded-full h-14 mt-20"
+            className="w-full text-base sm:text-lg font-semibold rounded-full h-12 sm:h-14 mt-10 sm:mt-16 md:mt-20"
             disabled={isLoading || isSuccess}
           >
             {isLoading ? (

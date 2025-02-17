@@ -1,8 +1,8 @@
 const AboutCompany = ({ id }: { id: string }) => {
   return (
     <div id={id} className="flex flex-col gap-5 mt-32">
-      <h1 className="text-4xl font-semibold">О компании</h1>
-      <div className="flex justify-between gap-4">
+      <h1 className="text-3xl lg:text-4xl font-semibold">О компании</h1>
+      <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-4">
         <div className="flex flex-col gap-2">
           <p className="text-[#FF9800] font-semibold">Наша миссия</p>
           <p className="font-normal">
@@ -10,14 +10,14 @@ const AboutCompany = ({ id }: { id: string }) => {
             людьми лучше, делать больше, жить счастливее.
           </p>
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
           <p className="text-[#FF9800] font-semibold">Как мы это делаем</p>
           <p className="font-normal">
             Мы уточняем представления пользователей сервиса о ценностях, которые
             важны для них и окружающих их людей
           </p>
         </div>
-        <div>
+        <div className="flex flex-col gap-2">
           <p className="text-[#FF9800] font-semibold">Зачем мы это делаем</p>
           <p className="font-normal">
             Мы инвестируем заработанные средства в научные проекты, направленные

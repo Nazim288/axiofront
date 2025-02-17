@@ -5,7 +5,7 @@ import Link from "next/link";
 const MainBanner = () => {
   return (
     <div>
-      <div className="flex justify-between">
+      <div className="flex flex-col lg:flex-row justify-between gap-10">
         <div className="flex flex-col gap-5">
           <Image
             src={"/icons/mainBannerBadge.svg"}
@@ -15,8 +15,10 @@ const MainBanner = () => {
             className="mb-5 shake"
           />
           <div className="line-height-1">
-            <h1 className="text-5xl font-semibold text-primary">Познай себя</h1>
-            <h1 className="text-5xl font-semibold">
+            <h1 className="text-3xl lg:text-5xl font-semibold text-primary">
+              Познай себя
+            </h1>
+            <h1 className="text-3xl lg:text-5xl font-semibold">
               Найди гармонию <br /> в отношениях
             </h1>
           </div>
@@ -59,8 +61,9 @@ const MainBanner = () => {
         <Image
           src={"/images/homePgae/values.png"}
           alt="tariffs"
-          width={535}
-          height={535}
+          width={358}
+          height={358}
+          className="mx-auto lg:mx-0"
         />
       </div>
       <Link href="/survey">
