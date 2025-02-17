@@ -2,7 +2,7 @@ import api from "./api";
 import { Urls } from "./urls";
 
 interface RegisterBody {
-  gender: string;
+  gender: "male" | "female";
   yearOfBirth: string;
   login: string;
   email: string;
@@ -26,12 +26,22 @@ export const loginUser = async (body: LoginBody) => {
 };
 
 export const registerUser = async (body: RegisterBody) => {
+  const formattedBody = {
+    ...body,
+    gender: body.gender.toUpperCase(),
+    yearOfBirth: convertYearRangeToDate(body.yearOfBirth),
+  };
+
   try {
-    const response = await api.post(Urls.authUrls.register, body);
+    const response = await api.post(Urls.authUrls.register, formattedBody);
     return response.data;
-    console.log(response.data);
   } catch (error) {
     console.error("Ошибка при регистрации:", error);
     throw error;
   }
 };
+
+function convertYearRangeToDate(yearRange: string): string {
+  const [startYear] = yearRange.split("-");
+  return `${startYear}-01-01`;
+}
