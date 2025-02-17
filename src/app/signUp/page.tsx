@@ -20,6 +20,10 @@ import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { registerUser } from "@/api/auth";
 import Loader from "@/components/loader/loader";
+import { useRouter } from "next/navigation";
+import { toast } from "sonner";
+import axios from "axios";
+
 const formSchema = z
   .object({
     gender: z.enum(["male", "female"]),
@@ -40,11 +44,22 @@ const formSchema = z
     message: "Пароли не совпадают",
   });
 
+interface ErrorResponse {
+  error: string;
+}
+
+const errorMessages: Record<string, string> = {
+  "Email already exists": "Пользователь с такой почтой уже существует",
+  "Nickname already exists": "Пользователь с таким псевдонимом уже существует",
+};
+
 const SignUp = () => {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -61,6 +76,8 @@ const SignUp = () => {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setIsSuccess(false);
+    setError(null);
+
     try {
       await registerUser({
         email: values.email,
@@ -70,9 +87,25 @@ const SignUp = () => {
         gender: values.gender,
         yearOfBirth: values.yearOfBirth,
       });
+
       setIsSuccess(true);
-    } catch (error) {
-      console.error("Ошибка регистрации:", error);
+      toast.success("Регистрация успешна!");
+
+      setTimeout(() => {
+        router.push("/");
+      }, 1000);
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const errorData = error.response.data as ErrorResponse;
+        const errorMessage = errorData.error
+          ? errorMessages[errorData.error] || errorData.error
+          : "Произошла ошибка при регистрации. Попробуйте позже";
+        setError(errorMessage);
+        toast.error(errorMessage);
+      } else {
+        setError("Произошла ошибка при регистрации. Попробуйте позже");
+        toast.error("Произошла ошибка при регистрации");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -82,6 +115,11 @@ const SignUp = () => {
     <div className="max-w-[670px] mx-auto pb-20">
       <Form {...form}>
         <h1 className="text-5xl font-bold text-center mb-10">Регистрация</h1>
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative mb-6">
+            {error}
+          </div>
+        )}
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <FormField
             control={form.control}
@@ -283,7 +321,7 @@ const SignUp = () => {
             {isLoading ? (
               <Loader isFullHeight={false} />
             ) : isSuccess ? (
-              "Успешно!"
+              "Успешно! Перенаправление..."
             ) : (
               "Зарегистрироваться"
             )}
