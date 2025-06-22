@@ -1,7 +1,7 @@
 "use client";
 
 import { useSearchParams } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, Suspense } from "react";
 import MainBanner from "@/components/home/mainBanner";
 import CardsBlock from "@/components/home/cards/cardsBlock";
 // import TeamBlock from "@/components/home/team/teamBlock";
@@ -11,7 +11,7 @@ import Tariffs from "@/components/home/tariffs";
 import Faq from "@/components/home/faq";
 import NewsBlock from "@/components/home/news/newsBlock";
 
-export default function HomePage() {
+function HomePageContent() {
   const searchParams = useSearchParams();
   const showAuth = searchParams.get("auth");
 
@@ -36,5 +36,13 @@ export default function HomePage() {
       <NewsBlock id="news" />
       <Contacts id="contacts" />
     </>
+  );
+}
+
+export default function HomePage() {
+  return (
+    <Suspense fallback={<div>Загрузка...</div>}>
+      <HomePageContent />
+    </Suspense>
   );
 }
