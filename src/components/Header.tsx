@@ -8,11 +8,14 @@ import { SignInModal } from "./modals/signInModal";
 import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Menu, X } from "lucide-react";
+import { useUser } from "@/contexts/UserContext";
+import { logoutUser } from "@/api/auth";
 
 const Header: React.FC = () => {
   const router = useRouter();
   const params = useParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const { isAuthenticated, logout } = useUser();
 
   const handleNavigation = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -27,6 +30,53 @@ const Header: React.FC = () => {
     } else {
       router.push("/#" + anchorId);
     }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await logoutUser();
+      logout();
+      setIsMenuOpen(false);
+    } catch (error) {
+      console.error("Ошибка при выходе:", error);
+    }
+  };
+
+  const AuthButtons = () => {
+    if (isAuthenticated) {
+      return (
+        <>
+          <Link href="/survey">
+            <Button variant="default" className="rounded-[40px]">
+              Пройти опрос
+            </Button>
+          </Link>
+          <Link href="/profile">
+            <Button variant="outline" className="rounded-[40px]">
+              Профиль
+            </Button>
+          </Link>
+          <Button
+            variant="outline"
+            className="rounded-[40px]"
+            onClick={handleLogout}
+          >
+            Выйти
+          </Button>
+        </>
+      );
+    }
+
+    return (
+      <>
+        <SignInModal />
+        <Link href="/signUp">
+          <Button variant="outline" className="rounded-[40px]">
+            Регистрация
+          </Button>
+        </Link>
+      </>
+    );
   };
 
   const navigationItems = [
@@ -64,22 +114,7 @@ const Header: React.FC = () => {
         </nav>
 
         <div className="hidden lg:flex justify-between gap-4">
-          <Link href="/survey">
-            <Button variant="default" className="rounded-[40px]">
-              Пройти опрос
-            </Button>
-          </Link>
-          <SignInModal />
-          <Link href="/profile">
-            <Button variant="outline" className="rounded-[40px]">
-              Профиль
-            </Button>
-          </Link>
-          <Link href="/signUp">
-            <Button variant="outline" className="rounded-[40px]">
-              Регистрация
-            </Button>
-          </Link>
+          <AuthButtons />
         </div>
 
         <button
@@ -109,22 +144,7 @@ const Header: React.FC = () => {
                 </li>
               ))}
               <li className="pt-4 flex flex-col gap-4">
-                <Link href="/survey" className="w-full">
-                  <Button variant="default" className="rounded-[40px] w-full">
-                    Пройти опрос
-                  </Button>
-                </Link>
-                <SignInModal />
-                <Link href="/profile" className="w-full">
-                  <Button variant="outline" className="rounded-[40px] w-full">
-                    Профиль
-                  </Button>
-                </Link>
-                <Link href="/signUp" className="w-full">
-                  <Button variant="outline" className="rounded-[40px] w-full">
-                    Регистрация
-                  </Button>
-                </Link>
+                <AuthButtons />
               </li>
             </ul>
           </nav>

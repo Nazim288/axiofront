@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Toaster } from "sonner";
+import { UserProvider } from "@/contexts/UserContext";
 
 const geistSans = localFont({
   src: "../fonts/GeistVF.woff",
@@ -31,12 +32,14 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
-        <Header />
-        <div className="p-4 sm:p-6 md:p-10 max-w-[1100px] min-h-[calc(100vh-120px)] sm:min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-160px)] mx-auto">
-          {children}
-        </div>
-        <Footer />
-        <Toaster richColors position="top-center" />
+        <UserProvider>
+          <Header />
+          <div className="p-4 sm:p-6 md:p-10 max-w-[1100px] min-h-[calc(100vh-120px)] sm:min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-160px)] mx-auto">
+            {children}
+          </div>
+          <Footer />
+          <Toaster richColors position="top-center" />
+        </UserProvider>
       </body>
     </html>
   );

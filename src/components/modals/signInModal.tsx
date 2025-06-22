@@ -27,6 +27,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { loginUser } from "@/api/auth";
 import Loader from "@/components/loader/loader";
+import { useUser } from "@/contexts/UserContext";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Неверный формат почты" }),
@@ -64,15 +65,21 @@ export function SignInModal() {
     },
   });
 
+  const { login } = useUser();
+
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setIsSuccess(false);
     try {
-      await loginUser({
+      const response = await loginUser({
         username: values.email,
         password: values.password,
       });
-      setIsSuccess(true);
+      if (response.token) {
+        login(response.token);
+        setIsSuccess(true);
+        closeDialog();
+      }
     } catch (error) {
       console.error("Ошибка входа:", error);
     } finally {
@@ -105,6 +112,7 @@ export function SignInModal() {
           variant="outline"
           className="rounded-[40px]"
           onClick={openDialog}
+          data-signin-trigger
         >
           Войти
         </Button>

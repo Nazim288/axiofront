@@ -8,6 +8,7 @@ import { IQuestion, ISurveyData } from "@/types/survey";
 import { surveyData } from "@/mocks/survey";
 import { getSurvey, sendAnswers } from "@/api/survey";
 import Loader from "@/components/loader/loader";
+import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
 
 const Survey = () => {
   const [data, setData] = useState<ISurveyData>();
@@ -165,52 +166,56 @@ const Survey = () => {
   }, []);
 
   return (
-    <div className="flex flex-col max-w-[1200px] mx-auto">
-      {isLoading ? (
-        <div
-          className="flex flex-col items-center justify-center"
-          style={{ height: "calc(100vh - 320px)" }}
-        >
-          <Loader />
-        </div>
-      ) : (
-        <>
-          <div className="sticky top-0 z-20 h-auto md:h-[271px] py-4">
-            <SurveyTitle data={data} step={currentStep} />
+    <ProtectedRoute>
+      <div className="flex flex-col max-w-[1200px] mx-auto">
+        {isLoading ? (
+          <div
+            className="flex flex-col items-center justify-center"
+            style={{ height: "calc(100vh - 320px)" }}
+          >
+            <Loader />
           </div>
-          <div className="flex flex-col gap-8 md:gap-10 z-10 mt-4 md:mt-0">
-            {questions.map((question) => (
-              <div
-                key={question.id}
-                id={`question-${question.id}`}
-                className={`p-4 transition-opacity duration-300 ease-in-out 
-                  ${
-                    allAnswered || question.position === activeQuestion
-                      ? "opacity-100"
-                      : "opacity-50 blur-sm hover:opacity-100 hover:blur-none"
-                  }
-                `}
-                onMouseEnter={() => setActiveQuestion(question.position)}
-              >
-                <Question
+        ) : (
+          <>
+            <div className="sticky top-0 z-20 h-auto md:h-[271px] py-4">
+              <SurveyTitle data={data} step={currentStep} />
+            </div>
+            <div className="flex flex-col gap-8 md:gap-10 z-10 mt-4 md:mt-0">
+              {questions.map((question) => (
+                <div
                   key={question.id}
-                  questionText={question.text}
-                  questionNumber={question.position}
-                  onSelect={(answer) => handleAnswer(question.position, answer)}
-                />
-              </div>
-            ))}
-            <Button
-              variant="default"
-              className="w-full md:w-[80%] mx-auto rounded-[40px] h-[50px] md:h-[60px] text-base md:text-lg my-10 md:my-20"
-              onClick={() => handleSubmit(currentStep)}
-            >
-              Пройти опрос
-            </Button>
-          </div>
-        </>
-      )}
-    </div>
+                  id={`question-${question.id}`}
+                  className={`p-4 transition-opacity duration-300 ease-in-out 
+                    ${
+                      allAnswered || question.position === activeQuestion
+                        ? "opacity-100"
+                        : "opacity-50 blur-sm hover:opacity-100 hover:blur-none"
+                    }
+                  `}
+                  onMouseEnter={() => setActiveQuestion(question.position)}
+                >
+                  <Question
+                    key={question.id}
+                    questionText={question.text}
+                    questionNumber={question.position}
+                    onSelect={(answer) =>
+                      handleAnswer(question.position, answer)
+                    }
+                  />
+                </div>
+              ))}
+              <Button
+                variant="default"
+                className="w-full md:w-[80%] mx-auto rounded-[40px] h-[50px] md:h-[60px] text-base md:text-lg my-10 md:my-20"
+                onClick={() => handleSubmit(currentStep)}
+              >
+                Пройти опрос
+              </Button>
+            </div>
+          </>
+        )}
+      </div>
+    </ProtectedRoute>
   );
 };
 

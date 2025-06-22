@@ -12,17 +12,17 @@ const cards = [
     description: "и создать или укрепить долгосрочные отношения.",
   },
   {
-    src: "/images/homePgae/values.png",
+    src: "/images/homePgae/step_04.png",
     title: "свои ценности",
     description: "которые определяют ваши решения и действия.",
   },
   {
-    src: "/images/homePgae/harmony.png",
+    src: "/images/homePgae/step_05.png",
     title: "насколько гармоничны ваши ценности между собой",
     description: "узнаете, какие ценности затрудняют выбор.",
   },
   {
-    src: "/images/homePgae/mainValues.png",
+    src: "/images/homePgae/step_06.png",
     title: "ценности партнёра",
     description: "для того чтобы «обходить острые углы» в общении.",
   },

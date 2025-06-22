@@ -15,9 +15,27 @@ interface LoginBody {
   password: string;
 }
 
+export const logoutUser = async () => {
+  // try {
+  //   const response = await api.get(Urls.authUrls.logout);
+  //   if (response.status === 200) {
+  //     localStorage.removeItem("token");
+  //     return true;
+  //   }
+  //   return false;
+  // } catch (error) {
+  //   console.error("Ошибка при выходе:", error);
+  //   throw error;
+  // }
+  localStorage.removeItem("token");
+};
+
 export const loginUser = async (body: LoginBody) => {
   try {
     const response = await api.post(Urls.authUrls.login, body);
+    if (response.data.token) {
+      localStorage.setItem("token", response.data.token);
+    }
     return response.data;
   } catch (error) {
     console.error("Ошибка при авторизации:", error);

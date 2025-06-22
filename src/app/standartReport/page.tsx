@@ -17,6 +17,7 @@ import {
 import Report from "@/components/report/report";
 import { Input } from "@/components/ui/input";
 import ColorPsychology from "@/components/standartReport/сolorPsychology";
+import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
 
 const data = {
   reports: [
@@ -154,178 +155,180 @@ const StandartReportPage = () => {
   }
 
   return (
-    <div className="flex flex-col gap-10">
-      <p className="text-md font-normal">{data.date}</p>
-      <Report />
-      <div className="flex flex-col gap-3">
-        <p className="text-2xl font-semibold">
-          Вы так думаете (я считаю что..)
+    <ProtectedRoute>
+      <div className="flex flex-col gap-10">
+        <p className="text-md font-normal">{data.date}</p>
+        <Report />
+        <div className="flex flex-col gap-3">
+          <p className="text-2xl font-semibold">
+            Вы так думаете (я считаю что..)
+          </p>
+          <div className="flex flex-col gap-5">
+            {data.reports?.[0].map((item, index) => (
+              <StandartReportCard
+                key={item.title}
+                title={item.title}
+                description={item.description}
+                number={index + 1}
+                priority={item.priority}
+              />
+            ))}
+          </div>
+        </div>
+        <div className="flex flex-col gap-3">
+          <p className="text-2xl font-semibold">
+            Вы так делаете (ближнее окружение, по вашему мнению, ожидает от вас
+            дел, связанных…)
+          </p>
+          <div className="flex flex-col gap-5">
+            {data.reports?.[1].map((item, index) => (
+              <StandartReportCard
+                key={item.title}
+                title={item.title}
+                description={item.description}
+                number={index + 1}
+                priority={item.priority}
+              />
+            ))}
+          </div>
+        </div>
+        <p>
+          Иногда в жизни случается так, что поведение, которого от вас (по
+          вашему мнению) ждут окружающие, не всегда соответствует вашим
+          собственным ценностям.
+          <br />
+          <br />
+          Это может произойти потому, что ваши приоритеты могли измениться, и
+          теперь какие-то ценности для вас стали важнее, чем раньше. Или вы
+          начали иначе понимать, какое поведение, основанное на ценностях,
+          ожидают от вас окружающие люди.
+          <br />
+          <br />
+          Иными словами, иногда ваши представления о том, что должно быть важным
+          в вашей жизни, и ваши представления о том что должно быть важным в
+          жизни окружающих вас людей, не совпадают.
+          <br />
+          <br />
+          Таким образом, естественно возникает вопрос – а насколько согласованы
+          между собой ваши ценности по уровням: «Вы так думаете» и «Вы так
+          делаете». Другими словами – насколько совпадают ваши представления о
+          собственных ценностях и ваши представления о восприятии ваших
+          ценностей окружающими людьми.
+          <br />
+          <br />
+          Величина этой согласованности находится в интервале от 0 до 100%.
         </p>
-        <div className="flex flex-col gap-5">
-          {data.reports?.[0].map((item, index) => (
-            <StandartReportCard
-              key={item.title}
-              title={item.title}
-              description={item.description}
-              number={index + 1}
-              priority={item.priority}
-            />
-          ))}
+        <Matches
+          matches={57}
+          values={[
+            "Покладистость",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Покладистость",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+            "Самостоятельность",
+          ]}
+        />
+        <div className="flex flex-col gap-2">
+          <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
+            <p className="text-2xl font-semibold text-[#388E3C]">
+              Привычные модели поведения, когда ничего не понятно
+            </p>
+            <p>
+              Стремиться полностью соответствовать ожиданиям общества – это
+              «путь в никуда», общество слишком разное, угодить всем не
+              получится. Сдерживание своих побуждений, которые могут причинить
+              вред окружающим –необходимо, но иногда то, что считается вредным в
+              текущий момент, со временем оказывается пользой. Дисциплина в
+              выполнении правил, принятых в обществе – недостижима.
+            </p>
+          </div>
+          <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
+            <p className="text-2xl font-semibold text-[#FF9800]">
+              5 советов, как наладить эффективное общение в условиях
+              неопределенности
+            </p>
+            <p>
+              Стремиться полностью соответствовать ожиданиям общества – это
+              «путь в никуда», общество слишком разное, угодить всем не
+              получится. Сдерживание своих побуждений, которые могут причинить
+              вред окружающим –необходимо, но иногда то, что считается вредным в
+              текущий момент, со временем оказывается пользой. Дисциплина в
+              выполнении правил, принятых в обществе – недостижима, т.к. слишком
+              часто меняются правила. Стремиться полностью соответствовать
+              ожиданиям общества – это «путь в никуда», общество слишком разное,
+              угодить всем не получится. Сдерживание своих побуждений, которые
+              могут причинить вред окружающим –необходимо, но иногда то, что
+              считается вредным в текущий момент, со временем оказывается
+              пользой. Дисциплина в выполнении правил, принятых в обществе –
+              недостижима, т.к. слишком часто меняются правила.
+            </p>
+          </div>
         </div>
-      </div>
-      <div className="flex flex-col gap-3">
-        <p className="text-2xl font-semibold">
-          Вы так делаете (ближнее окружение, по вашему мнению, ожидает от вас
-          дел, связанных…)
-        </p>
-        <div className="flex flex-col gap-5">
-          {data.reports?.[1].map((item, index) => (
-            <StandartReportCard
-              key={item.title}
-              title={item.title}
-              description={item.description}
-              number={index + 1}
-              priority={item.priority}
-            />
-          ))}
-        </div>
-      </div>
-      <p>
-        Иногда в жизни случается так, что поведение, которого от вас (по вашему
-        мнению) ждут окружающие, не всегда соответствует вашим собственным
-        ценностям.
-        <br />
-        <br />
-        Это может произойти потому, что ваши приоритеты могли измениться, и
-        теперь какие-то ценности для вас стали важнее, чем раньше. Или вы начали
-        иначе понимать, какое поведение, основанное на ценностях, ожидают от вас
-        окружающие люди.
-        <br />
-        <br />
-        Иными словами, иногда ваши представления о том, что должно быть важным в
-        вашей жизни, и ваши представления о том что должно быть важным в жизни
-        окружающих вас людей, не совпадают.
-        <br />
-        <br />
-        Таким образом, естественно возникает вопрос – а насколько согласованы
-        между собой ваши ценности по уровням: «Вы так думаете» и «Вы так
-        делаете». Другими словами – насколько совпадают ваши представления о
-        собственных ценностях и ваши представления о восприятии ваших ценностей
-        окружающими людьми.
-        <br />
-        <br />
-        Величина этой согласованности находится в интервале от 0 до 100%.
-      </p>
-      <Matches
-        matches={57}
-        values={[
-          "Покладистость",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Покладистость",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-          "Самостоятельность",
-        ]}
-      />
-      <div className="flex flex-col gap-2">
-        <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
-          <p className="text-2xl font-semibold text-[#388E3C]">
-            Привычные модели поведения, когда ничего не понятно
-          </p>
-          <p>
-            Стремиться полностью соответствовать ожиданиям общества – это «путь
-            в никуда», общество слишком разное, угодить всем не получится.
-            Сдерживание своих побуждений, которые могут причинить вред
-            окружающим –необходимо, но иногда то, что считается вредным в
-            текущий момент, со временем оказывается пользой. Дисциплина в
-            выполнении правил, принятых в обществе – недостижима.
-          </p>
-        </div>
-        <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
-          <p className="text-2xl font-semibold text-[#FF9800]">
-            5 советов, как наладить эффективное общение в условиях
-            неопределенности
-          </p>
-          <p>
-            Стремиться полностью соответствовать ожиданиям общества – это «путь
-            в никуда», общество слишком разное, угодить всем не получится.
-            Сдерживание своих побуждений, которые могут причинить вред
-            окружающим –необходимо, но иногда то, что считается вредным в
-            текущий момент, со временем оказывается пользой. Дисциплина в
-            выполнении правил, принятых в обществе – недостижима, т.к. слишком
-            часто меняются правила. Стремиться полностью соответствовать
-            ожиданиям общества – это «путь в никуда», общество слишком разное,
-            угодить всем не получится. Сдерживание своих побуждений, которые
-            могут причинить вред окружающим –необходимо, но иногда то, что
-            считается вредным в текущий момент, со временем оказывается пользой.
-            Дисциплина в выполнении правил, принятых в обществе – недостижима,
-            т.к. слишком часто меняются правила.
-          </p>
-        </div>
-      </div>
-      <ColorPsychology />
-      <div className="w-full flex justify-center">
-        <div className="flex flex-col gap-5 w-fit">
-          <Image src={data.img} alt="report" width={900} height={400} />
-          <Button
-            variant={"outline"}
-            color="primary"
-            className="w-full rounded-3xl"
-          >
-            Выслать на эл.почту текущую версию отчета и картинку
-          </Button>
-        </div>
-      </div>
-      <div className="flex flex-col gap-4 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
-        <p className="text-2xl font-normal">
-          Хотите получить более точные советы о том, как лучше общаться с
-          определённым человеком? Просто отправьте ему письмо с просьбой
-          заполнить опросник. После того как он это сделает, мы рассчитаем
-          совместимость ценностей и отправим результаты вам.
-        </p>
-        <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
-            <FormField
-              control={form.control}
-              name="email"
-              render={({ field }) => (
-                <FormItem>
-                  <FormControl>
-                    <Input
-                      placeholder="email@example.com"
-                      className="pr-10 h-12 bg-[#F3F1F1]"
-                      {...field}
-                    />
-                  </FormControl>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+        <ColorPsychology />
+        <div className="w-full flex justify-center">
+          <div className="flex flex-col gap-5 w-fit">
+            <Image src={data.img} alt="report" width={900} height={400} />
             <Button
-              variant={"default"}
+              variant={"outline"}
               color="primary"
-              className="w-full rounded-3xl text-lg font-md h-[60px]"
+              className="w-full rounded-3xl"
             >
-              Отправить заявку
+              Выслать на эл.почту текущую версию отчета и картинку
             </Button>
-          </form>
-        </Form>
+          </div>
+        </div>
+        <div className="flex flex-col gap-4 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
+          <p className="text-2xl font-normal">
+            Хотите получить более точные советы о том, как лучше общаться с
+            определённым человеком? Просто отправьте ему письмо с просьбой
+            заполнить опросник. После того как он это сделает, мы рассчитаем
+            совместимость ценностей и отправим результаты вам.
+          </p>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+              <FormField
+                control={form.control}
+                name="email"
+                render={({ field }) => (
+                  <FormItem>
+                    <FormControl>
+                      <Input
+                        placeholder="email@example.com"
+                        className="pr-10 h-12 bg-[#F3F1F1]"
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button
+                variant={"default"}
+                color="primary"
+                className="w-full rounded-3xl text-lg font-md h-[60px]"
+              >
+                Отправить заявку
+              </Button>
+            </form>
+          </Form>
+        </div>
       </div>
-    </div>
+    </ProtectedRoute>
   );
 };
 
