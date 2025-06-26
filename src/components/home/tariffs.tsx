@@ -26,7 +26,7 @@ const Tariffs = ({ id }: { id: string }) => {
         </Button>
       </div>
       <Image
-        src={"/images/homePgae/values.png"}
+        src={"/images/homePgae/step_01.png"}
         alt="tariffs"
         width={535}
         height={535}

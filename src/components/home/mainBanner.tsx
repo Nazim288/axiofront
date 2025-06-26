@@ -59,7 +59,7 @@ const MainBanner = () => {
           </ul>
         </div>
         <Image
-          src={"/images/homePgae/values.png"}
+          src={"/images/homePgae/step_00.png"}
           alt="tariffs"
           width={358}
           height={358}

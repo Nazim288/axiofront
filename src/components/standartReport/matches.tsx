@@ -13,7 +13,7 @@ const Matches = ({
       <div className="flex justify-around">
         <div className="flex flex-col gap-2">
           <Image
-            src={"/images/reports/IThink.png"}
+            src={"/images/reports/step_06.png"}
             alt="report"
             width={300}
             height={300}
@@ -89,7 +89,7 @@ const Matches = ({
 
         <div className="flex flex-col gap-2">
           <Image
-            src={"/images/reports/PeopleThink.png"}
+            src={"/images/reports/step_07.png"}
             alt="report"
             width={300}
             height={300}
