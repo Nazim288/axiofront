@@ -85,6 +85,7 @@ const Header: React.FC = () => {
     { id: "company", text: "О компании" },
     { id: "news", text: "Новости" },
     { id: "contacts", text: "Контакты" },
+    { id: "tariffs", text: "Тарифы" },
   ];
 
   return (

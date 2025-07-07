@@ -9,6 +9,8 @@ import { surveyData } from "@/mocks/survey";
 import { getSurvey, sendAnswers } from "@/api/survey";
 import Loader from "@/components/loader/loader";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
+import { CongratulationsModal } from "@/components/modals/congratulationsModal";
+import { RetakeSurveyModal } from "@/components/modals/retakeSurveyModal";
 
 const Survey = () => {
   const [data, setData] = useState<ISurveyData>();
@@ -24,6 +26,29 @@ const Survey = () => {
   const [answersStep, setAnswersStep] = useState<
     { value: number; questionPosition: number }[]
   >([]);
+  const [showCongratulations, setShowCongratulations] = useState(false);
+  const [showRetakeSurvey, setShowRetakeSurvey] = useState(false);
+
+  // Функция для проверки одинаковых ответов
+  const checkForSameAnswers = (
+    answers: { value: number; questionPosition: number }[]
+  ) => {
+    if (answers.length === 0) return false;
+    const firstValue = answers[0].value;
+    return answers.every((answer) => answer.value === firstValue);
+  };
+
+  // Функция сброса состояния опроса
+  const resetSurveyState = () => {
+    setCurrentStep(1);
+    setAnswers([]);
+    setAnswersStep([]);
+    setActiveQuestion(1);
+    setAllAnswered(false);
+    setQuestions(data?.questionGroups[0].questions || []);
+    setShowCongratulations(false);
+    setShowRetakeSurvey(false);
+  };
 
   useEffect(() => {
     const fetchSurvey = async () => {
@@ -76,7 +101,7 @@ const Survey = () => {
     }
   };
 
-  const handleSubmit = (currentStep: number) => {
+  const handleSubmit = async (currentStep: number) => {
     if (!allAnswered) {
       // Находим первый неотвеченный вопрос
       const unansweredQuestion = questions.find(
@@ -111,11 +136,22 @@ const Survey = () => {
         behavior: "smooth",
       });
     } else {
-      sendAnswers({
-        answers: answers,
-        personTestId: 1,
-      });
-      console.log("Collected Answers:", answers);
+      // Проверяем, не выбрал ли пользователь везде одинаковые ответы
+      if (checkForSameAnswers(answers)) {
+        setShowRetakeSurvey(true);
+        return;
+      }
+
+      try {
+        await sendAnswers({
+          answers: answers,
+          personTestId: 1,
+        });
+        console.log("Collected Answers:", answers);
+        setShowCongratulations(true);
+      } catch (error) {
+        console.error("Ошибка при отправке ответов:", error);
+      }
     }
   };
 
@@ -209,11 +245,20 @@ const Survey = () => {
                 className="w-full md:w-[80%] mx-auto rounded-[40px] h-[50px] md:h-[60px] text-base md:text-lg my-10 md:my-20"
                 onClick={() => handleSubmit(currentStep)}
               >
-                Пройти опрос
+                {currentStep === 3 ? "Завершить опрос" : "Далее"}
               </Button>
             </div>
           </>
         )}
+        <CongratulationsModal
+          isOpen={showCongratulations}
+          onClose={() => setShowCongratulations(false)}
+        />
+        <RetakeSurveyModal
+          isOpen={showRetakeSurvey}
+          onClose={() => setShowRetakeSurvey(false)}
+          onRetake={resetSurveyState}
+        />
       </div>
     </ProtectedRoute>
   );

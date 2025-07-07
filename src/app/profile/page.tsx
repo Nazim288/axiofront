@@ -23,7 +23,7 @@ const Survey = () => {
         <div className="flex flex-col gap-4 mt-20">
           <h2 className=" text-3xl font-semibold mb-5">Отчеты</h2>
           <Link href={"/freeReport"}>
-            <div className="relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out ">
+            <div className="relative flex flex-col border border-yellow-500 gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out ">
               <p className="text-xl font-semibold">Мои ценности</p>
               <p className="text-xl font-light">Краткий</p>
               <p className="text-xl font-light">05.07.24</p>

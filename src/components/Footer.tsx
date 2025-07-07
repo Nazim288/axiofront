@@ -13,7 +13,6 @@ const Footer: React.FC = () => {
     { id: "rules", text: "Правила пользования сайтом" },
     { id: "offer", text: "Договор оферты" },
     { id: "privacy", text: "Политика конфиденциальности" },
-    { id: "freepik", text: "Изображения взяты с Freepik.com" },
   ];
 
   return (

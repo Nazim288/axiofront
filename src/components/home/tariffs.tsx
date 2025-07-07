@@ -28,7 +28,7 @@ const Tariffs = ({ id }: { id: string }) => {
       <Image
         src={"/images/homePgae/step_01.png"}
         alt="tariffs"
-        width={535}
+        width={560}
         height={535}
         className="mx-auto lg:mx-0"
       />

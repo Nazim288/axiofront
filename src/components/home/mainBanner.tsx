@@ -61,7 +61,7 @@ const MainBanner = () => {
         <Image
           src={"/images/homePgae/step_00.png"}
           alt="tariffs"
-          width={358}
+          width={400}
           height={358}
           className="mx-auto lg:mx-0"
         />
