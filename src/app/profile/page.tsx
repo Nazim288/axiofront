@@ -4,8 +4,55 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
+import { getTestResult, getTestResultShort } from "@/api/survey";
+import { useRouter } from "next/navigation";
+import { useState, useEffect } from "react";
+import { ITestResultShort } from "@/types/survey";
 
 const Survey = () => {
+  const router = useRouter();
+  const [isLoading, setIsLoading] = useState(false);
+  const [shortResult, setShortResult] = useState<ITestResultShort | null>(null);
+  const [dataLoading, setDataLoading] = useState(true);
+
+  useEffect(() => {
+    const loadShortResult = async () => {
+      try {
+        const response = await getTestResultShort();
+        setShortResult(response.data);
+      } catch (error) {
+        console.error("Ошибка при загрузке короткого результата:", error);
+      } finally {
+        setDataLoading(false);
+      }
+    };
+
+    loadShortResult();
+  }, []);
+
+  const handleFreeReportClick = async (e: React.MouseEvent) => {
+    e.preventDefault();
+
+    if (!shortResult) {
+      console.error("Данные короткого результата не загружены");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      // Получаем полный результат используя ID из уже загруженного короткого ответа
+      const fullResponse = await getTestResult(shortResult.id.toString());
+      // Сохраняем данные в localStorage для передачи на страницу отчета
+      localStorage.setItem("testResult", JSON.stringify(fullResponse.data));
+      router.push(`/freeReport/${shortResult.id}`);
+    } catch (error) {
+      console.error("Ошибка при получении результатов теста:", error);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <ProtectedRoute>
       <div className="flex flex-col">
@@ -22,11 +69,41 @@ const Survey = () => {
 
         <div className="flex flex-col gap-4 mt-20">
           <h2 className=" text-3xl font-semibold mb-5">Отчеты</h2>
-          <Link href={"/freeReport"}>
-            <div className="relative flex flex-col border border-yellow-500 gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out ">
-              <p className="text-xl font-semibold">Мои ценности</p>
-              <p className="text-xl font-light">Краткий</p>
-              <p className="text-xl font-light">05.07.24</p>
+          <div
+            onClick={
+              dataLoading || !shortResult ? undefined : handleFreeReportClick
+            }
+            className={`relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full transition-transform duration-300 ease-in-out ${
+              // Желтый бордер и фон только для непрочитанных отчетов
+              shortResult && !shortResult.read
+                ? "border border-yellow-500 bg-yellow-50"
+                : "border border-gray-200 bg-white"
+            } ${
+              dataLoading || !shortResult
+                ? "cursor-not-allowed opacity-50"
+                : "hover:scale-105 cursor-pointer"
+            }`}
+          >
+            <p className="text-xl font-semibold">Мои ценности</p>
+            <p className="text-xl font-light">Краткий</p>
+            {dataLoading ? (
+              <div className="text-xl font-light text-gray-400">
+                Загрузка...
+              </div>
+            ) : shortResult ? (
+              <div className="flex flex-col gap-1">
+                <p className="text-xl font-light">
+                  {new Date(shortResult.finishTime).toLocaleDateString("ru-RU")}
+                </p>
+              </div>
+            ) : (
+              <p className="text-xl font-light text-red-500">
+                Данные недоступны
+              </p>
+            )}
+            {isLoading ? (
+              <div className="absolute right-5 bottom-5 w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+            ) : (
               <Image
                 src={"/icons/profileArrow.svg"}
                 alt="arrow right"
@@ -34,8 +111,8 @@ const Survey = () => {
                 height={24}
                 className="absolute right-5 bottom-5"
               />
-            </div>
-          </Link>
+            )}
+          </div>
           <Link href={"/standartReport"}>
             <div className="relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out ">
               <p className="text-xl font-semibold">Мои ценности</p>

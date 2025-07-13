@@ -6,77 +6,152 @@ import ColorPsychology from "@/components/standartReport/сolorPsychology";
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import Link from "next/link";
-import { FC } from "react";
+import { FC, useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
+import { ITestResult } from "@/types/survey";
+import { getYandexDiskFileUrl } from "@/api/yandexDisk";
 
-const data = {
-  reports: [
-    {
-      title: "Гибкость",
-      description:
-        "Вам важно влиться в команду, соблюдать правила компании и быть её частью",
-      color: "#FFD700",
-    },
-    {
-      title: "Традиционность",
-      description:
-        "Вам важно принятие традиционных канонов общества для стабильной и спокойной жизни",
-      color: "#FFaf00",
-    },
-    {
-      title: "Сопереживание",
-      description:
-        "Вам важно оберегать и обеспечивать благополучие близких людей.",
-      color: "#FF8000",
-    },
-    {
-      title: "Толерантность",
-      description:
-        "Вам важно стремиться к пониманию людей ради безопасного общения с ними.",
-      color: "#FF5500",
-    },
-    {
-      title: "Самостоятельность",
-      description: "Вам важно сохранять самостоятельность во всём.",
-      color: "blue",
-    },
-    {
-      title: "Энергичность",
-      description: "Вам важно быть активным человеком.",
-      color: "green",
-    },
-    {
-      title: "Гедонизм",
-      description:
-        "Вам важно находить удовольствие во всём, чем бы не пришлось заниматься",
-      color: "yellow",
-    },
-    {
-      title: "Успешность",
-      description:
-        "Вам важно стремиться к достижению успеха и вызывать восторг у окружающих людей",
-      color: "orange",
-    },
-    {
-      title: "Власть",
-      description: "Вам важно достижение лидерства и контроль над людьми",
-      color: "green",
-    },
-    {
-      title: "Защищённость",
-      description: "Вам важно обеспечить безопасность себя и близких людей",
-      color: "purple",
-    },
-  ],
+// Статичные данные для fallback
+const defaultData = {
   img: "/images/reports/report.png",
   date: "2024-01-01",
 };
 
 const FreeReportPage: FC = () => {
+  const [testResult, setTestResult] = useState<ITestResult | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
+  const [downloadLoading, setDownloadLoading] = useState(false);
+
+  useEffect(() => {
+    // Загружаем данные из localStorage
+    const savedResult = localStorage.getItem("testResult");
+    if (savedResult) {
+      try {
+        const parsedResult = JSON.parse(savedResult) as ITestResult;
+        setTestResult(parsedResult);
+      } catch (error) {
+        console.error("Ошибка при парсинге результатов теста:", error);
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  // Загружаем URL изображения при изменении colorNumber
+  useEffect(() => {
+    if (testResult?.colorNumber) {
+      setImageLoading(true);
+      getYandexDiskFileUrl(testResult.colorNumber)
+        .then((url) => {
+          setImageUrl(url);
+        })
+        .catch((error) => {
+          console.error("Ошибка при получении URL изображения:", error);
+          setImageUrl(null);
+        })
+        .finally(() => {
+          setImageLoading(false);
+        });
+    }
+  }, [testResult?.colorNumber]);
+
+  // Формируем отчеты из реальных данных
+  const getReportsFromTestResult = (
+    result: ITestResult
+  ): Array<{ title: string; description: string }> => {
+    const valueTypes = [
+      { key: "adaptability", title: "Гибкость" },
+      { key: "traditions", title: "Традиционность" },
+      { key: "compassion", title: "Сопереживание" },
+      { key: "empathy", title: "Толерантность" },
+      { key: "selfSufficiency", title: "Самостоятельность" },
+      { key: "activity", title: "Энергичность" },
+      { key: "hedonistic", title: "Гедонизм" },
+      { key: "ambition", title: "Успешность" },
+      { key: "power", title: "Власть" },
+      { key: "security", title: "Защищённость" },
+    ];
+
+    return valueTypes
+      .map((type) => {
+        const value = result.ni?.[type.key as keyof typeof result.ni];
+        if (
+          typeof value === "object" &&
+          value !== null &&
+          "description" in value &&
+          "rating" in value &&
+          typeof value.rating === "number" &&
+          typeof value.description === "string" &&
+          value.description.trim() !== ""
+        ) {
+          return {
+            title: type.title,
+            description: value.description,
+            rating: value.rating,
+          };
+        }
+        return null;
+      })
+      .filter(
+        (
+          item
+        ): item is { title: string; description: string; rating: number } =>
+          item !== null
+      )
+      .sort((a, b) => a.rating - b.rating)
+      .map((item) => ({ title: item.title, description: item.description })); // Убираем rating из финального результата
+  };
+
+  if (isLoading) {
+    return (
+      <ProtectedRoute>
+        <div className="flex justify-center items-center h-64">
+          <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+        </div>
+      </ProtectedRoute>
+    );
+  }
+
+  const reports = testResult ? getReportsFromTestResult(testResult) : [];
+
+  // Функция скачивания изображения
+  const handleDownload = async () => {
+    if (!testResult?.colorNumber) {
+      console.error("colorNumber отсутствует");
+      return;
+    }
+
+    setDownloadLoading(true);
+
+    try {
+      // Используем imageUrl если доступен, иначе дефолтное изображение
+      const downloadUrl = imageUrl || defaultData.img;
+      const response = await fetch(downloadUrl);
+      const blob = await response.blob();
+
+      // Создаем временную ссылку для скачивания
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `report-${testResult.colorNumber}.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+    } catch (error) {
+      console.error("Ошибка при скачивании изображения:", error);
+    } finally {
+      setDownloadLoading(false);
+    }
+  };
+
   return (
     <ProtectedRoute>
       <div className="flex flex-col gap-10">
-        <p className="text-md font-normal">{data.date}</p>
+        <p className="text-md font-normal">
+          {testResult?.date || defaultData.date}
+        </p>
         <h1 className="text-4xl font-bold">Мои самые важные ценности</h1>
         <div className="flex flex-col gap-3">
           <p>Теперь давайте разберемся, что получилось.</p>
@@ -138,13 +213,19 @@ const FreeReportPage: FC = () => {
             В результате обработки ответов опросника, мы рассчитали наиболее
             важные ценности для Вас:
           </p>
-          {data.reports?.map((item) => (
-            <FreeReportCard
-              key={item.title}
-              title={item.title}
-              description={item.description}
-            />
-          ))}
+          {reports.length > 0 ? (
+            reports.map((item) => (
+              <FreeReportCard
+                key={item.title}
+                title={item.title}
+                description={item.description}
+              />
+            ))
+          ) : (
+            <p>
+              Результаты теста не найдены. Пожалуйста, пройдите тест заново.
+            </p>
+          )}
         </div>
         <p>
           Понимание того, что для вас действительно важно, помогает лучше понять
@@ -180,13 +261,47 @@ const FreeReportPage: FC = () => {
         <ColorPsychology />
         <div className="w-full flex justify-center">
           <div className="flex flex-col gap-5 w-fit">
-            <Image src={data.img} alt="report" width={900} height={400} />
+            {imageLoading ? (
+              <div className="flex justify-center items-center w-[900px] h-[400px] bg-gray-100 rounded">
+                <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+              </div>
+            ) : imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="report"
+                width={900}
+                height={400}
+                style={{ maxWidth: "100%", height: "auto" }}
+                onError={(e) => {
+                  console.error("Ошибка загрузки изображения:", imageUrl);
+                  // Fallback на локальное изображение при ошибке
+                  e.currentTarget.src = defaultData.img;
+                }}
+              />
+            ) : (
+              <div className="flex flex-col items-center gap-4">
+                <Image
+                  src={defaultData.img}
+                  alt="report"
+                  width={900}
+                  height={400}
+                />
+                {testResult?.colorNumber && (
+                  <p className="text-sm text-gray-500">
+                    Изображение для номера {testResult.colorNumber} недоступно.
+                    Показано стандартное изображение.
+                  </p>
+                )}
+              </div>
+            )}
             <Button
               variant={"outline"}
               color="primary"
               className="w-full rounded-3xl"
+              onClick={handleDownload}
+              disabled={downloadLoading || imageLoading}
             >
-              Скачать
+              {downloadLoading ? "Скачивание..." : "Скачать"}
             </Button>
           </div>
         </div>

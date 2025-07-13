@@ -9,23 +9,41 @@ import {
 } from "@/components/ui/dialog";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import { getTestResult } from "@/api/survey";
 
 interface CongratulationsModalProps {
   isOpen: boolean;
   onClose: () => void;
+  personTestId: number | null;
 }
 
 export function CongratulationsModal({
   isOpen,
   onClose,
+  personTestId,
 }: CongratulationsModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
-  const handleViewResults = () => {
+  const handleViewResults = async () => {
+    if (!personTestId) {
+      console.error("personTestId отсутствует");
+      return;
+    }
+
     setIsLoading(true);
-    onClose();
-    router.push("/freeReport");
+
+    try {
+      const response = await getTestResult(personTestId.toString());
+      // Сохраняем данные в localStorage для передачи на страницу отчета
+      localStorage.setItem("testResult", JSON.stringify(response.data));
+      onClose();
+      router.push("/freeReport");
+    } catch (error) {
+      console.error("Ошибка при получении результатов теста:", error);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const onOpenChange = (open: boolean) => {

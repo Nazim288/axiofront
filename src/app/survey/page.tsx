@@ -28,15 +28,7 @@ const Survey = () => {
   >([]);
   const [showCongratulations, setShowCongratulations] = useState(false);
   const [showRetakeSurvey, setShowRetakeSurvey] = useState(false);
-
-  // Функция для проверки одинаковых ответов
-  const checkForSameAnswers = (
-    answers: { value: number; questionPosition: number }[]
-  ) => {
-    if (answers.length === 0) return false;
-    const firstValue = answers[0].value;
-    return answers.every((answer) => answer.value === firstValue);
-  };
+  const [personTestId, setPersonTestId] = useState<number | null>(null);
 
   // Функция сброса состояния опроса
   const resetSurveyState = () => {
@@ -48,6 +40,7 @@ const Survey = () => {
     setQuestions(data?.questionGroups[0].questions || []);
     setShowCongratulations(false);
     setShowRetakeSurvey(false);
+    setPersonTestId(null);
   };
 
   useEffect(() => {
@@ -136,21 +129,47 @@ const Survey = () => {
         behavior: "smooth",
       });
     } else {
-      // Проверяем, не выбрал ли пользователь везде одинаковые ответы
-      if (checkForSameAnswers(answers)) {
-        setShowRetakeSurvey(true);
-        return;
-      }
-
       try {
-        await sendAnswers({
+        const response = await sendAnswers({
           answers: answers,
-          personTestId: 1,
+          personTestId: data?.personTestId || 0,
+          personId: data?.personId || 0,
+          testId: data?.testId || 0,
+          startTime: new Date().toISOString(),
         });
         console.log("Collected Answers:", answers);
-        setShowCongratulations(true);
+        console.log("Server Response:", response.data);
+
+        // Проверяем ответ сервера на некорректные данные
+        if (
+          response.data.status &&
+          response.data.status.includes("Данные заполнены некорректно")
+        ) {
+          setShowRetakeSurvey(true);
+        } else {
+          // Сохраняем personTestId для дальнейшего использования
+          if (response.data.personTestId) {
+            setPersonTestId(response.data.personTestId);
+          }
+          setShowCongratulations(true);
+        }
       } catch (error) {
         console.error("Ошибка при отправке ответов:", error);
+        // Если это ошибка с сервера, проверяем её содержимое
+        if (error && typeof error === "object" && "response" in error) {
+          const serverError = error as {
+            response: { data: { status?: string } };
+          };
+          if (
+            serverError.response?.data?.status?.includes(
+              "Данные заполнены некорректно"
+            )
+          ) {
+            setShowRetakeSurvey(true);
+            return;
+          }
+        }
+        // Для других ошибок можно показать общее сообщение об ошибке
       }
     }
   };
@@ -253,6 +272,7 @@ const Survey = () => {
         <CongratulationsModal
           isOpen={showCongratulations}
           onClose={() => setShowCongratulations(false)}
+          personTestId={personTestId}
         />
         <RetakeSurveyModal
           isOpen={showRetakeSurvey}

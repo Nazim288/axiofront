@@ -2,27 +2,66 @@
 
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { useParams } from "next/navigation";
+import { pay } from "@/api/survey";
+import { useState } from "react";
+import { toast } from "sonner";
 
 const ReportTariffs = () => {
-  const router = useRouter();
+  const params = useParams();
+  const [isLoading, setIsLoading] = useState(false);
+
+  const handlePayment = async () => {
+    const personTestId = params.id as string;
+
+    if (!personTestId) {
+      console.error("personTestId не найден в URL");
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const paymentData = {
+        personTestId: parseInt(personTestId),
+        amount: 1000, // Сумма в копейках (например, 10.00 руб)
+        paymentMethod: "CREDIT_CARD" as const,
+        currency: "RUB",
+      };
+
+      await pay(paymentData);
+
+      // Показываем уведомление об успешной оплате
+      toast.success("Отчет оплачен", {
+        description: "Теперь вы можете просмотреть полный отчет",
+      });
+    } catch (error) {
+      console.error("Ошибка при инициализации платежа:", error);
+      toast.error("Ошибка оплаты", {
+        description: "Не удалось обработать платеж. Попробуйте еще раз.",
+      });
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
   return (
     <div className="flex gap-4 justify-start h-[600px] rounded-[20px] baseShadow p-10">
       <div className="flex flex-col gap-4 w-[50%] justify-center">
         <p>
-          Оформите подписку и попросите своих друзей тоже пройти опрос. Так вы
-          быстрее узнаете, насколько ваши ценности совпадают. Получите подробный
-          отчет о своих ценностях: что для вас самое важное, как ваши ценности
-          соотносятся с ожиданиями окружающих и советы по улучшению общения.
+          Оплатите полный отчет и попросите своих друзей тоже пройти опрос. Так
+          вы быстрее узнаете, насколько ваши ценности совпадают. Получите
+          подробный отчет о своих ценностях: что для вас самое важное, как ваши
+          ценности соотносятся с ожиданиями окружающих и советы по улучшению
+          общения.
         </p>
         <Button
           variant="default"
           className="rounded-3xl"
-          onClick={() => {
-            router.push("/tariffs");
-          }}
+          onClick={handlePayment}
+          disabled={isLoading}
         >
-          Подробнее
+          {isLoading ? "Обработка..." : "Оплатить"}
         </Button>
       </div>
       <Image

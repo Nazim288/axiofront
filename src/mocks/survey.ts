@@ -323,4 +323,6 @@ export const surveyData: ISurveyData = {
   ],
   model: "SVS_46",
   personTestId: 0,
+  testId: 0,
+  personId: 0,
 };

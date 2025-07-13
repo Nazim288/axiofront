@@ -18,6 +18,9 @@ import Report from "@/components/report/report";
 import { Input } from "@/components/ui/input";
 import ColorPsychology from "@/components/standartReport/сolorPsychology";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
+import { ITestResult } from "@/types/survey";
+import { useEffect, useState } from "react";
+import { getYandexDiskFileUrl } from "@/api/yandexDisk";
 
 const data = {
   reports: [
@@ -143,6 +146,11 @@ const formSchema = z.object({
 });
 
 const StandartReportPage = () => {
+  const [testResult, setTestResult] = useState<ITestResult | null>(null);
+  const [isLoading, setIsLoading] = useState(true);
+  const [imageUrl, setImageUrl] = useState<string | null>(null);
+  const [imageLoading, setImageLoading] = useState(false);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -150,29 +158,176 @@ const StandartReportPage = () => {
     },
   });
 
+  useEffect(() => {
+    // Загружаем данные из localStorage
+    const savedResult = localStorage.getItem("testResult");
+    if (savedResult) {
+      try {
+        const parsedResult = JSON.parse(savedResult) as ITestResult;
+        setTestResult(parsedResult);
+      } catch (error) {
+        console.error("Ошибка при парсинге результатов теста:", error);
+      }
+    }
+    setIsLoading(false);
+  }, []);
+
+  // Загружаем URL изображения при изменении colorNumber
+  useEffect(() => {
+    if (testResult?.colorNumber) {
+      setImageLoading(true);
+      getYandexDiskFileUrl(testResult.colorNumber)
+        .then((url) => {
+          setImageUrl(url);
+        })
+        .catch((error) => {
+          console.error("Ошибка при получении URL изображения:", error);
+          setImageUrl(null);
+        })
+        .finally(() => {
+          setImageLoading(false);
+        });
+    }
+  }, [testResult?.colorNumber]);
+
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
 
+  // Формируем отчеты из реальных данных ni
+  const getNiReports = (result: ITestResult) => {
+    if (!result.ni) return [];
+
+    const valueTypes = [
+      { key: "adaptability", title: "Гибкость" },
+      { key: "traditions", title: "Традиционность" },
+      { key: "compassion", title: "Сопереживание" },
+      { key: "empathy", title: "Толерантность" },
+      { key: "selfSufficiency", title: "Самостоятельность" },
+      { key: "activity", title: "Энергичность" },
+      { key: "hedonistic", title: "Гедонизм" },
+      { key: "ambition", title: "Успешность" },
+      { key: "power", title: "Власть" },
+      { key: "security", title: "Защищённость" },
+    ];
+
+    return valueTypes
+      .map((type) => {
+        const value = result.ni![type.key as keyof typeof result.ni];
+        if (
+          typeof value === "object" &&
+          value !== null &&
+          "description" in value &&
+          "rating" in value &&
+          typeof value.rating === "number" &&
+          typeof value.description === "string"
+        ) {
+          return {
+            title: type.title,
+            description: value.description,
+            rating: value.rating,
+            priority: Math.ceil(value.rating / 4), // Конвертируем rating в priority (1-3)
+          };
+        }
+        return null;
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null)
+      .sort((a, b) => b.rating - a.rating);
+  };
+
+  // Формируем отчеты из реальных данных ip
+  const getIpReports = (result: ITestResult) => {
+    if (!result.ip) return [];
+
+    const valueTypes = [
+      { key: "adaptability", title: "Гибкость" },
+      { key: "traditions", title: "Традиционность" },
+      { key: "compassion", title: "Сопереживание" },
+      { key: "empathy", title: "Толерантность" },
+      { key: "selfSufficiency", title: "Самостоятельность" },
+      { key: "activity", title: "Энергичность" },
+      { key: "hedonistic", title: "Гедонизм" },
+      { key: "ambition", title: "Успешность" },
+      { key: "power", title: "Власть" },
+      { key: "security", title: "Защищённость" },
+    ];
+
+    return valueTypes
+      .map((type) => {
+        const value = result.ip![type.key as keyof typeof result.ip];
+        if (
+          typeof value === "object" &&
+          value !== null &&
+          "description" in value &&
+          "rating" in value &&
+          typeof value.rating === "number" &&
+          typeof value.description === "string"
+        ) {
+          return {
+            title: type.title,
+            description: value.description,
+            rating: value.rating,
+            priority: Math.ceil(value.rating / 4), // Конвертируем rating в priority (1-3)
+          };
+        }
+        return null;
+      })
+      .filter((item): item is NonNullable<typeof item> => item !== null)
+      .sort((a, b) => b.rating - a.rating);
+  };
+
+  // Формируем массивы названий для компонента Matches
+  const getMatchesValues = (result: ITestResult) => {
+    const niReports = getNiReports(result);
+    const ipReports = getIpReports(result);
+
+    const niValues = niReports.map((item) => item.title);
+    const ipValues = ipReports.map((item) => item.title);
+
+    // Дополняем до 10 элементов если нужно
+    while (niValues.length < 10) niValues.push("Не определено");
+    while (ipValues.length < 10) ipValues.push("Не определено");
+
+    return [...niValues.slice(0, 10), ...ipValues.slice(0, 10)];
+  };
+
+  if (isLoading) {
+    return (
+      <ProtectedRoute>
+        <div className="flex justify-center items-center h-64">
+          <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+        </div>
+      </ProtectedRoute>
+    );
+  }
+
+  const niReports = testResult ? getNiReports(testResult) : [];
+  const ipReports = testResult ? getIpReports(testResult) : [];
+  const matchesValues = testResult ? getMatchesValues(testResult) : [];
+
   return (
     <ProtectedRoute>
       <div className="flex flex-col gap-10">
-        <p className="text-md font-normal">{data.date}</p>
+        <p className="text-md font-normal">{testResult?.date || data.date}</p>
         <Report />
         <div className="flex flex-col gap-3">
           <p className="text-2xl font-semibold">
             Вы так думаете (я считаю что..)
           </p>
           <div className="flex flex-col gap-5">
-            {data.reports?.[0].map((item, index) => (
-              <StandartReportCard
-                key={item.title}
-                title={item.title}
-                description={item.description}
-                number={index + 1}
-                priority={item.priority}
-              />
-            ))}
+            {niReports.length > 0 ? (
+              niReports.map((item, index) => (
+                <StandartReportCard
+                  key={item.title}
+                  title={item.title}
+                  description={item.description}
+                  number={index + 1}
+                  priority={item.priority}
+                />
+              ))
+            ) : (
+              <p>Данные отчета не найдены</p>
+            )}
           </div>
         </div>
         <div className="flex flex-col gap-3">
@@ -181,15 +336,19 @@ const StandartReportPage = () => {
             дел, связанных…)
           </p>
           <div className="flex flex-col gap-5">
-            {data.reports?.[1].map((item, index) => (
-              <StandartReportCard
-                key={item.title}
-                title={item.title}
-                description={item.description}
-                number={index + 1}
-                priority={item.priority}
-              />
-            ))}
+            {ipReports.length > 0 ? (
+              ipReports.map((item, index) => (
+                <StandartReportCard
+                  key={item.title}
+                  title={item.title}
+                  description={item.description}
+                  number={index + 1}
+                  priority={item.priority}
+                />
+              ))
+            ) : (
+              <p>Данные отчета не найдены</p>
+            )}
           </div>
         </div>
         <p>
@@ -218,31 +377,7 @@ const StandartReportPage = () => {
           <br />
           Величина этой согласованности находится в интервале от 0 до 100%.
         </p>
-        <Matches
-          matches={57}
-          values={[
-            "Покладистость",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Покладистость",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-            "Самостоятельность",
-          ]}
-        />
+        <Matches matches={testResult?.pcs || 0} values={matchesValues} />
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-2xl font-semibold text-[#388E3C]">
@@ -282,7 +417,33 @@ const StandartReportPage = () => {
         <ColorPsychology />
         <div className="w-full flex justify-center">
           <div className="flex flex-col gap-5 w-fit">
-            <Image src={data.img} alt="report" width={900} height={400} />
+            {imageLoading ? (
+              <div className="flex justify-center items-center w-[900px] h-[400px] bg-gray-100 rounded">
+                <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+              </div>
+            ) : imageUrl ? (
+              <img
+                src={imageUrl}
+                alt="report"
+                width={900}
+                height={400}
+                style={{ maxWidth: "100%", height: "auto" }}
+                onError={(e) => {
+                  console.error("Ошибка загрузки изображения:", imageUrl);
+                  e.currentTarget.src = data.img;
+                }}
+              />
+            ) : (
+              <div className="flex flex-col items-center gap-4">
+                <Image src={data.img} alt="report" width={900} height={400} />
+                {testResult?.colorNumber && (
+                  <p className="text-sm text-gray-500">
+                    Изображение для номера {testResult.colorNumber} недоступно.
+                    Показано стандартное изображение.
+                  </p>
+                )}
+              </div>
+            )}
             <Button
               variant={"outline"}
               color="primary"
