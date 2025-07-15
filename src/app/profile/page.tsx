@@ -2,7 +2,6 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
-import Link from "next/link";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
 import { getTestResult, getTestResultShort } from "@/api/survey";
 import { useRouter } from "next/navigation";
@@ -45,7 +44,11 @@ const Survey = () => {
       const fullResponse = await getTestResult(shortResult.id.toString());
       // Сохраняем данные в localStorage для передачи на страницу отчета
       localStorage.setItem("testResult", JSON.stringify(fullResponse.data));
-      router.push(`/freeReport/${shortResult.id}`);
+      if (shortResult.paid === true) {
+        router.push(`/standartReport/${shortResult.id}`);
+      } else {
+        router.push(`/freeReport/${shortResult.id}`);
+      }
     } catch (error) {
       console.error("Ошибка при получении результатов теста:", error);
     } finally {
@@ -85,7 +88,9 @@ const Survey = () => {
             }`}
           >
             <p className="text-xl font-semibold">Мои ценности</p>
-            <p className="text-xl font-light">Краткий</p>
+            <p className="text-xl font-light">
+              {shortResult?.paid ? "Полный" : "Краткий"}
+            </p>
             {dataLoading ? (
               <div className="text-xl font-light text-gray-400">
                 Загрузка...
@@ -113,20 +118,6 @@ const Survey = () => {
               />
             )}
           </div>
-          <Link href={"/standartReport"}>
-            <div className="relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out ">
-              <p className="text-xl font-semibold">Мои ценности</p>
-              <p className="text-xl font-light">Полный</p>
-              <p className="text-xl font-light">05.07.24</p>
-              <Image
-                src={"/icons/profileArrow.svg"}
-                alt="arrow right"
-                width={24}
-                height={24}
-                className="absolute right-5 bottom-5"
-              />
-            </div>
-          </Link>
         </div>
 
         <div className="flex justify-between gap-10 mt-36">

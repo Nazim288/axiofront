@@ -135,7 +135,7 @@ const Survey = () => {
           personTestId: data?.personTestId || 0,
           personId: data?.personId || 0,
           testId: data?.testId || 0,
-          startTime: new Date().toISOString(),
+          startTime: data?.startTime || "",
         });
         console.log("Collected Answers:", answers);
         console.log("Server Response:", response.data);

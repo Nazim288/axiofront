@@ -232,7 +232,7 @@ const StandartReportPage = () => {
         return null;
       })
       .filter((item): item is NonNullable<typeof item> => item !== null)
-      .sort((a, b) => b.rating - a.rating);
+      .sort((a, b) => a.rating - b.rating);
   };
 
   // Формируем отчеты из реальных данных ip
@@ -273,7 +273,7 @@ const StandartReportPage = () => {
         return null;
       })
       .filter((item): item is NonNullable<typeof item> => item !== null)
-      .sort((a, b) => b.rating - a.rating);
+      .sort((a, b) => a.rating - b.rating);
   };
 
   // Формируем массивы названий для компонента Matches
@@ -427,7 +427,11 @@ const StandartReportPage = () => {
                 alt="report"
                 width={900}
                 height={400}
-                style={{ maxWidth: "100%", height: "auto" }}
+                style={{
+                  maxWidth: "100%",
+                  height: "400px",
+                  borderRadius: "10px",
+                }}
                 onError={(e) => {
                   console.error("Ошибка загрузки изображения:", imageUrl);
                   e.currentTarget.src = data.img;

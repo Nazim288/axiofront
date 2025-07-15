@@ -17,16 +17,16 @@ interface ColorValue {
 }
 
 const colorValues: ColorValue[] = [
-  { name: "Энергичность", color: "#FF4500" },
-  { name: "Самодостаточность", color: "#FF8C00" },
-  { name: "Успешность", color: "#FFD700" },
-  { name: "Сопереживание", color: "#008000" },
-  { name: "Защищённость", color: "#0000FF" },
-  { name: "Толерантность", color: "#4B0082" },
-  { name: "Традиционность", color: "#EE82EE" },
-  { name: "Гедонизм", color: "#FFC0CB" },
-  { name: "Гибкость", color: "#808080" },
-  { name: "Власть", color: "#000000" },
+  { name: "Энергичность", color: "#F44336" },
+  { name: "Самодостаточность", color: "#FF9800" },
+  { name: "Успешность", color: "#FFC727" },
+  { name: "Сопереживание", color: "#8BC34A" },
+  { name: "Защищённость", color: "#388E3C" },
+  { name: "Толерантность", color: "#303F9F" },
+  { name: "Традиционность", color: "#9C27B0" },
+  { name: "Гедонизм", color: "#FF69B4" },
+  { name: "Гибкость", color: "#BOBECS" },
+  { name: "Власть", color: "#212121" },
 ];
 
 const ColorPsychology = () => {

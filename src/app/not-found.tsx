@@ -1,5 +1,5 @@
-import { Button } from "@/components/ui/button";
 import Image from "next/image";
+import Link from "next/link";
 
 const NotFoundPage = () => {
   return (
@@ -11,10 +11,9 @@ const NotFoundPage = () => {
         height={456}
         className="mb-5"
       />
-      <p className="text-xl font-normal">Что-то пошло не так.</p>
-      <Button variant="default" className="rounded-[40px] w-1/3">
+      <Link href="/" className="text-xl font-normal text-primary underline">
         На главную
-      </Button>
+      </Link>
     </div>
   );
 };

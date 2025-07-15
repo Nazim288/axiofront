@@ -38,7 +38,7 @@ export function CongratulationsModal({
       // Сохраняем данные в localStorage для передачи на страницу отчета
       localStorage.setItem("testResult", JSON.stringify(response.data));
       onClose();
-      router.push("/freeReport");
+      router.push(`/freeReport/${personTestId}`);
     } catch (error) {
       console.error("Ошибка при получении результатов теста:", error);
     } finally {

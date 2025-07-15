@@ -16,6 +16,7 @@ export type ISurveyData = {
   personTestId: number | null;
   testId: number;
   personId: number;
+  startTime: string;
 };
 
 export type IQuestion = {
@@ -73,6 +74,7 @@ export interface ITestResultShort {
   finishTime: string;
   pcs: number;
   read: boolean;
+  paid: boolean;
 }
 
 export interface IPayBody {
