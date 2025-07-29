@@ -1,6 +1,6 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
+import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, Suspense } from "react";
 import MainBanner from "@/components/home/mainBanner";
 import CardsBlock from "@/components/home/cards/cardsBlock";
@@ -10,20 +10,41 @@ import Contacts from "@/components/home/contacts";
 import Tariffs from "@/components/home/tariffs";
 import Faq from "@/components/home/faq";
 import NewsBlock from "@/components/home/news/newsBlock";
+import { useUser } from "@/contexts/UserContext";
 
 function HomePageContent() {
   const searchParams = useSearchParams();
+  const router = useRouter();
+  const { isAuthenticated } = useUser();
   const showAuth = searchParams.get("auth");
 
   useEffect(() => {
     if (showAuth === "signin") {
-      // Здесь нужно добавить логику открытия модального окна
-      // Можно использовать глобальное состояние или контекст для управления модальным окном
-      document
-        .querySelector<HTMLButtonElement>("[data-signin-trigger]")
-        ?.click();
+      // Если пользователь уже авторизован, очищаем URL от параметра auth
+      if (isAuthenticated) {
+        // Создаем новый URL без параметра auth
+        const params = new URLSearchParams(searchParams.toString());
+        params.delete("auth");
+        const newUrl = params.toString() ? `/?${params.toString()}` : "/";
+        router.replace(newUrl);
+      } else {
+        // Если не авторизован, показываем модальное окно входа
+        document
+          .querySelector<HTMLButtonElement>("[data-signin-trigger]")
+          ?.click();
+      }
     }
-  }, [showAuth]);
+  }, [showAuth, isAuthenticated, router, searchParams]);
+
+  // Отдельный useEffect для очистки URL при изменении состояния авторизации
+  useEffect(() => {
+    if (isAuthenticated && showAuth === "signin") {
+      const params = new URLSearchParams(searchParams.toString());
+      params.delete("auth");
+      const newUrl = params.toString() ? `/?${params.toString()}` : "/";
+      router.replace(newUrl);
+    }
+  }, [isAuthenticated, showAuth, router, searchParams]);
 
   return (
     <>
