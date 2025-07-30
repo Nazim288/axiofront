@@ -151,6 +151,12 @@ const StandartReportPage = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
 
+  // Функция для обработки переносов строк
+  const formatText = (text: string) => {
+    if (!text) return text;
+    return text.replace(/\\n/g, "\n");
+  };
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -381,16 +387,20 @@ const StandartReportPage = () => {
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-2xl font-semibold text-[#388E3C]">
-              О чём говорит моя согласованностьценностей
+              О чём говорит моя согласованность ценностей
             </p>
-            <p>{testResult?.resultCongruence}</p>
+            <p style={{ whiteSpace: "pre-line" }}>
+              {formatText(testResult?.resultCongruence || "")}
+            </p>
           </div>
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-2xl font-semibold text-[#FF9800]">
               5 советов, как наладитьэффективное общение с окружающими Вас
               людьми
             </p>
-            <p>{testResult?.recommendation}</p>
+            <p style={{ whiteSpace: "pre-line" }}>
+              {formatText(testResult?.recommendation || "")}
+            </p>
           </div>
         </div>
         <ColorPsychology />
