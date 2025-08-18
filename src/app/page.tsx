@@ -4,7 +4,7 @@ import { useSearchParams, useRouter } from "next/navigation";
 import { useEffect, Suspense } from "react";
 import MainBanner from "@/components/home/mainBanner";
 import CardsBlock from "@/components/home/cards/cardsBlock";
-// import TeamBlock from "@/components/home/team/teamBlock";
+import ReviewsBlock from "@/components/home/reviews/reviewsBlock";
 import AboutCompany from "@/components/home/aboutCompany";
 import Contacts from "@/components/home/contacts";
 import Tariffs from "@/components/home/tariffs";
@@ -55,6 +55,7 @@ function HomePageContent() {
       <Faq id="faq" />
       <AboutCompany id="company" />
       <NewsBlock id="news" />
+      <ReviewsBlock id="reviews" />
       <Contacts id="contacts" />
     </>
   );

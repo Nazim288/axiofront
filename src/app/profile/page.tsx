@@ -61,13 +61,13 @@ const Survey = () => {
       <div className="flex flex-col">
         <div className="relative">
           <h1 className="text-5xl font-bold">Профиль</h1>
-          <Image
+          {/* <Image
             src={"/icons/profileBadge.svg"}
             alt="profile badge"
             width={133}
             height={38}
             className="absolute -top-5 left-60"
-          />
+          /> */}
         </div>
 
         <div className="flex flex-col gap-4 mt-20">

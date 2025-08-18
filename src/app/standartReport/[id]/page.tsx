@@ -21,6 +21,7 @@ import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
 import { ITestResult } from "@/types/survey";
 import { useEffect, useState } from "react";
 import { getYandexDiskFileUrl } from "@/api/yandexDisk";
+import ReviewForm from "@/components/review/reviewForm";
 
 const data = {
   reports: [
@@ -395,7 +396,7 @@ const StandartReportPage = () => {
           </div>
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-2xl font-semibold text-[#FF9800]">
-              5 советов, как наладитьэффективное общение с окружающими Вас
+              5 советов, как наладить эффективное общение с окружающими Вас
               людьми
             </p>
             <p style={{ whiteSpace: "pre-line" }}>
@@ -481,6 +482,7 @@ const StandartReportPage = () => {
             </form>
           </Form>
         </div>
+        <ReviewForm />
       </div>
     </ProtectedRoute>
   );
