@@ -321,7 +321,7 @@ export const surveyData: ISurveyData = {
       questions: thirdSurveyQuestions,
     },
   ],
-  model: "SVS_46",
+  model: "KV_86",
   personTestId: 0,
   testId: 0,
   personId: 0,

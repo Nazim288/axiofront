@@ -4,6 +4,7 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
 import { getTestResult, getTestResultShort } from "@/api/survey";
+import { getPersonCurrent } from "@/api/auth";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { ITestResultShort } from "@/types/survey";
@@ -13,8 +14,22 @@ const Survey = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [shortResult, setShortResult] = useState<ITestResultShort | null>(null);
   const [dataLoading, setDataLoading] = useState(true);
+  const [userLogin, setUserLogin] = useState<string>("");
+  const [userDataLoading, setUserDataLoading] = useState(true);
 
   useEffect(() => {
+    const loadData = async () => {
+      try {
+        // Загружаем данные пользователя
+        const userResponse = await getPersonCurrent();
+        setUserLogin(userResponse.login);
+      } catch (error) {
+        console.error("Ошибка при загрузке данных пользователя:", error);
+      } finally {
+        setUserDataLoading(false);
+      }
+    };
+
     const loadShortResult = async () => {
       try {
         const response = await getTestResultShort();
@@ -26,6 +41,7 @@ const Survey = () => {
       }
     };
 
+    loadData();
     loadShortResult();
   }, []);
 
@@ -59,8 +75,15 @@ const Survey = () => {
   return (
     <ProtectedRoute>
       <div className="flex flex-col">
-        <div className="relative">
+        <div className="relative flex items-center gap-2">
           <h1 className="text-5xl font-bold">Профиль</h1>
+          {userDataLoading ? (
+            <p className="text-xl text-gray-400 mt-2">Загрузка...</p>
+          ) : userLogin ? (
+            <p className="text-xl text-gray-600 mt-2 font-bold">@{userLogin}</p>
+          ) : (
+            <p className="text-xl text-red-500 mt-2">Данные недоступны</p>
+          )}
           {/* <Image
             src={"/icons/profileBadge.svg"}
             alt="profile badge"

@@ -15,6 +15,34 @@ interface LoginBody {
   password: string;
 }
 
+interface Review {
+  id: number;
+  userId: number;
+  userName: string;
+  targetType: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+interface PersonCurrentResponse {
+  id: number;
+  firstName: string;
+  lastName: string;
+  middleName: string;
+  age: number;
+  gender: string;
+  location: string;
+  email: string;
+  login: string;
+  phoneNumber: string;
+  birthDate: string;
+  status: string;
+  reviews: Review[];
+  emailVerified: boolean;
+}
+
 export const logoutUser = async () => {
   // try {
   //   const response = await api.get(Urls.authUrls.logout);
@@ -55,6 +83,16 @@ export const registerUser = async (body: RegisterBody) => {
     return response.data;
   } catch (error) {
     console.error("Ошибка при регистрации:", error);
+    throw error;
+  }
+};
+
+export const getPersonCurrent = async (): Promise<PersonCurrentResponse> => {
+  try {
+    const response = await api.get(Urls.authUrls.getPersonCurrent);
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при получении данных пользователя:", error);
     throw error;
   }
 };

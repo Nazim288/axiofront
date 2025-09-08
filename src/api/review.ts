@@ -1,0 +1,45 @@
+import api from "./api";
+import { Urls } from "./urls";
+
+interface CreateReviewBody {
+  comment: string;
+  rating: number;
+  targetType: string;
+}
+
+interface ReviewResponse {
+  id: number;
+  userId: number;
+  userName: string;
+  targetType: string;
+  rating: number;
+  comment: string;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export const createReview = async (
+  body: CreateReviewBody
+): Promise<ReviewResponse> => {
+  try {
+    const response = await api.post(Urls.surveyUrls.setReviews, body);
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при создании отзыва:", error);
+    throw error;
+  }
+};
+
+export const getReviews = async (
+  targetType: string
+): Promise<ReviewResponse[]> => {
+  try {
+    const response = await api.get(Urls.surveyUrls.getReviews, {
+      params: { targetType },
+    });
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при получении отзывов:", error);
+    throw error;
+  }
+};

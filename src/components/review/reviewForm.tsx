@@ -14,18 +14,21 @@ import {
 } from "@/components/ui/form";
 import { Textarea } from "@/components/ui/textarea";
 import { useState } from "react";
+import { createReview } from "@/api/review";
 
 const formSchema = z.object({
   rating: z.number().min(1, { message: "Пожалуйста, выберите рейтинг" }).max(5),
   reviewText: z
     .string()
-    .min(10, { message: "Отзыв должен содержать минимум 10 символов" })
+    .min(5, { message: "Отзыв должен содержать минимум 5 символов" })
     .max(500, { message: "Отзыв не должен превышать 500 символов" }),
 });
 
 const ReviewForm = () => {
   const [hoveredStar, setHoveredStar] = useState<number>(0);
   const [isSubmitted, setIsSubmitted] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -49,16 +52,30 @@ const ReviewForm = () => {
     setHoveredStar(0);
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log("Review submitted:", values);
-    // Here you would typically send the review to your API
-    setIsSubmitted(true);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
+    setError("");
 
-    // Reset form after 3 seconds
-    setTimeout(() => {
-      setIsSubmitted(false);
-      form.reset();
-    }, 3000);
+    try {
+      await createReview({
+        comment: values.reviewText,
+        rating: values.rating,
+        targetType: "KV_86",
+      });
+
+      setIsSubmitted(true);
+
+      // Reset form after 3 seconds
+      setTimeout(() => {
+        setIsSubmitted(false);
+        form.reset();
+      }, 3000);
+    } catch (err) {
+      console.error("Ошибка при отправке отзыва:", err);
+      setError("Произошла ошибка при отправке отзыва. Попробуйте еще раз.");
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   const renderStars = () => {
@@ -111,7 +128,7 @@ const ReviewForm = () => {
           <FormField
             control={form.control}
             name="rating"
-            render={({ field }) => (
+            render={() => (
               <FormItem>
                 <FormLabel className="text-lg font-medium">
                   Оцените наш сервис
@@ -147,13 +164,26 @@ const ReviewForm = () => {
             )}
           />
 
+          {error && (
+            <div className="text-red-500 text-sm bg-red-50 p-3 rounded-lg border border-red-200">
+              {error}
+            </div>
+          )}
+
           <Button
             type="submit"
             variant="default"
             className="w-full rounded-3xl text-lg font-medium h-[60px]"
-            disabled={!form.formState.isValid}
+            disabled={isLoading}
           >
-            Отправить отзыв
+            {isLoading ? (
+              <div className="flex items-center gap-2">
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+                Отправляем...
+              </div>
+            ) : (
+              "Отправить отзыв"
+            )}
           </Button>
         </form>
       </Form>

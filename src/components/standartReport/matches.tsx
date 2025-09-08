@@ -13,7 +13,10 @@ const Matches = ({
 
   return (
     <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
-      <h1 className="text-center font-semibold text-4xl">{matches}%</h1>
+      <h1 className="text-center font-semibold text-4xl">
+        Согласованность ваших уровней ценностей:
+        <br /> {matches}%
+      </h1>
       <div className="flex justify-around">
         <div className="flex flex-col gap-2">
           <Image
