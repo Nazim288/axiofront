@@ -1,8 +1,11 @@
 import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { useGenderImage } from "@/hooks/useGenderImage";
 
 const MainBanner = () => {
+  const { getImage } = useGenderImage();
+
   return (
     <div>
       <div className="flex flex-col lg:flex-row justify-between gap-10">
@@ -59,7 +62,7 @@ const MainBanner = () => {
           </ul>
         </div>
         <Image
-          src={"/images/homePgae/step_00.png"}
+          src={getImage("step_07")}
           alt="tariffs"
           width={400}
           height={358}

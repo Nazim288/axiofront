@@ -8,6 +8,7 @@ import { getPersonCurrent } from "@/api/auth";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { ITestResultShort } from "@/types/survey";
+import { useGenderImage } from "@/hooks/useGenderImage";
 
 const Survey = () => {
   const router = useRouter();
@@ -16,6 +17,7 @@ const Survey = () => {
   const [dataLoading, setDataLoading] = useState(true);
   const [userLogin, setUserLogin] = useState<string>("");
   const [userDataLoading, setUserDataLoading] = useState(true);
+  const { getImage } = useGenderImage();
 
   useEffect(() => {
     const loadData = async () => {
@@ -188,7 +190,7 @@ const Survey = () => {
             </Button>
           </div>
           <Image
-            src={"/images/homePgae/values.png"}
+            src={getImage("step_01")}
             alt="tariffs"
             width={535}
             height={535}

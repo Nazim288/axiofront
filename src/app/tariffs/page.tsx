@@ -9,9 +9,11 @@ const Survey = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
         {/* Колонка 1 - Пробный (бесплатно) */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
-          <h2 className="text-2xl font-semibold text-primary">
-            Пробный (бесплатно)
-          </h2>
+          <div className="flex justify-between h-[100px]">
+            <h2 className="text-2xl font-semibold text-primary">
+              Пробный (бесплатно)
+            </h2>
+          </div>
           <p className="text-gray-600 text-sm leading-relaxed">
             Познакомьтесь с нашим сервисом — создайте личный кабинет, пройдите
             опросник и получите сокращённый отчет, где представлены 3 наиболее
@@ -25,9 +27,11 @@ const Survey = () => {
 
         {/* Колонка 2 - Расширенный отчет о ценностях */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
-          <h2 className="text-2xl font-semibold text-[#FFC727]">
-            Расширенный отчет о ценностях
-          </h2>
+          <div className="flex justify-between h-[100px]">
+            <h2 className="text-2xl font-semibold text-[#FFC727]">
+              Расширенный отчет о ценностях
+            </h2>
+          </div>
           <p className="text-gray-600 text-sm leading-relaxed">
             Получите подробный отчет с ранжированием ценностей по их значимости
             для Вас и рекомендации для гармоничного саморазвития и улучшения
@@ -38,9 +42,11 @@ const Survey = () => {
 
         {/* Колонка 3 - Совместимость ценностей */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
-          <h2 className="text-2xl font-semibold text-[#FF9800]">
-            Совместимость ценностей
-          </h2>
+          <div className="flex justify-between h-[100px]">
+            <h2 className="text-2xl font-semibold text-[#FF9800]">
+              Совместимость ценностей
+            </h2>
+          </div>
           <p className="text-gray-600 text-sm leading-relaxed">
             Сравните свои ценности с ценностями другого пользователя. Вы узнаете
             о сходствах и различиях, а также получите практические рекомендации
@@ -52,9 +58,11 @@ const Survey = () => {
 
         {/* Колонка 4 - Комбинированный пакет */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out border-2 border-[#FF6B35]">
-          <h2 className="text-2xl font-semibold text-[#FF6B35]">
-            Расширенный отчет + Совместимость
-          </h2>
+          <div className="flex justify-between h-[100px]">
+            <h2 className="text-2xl font-semibold text-[#FF6B35]">
+              Расширенный отчет + Совместимость
+            </h2>
+          </div>
           <div className="text-gray-600 text-sm leading-relaxed">
             <p className="mb-3">
               <strong>1) Подробный отчет</strong> с ранжированием ценностей по

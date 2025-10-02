@@ -6,10 +6,12 @@ import { useParams } from "next/navigation";
 import { pay } from "@/api/survey";
 import { useState } from "react";
 import { toast } from "sonner";
+import { useGenderImage } from "@/hooks/useGenderImage";
 
 const ReportTariffs = () => {
   const params = useParams();
   const [isLoading, setIsLoading] = useState(false);
+  const { getImage } = useGenderImage();
 
   const handlePayment = async () => {
     const personTestId = params.id as string;
@@ -64,12 +66,7 @@ const ReportTariffs = () => {
           {isLoading ? "Обработка..." : "Оплатить"}
         </Button>
       </div>
-      <Image
-        src={"/images/homePgae/values.png"}
-        alt="tariffs"
-        width={535}
-        height={535}
-      />
+      <Image src={getImage("step_01")} alt="tariffs" width={535} height={535} />
     </div>
   );
 };

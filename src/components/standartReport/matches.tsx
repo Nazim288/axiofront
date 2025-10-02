@@ -1,4 +1,5 @@
 import Image from "next/image";
+import { useGenderImage } from "@/hooks/useGenderImage";
 
 const Matches = ({
   values,
@@ -7,6 +8,8 @@ const Matches = ({
   values: string[];
   matches: number;
 }) => {
+  const { getImage } = useGenderImage();
+
   // Разделяем значения на два массива: первые 10 для "Я считаю", последние 10 для "От меня ждут"
   const niValues = values.slice(0, 10); // ni - что я считаю
   const ipValues = values.slice(10, 20); // ip - что от меня ждут
@@ -14,13 +17,16 @@ const Matches = ({
   return (
     <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
       <h1 className="text-center font-semibold text-4xl">
-        Согласованность ваших уровней ценностей:
+        <span className="!text-xl">
+          {" "}
+          Согласованность ваших уровней ценностей:
+        </span>
         <br /> {matches}%
       </h1>
       <div className="flex justify-around">
         <div className="flex flex-col gap-2">
           <Image
-            src={"/images/reports/step_06.png"}
+            src={getImage("report_step_06")}
             alt="report"
             width={300}
             height={300}
@@ -96,7 +102,7 @@ const Matches = ({
 
         <div className="flex flex-col gap-2">
           <Image
-            src={"/images/reports/step_07.png"}
+            src={getImage("report_step_07")}
             alt="report"
             width={300}
             height={300}

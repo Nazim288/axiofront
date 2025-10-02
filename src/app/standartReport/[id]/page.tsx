@@ -138,7 +138,7 @@ const data = {
       },
     ],
   ],
-  img: "/images/reports/report.png",
+  img: "/images/report.png",
   date: "2024-01-01",
 };
 
@@ -396,7 +396,7 @@ const StandartReportPage = () => {
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-2xl font-semibold text-[#388E3C]">
-              О чём говорит моя согласованность ценностей
+              Привычные модели поведения, когда ничего не понятно
             </p>
             <p style={{ whiteSpace: "pre-line" }}>
               {formatText(testResult?.resultCongruence || "")}
@@ -404,8 +404,8 @@ const StandartReportPage = () => {
           </div>
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-2xl font-semibold text-[#FF9800]">
-              5 советов, как наладить эффективное общение с окружающими Вас
-              людьми
+              10 советов, как наладить эффективное общение в условиях
+              неопределенности…
             </p>
             <p style={{ whiteSpace: "pre-line" }}>
               {formatText(testResult?.recommendation || "")}

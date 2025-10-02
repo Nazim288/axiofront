@@ -2,27 +2,27 @@ import Card from "./card";
 
 const cards = [
   {
-    src: "/images/homePgae/man.png",
+    src: "/images/report.png", // Заменяем на доступное изображение
     title: "Галим, психолог",
   },
   {
-    src: "/images/homePgae/man1.png",
+    src: "/images/report.png",
     title: "Галим, психолог",
   },
   {
-    src: "/images/homePgae/man2.png",
+    src: "/images/report.png",
     title: "Галим, психолог",
   },
   {
-    src: "/images/homePgae/man3.png",
+    src: "/images/report.png",
     title: "Галим, психолог",
   },
   {
-    src: "/images/homePgae/man4.png",
+    src: "/images/report.png",
     title: "Галим, психолог",
   },
   {
-    src: "/images/homePgae/man5.png",
+    src: "/images/report.png",
     title: "Галим, психолог",
   },
 ];

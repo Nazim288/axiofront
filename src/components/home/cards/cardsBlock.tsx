@@ -1,34 +1,41 @@
 import Card from "./card";
+import { useGenderImage } from "@/hooks/useGenderImage";
+import { GENDER_SPECIFIC_IMAGES } from "@/lib/imageUtils";
 
-const cards = [
+const getCards = (
+  getImage: (key: keyof typeof GENDER_SPECIFIC_IMAGES) => string
+) => [
   {
-    src: "/images/homePgae/changeYourLife.png",
+    src: getImage("step_02"),
     title: "стать ещё эффективней",
     description: "и найти в себе силы сделать это быстрее.",
   },
   {
-    src: "/images/homePgae/partnerСompatibility.png",
+    src: getImage("step_03"),
     title: "узнать совместимость ценностей",
     description: "и создать или укрепить долгосрочные отношения.",
   },
   {
-    src: "/images/homePgae/step_01.png",
+    src: getImage("step_01"),
     title: "свои ценности",
     description: "которые определяют ваши решения и действия.",
   },
   {
-    src: "/images/homePgae/step_04.png",
+    src: getImage("step_04"),
     title: "насколько гармоничны ваши ценности между собой",
     description: "узнаете, какие ценности затрудняют выбор.",
   },
   {
-    src: "/images/homePgae/step_05.png",
+    src: getImage("step_05"),
     title: "ценности партнёра",
     description: "для того чтобы «обходить острые углы» в общении.",
   },
 ];
 
 const CardsBlock = ({ id }: { id: string }) => {
+  const { getImage } = useGenderImage();
+  const cards = getCards(getImage);
+
   return (
     <div id={id} className="flex flex-col gap-16 mt-32">
       <div className="flex flex-col gap-4">

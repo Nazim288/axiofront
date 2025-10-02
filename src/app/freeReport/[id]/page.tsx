@@ -13,7 +13,7 @@ import { getYandexDiskFileUrl } from "@/api/yandexDisk";
 
 // Статичные данные для fallback
 const defaultData = {
-  img: "/images/reports/report.png",
+  img: "/images/report.png",
   date: "2024-01-01",
 };
 

@@ -3,8 +3,11 @@
 import { Button } from "@/components/ui/button";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useGenderImage } from "@/hooks/useGenderImage";
 const Tariffs = ({ id }: { id: string }) => {
   const router = useRouter();
+  const { getImage } = useGenderImage();
+
   return (
     <div
       id={id}
@@ -26,7 +29,7 @@ const Tariffs = ({ id }: { id: string }) => {
         </Button>
       </div>
       <Image
-        src={"/images/homePgae/step_01.png"}
+        src={getImage("step_01")}
         alt="tariffs"
         width={560}
         height={535}

@@ -15,10 +15,10 @@ interface LoginBody {
   password: string;
 }
 
-interface Review {
+export interface Review {
   id: number;
-  userId: number;
-  userName: string;
+  userId: number | null;
+  userName: string | null;
   targetType: string;
   rating: number;
   comment: string;
@@ -26,19 +26,19 @@ interface Review {
   updatedAt: string;
 }
 
-interface PersonCurrentResponse {
+export interface PersonCurrentResponse {
   id: number;
   firstName: string;
-  lastName: string;
-  middleName: string;
+  lastName: string | null;
+  middleName: string | null;
   age: number;
-  gender: string;
+  gender: "MALE" | "FEMALE";
   location: string;
   email: string;
   login: string;
-  phoneNumber: string;
+  phoneNumber: string | null;
   birthDate: string;
-  status: string;
+  status: "ACTIVE" | "INACTIVE";
   reviews: Review[];
   emailVerified: boolean;
 }
@@ -56,6 +56,7 @@ export const logoutUser = async () => {
   //   throw error;
   // }
   localStorage.removeItem("token");
+  clearCurrentUserFromStorage();
 };
 
 export const loginUser = async (body: LoginBody) => {
@@ -90,11 +91,32 @@ export const registerUser = async (body: RegisterBody) => {
 export const getPersonCurrent = async (): Promise<PersonCurrentResponse> => {
   try {
     const response = await api.get(Urls.authUrls.getPersonCurrent);
-    return response.data;
+    const userData = response.data;
+
+    // Сохраняем данные пользователя в localStorage
+    localStorage.setItem("currentUser", JSON.stringify(userData));
+
+    return userData;
   } catch (error) {
     console.error("Ошибка при получении данных пользователя:", error);
     throw error;
   }
+};
+
+// Функция для получения пользователя из localStorage
+export const getCurrentUserFromStorage = (): PersonCurrentResponse | null => {
+  try {
+    const userData = localStorage.getItem("currentUser");
+    return userData ? JSON.parse(userData) : null;
+  } catch (error) {
+    console.error("Ошибка при получении пользователя из localStorage:", error);
+    return null;
+  }
+};
+
+// Функция для очистки данных пользователя из localStorage
+export const clearCurrentUserFromStorage = (): void => {
+  localStorage.removeItem("currentUser");
 };
 
 function convertYearRangeToDate(yearRange: string): string {
