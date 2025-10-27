@@ -152,12 +152,6 @@ const StandartReportPage = () => {
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
 
-  // Функция для обработки переносов строк
-  const formatText = (text: string) => {
-    if (!text) return text;
-    return text.replace(/\\n/g, "\n");
-  };
-
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -210,7 +204,7 @@ const StandartReportPage = () => {
       { key: "traditions", title: "Традиционность" },
       { key: "compassion", title: "Сопереживание" },
       { key: "empathy", title: "Толерантность" },
-      { key: "selfSufficiency", title: "Самостоятельность" },
+      { key: "selfSufficiency", title: "Самодостаточность" },
       { key: "activity", title: "Энергичность" },
       { key: "hedonistic", title: "Гедонизм" },
       { key: "ambition", title: "Успешность" },
@@ -398,18 +392,30 @@ const StandartReportPage = () => {
             <p className="text-2xl font-semibold text-[#388E3C]">
               Привычные модели поведения, когда ничего не понятно
             </p>
-            <p style={{ whiteSpace: "pre-line" }}>
-              {formatText(testResult?.resultCongruence || "")}
-            </p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: testResult?.resultCongruence || "",
+              }}
+              style={{
+                whiteSpace: "pre-wrap",
+              }}
+              className="prose prose-sm max-w-none prose-headings:text-[#388E3C] prose-p:my-2 prose-strong:text-[#388E3C] prose-em:text-gray-600 prose-blockquote:border-l-[#388E3C] prose-blockquote:text-gray-700"
+            />
           </div>
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-2xl font-semibold text-[#FF9800]">
               10 советов, как наладить эффективное общение в условиях
               неопределенности…
             </p>
-            <p style={{ whiteSpace: "pre-line" }}>
-              {formatText(testResult?.recommendation || "")}
-            </p>
+            <div
+              dangerouslySetInnerHTML={{
+                __html: testResult?.recommendation || "",
+              }}
+              style={{
+                whiteSpace: "pre-wrap",
+              }}
+              className="prose prose-sm max-w-none prose-headings:text-[#FF9800] prose-p:my-2 prose-strong:text-[#FF9800] prose-em:text-gray-600 prose-blockquote:border-l-[#FF9800] prose-blockquote:text-gray-700 prose-ol:list-decimal prose-ul:list-disc prose-li:my-1"
+            />
           </div>
         </div>
         <ColorPsychology />

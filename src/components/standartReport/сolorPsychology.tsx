@@ -25,7 +25,7 @@ const colorValues: ColorValue[] = [
   { name: "Толерантность", color: "#303F9F" },
   { name: "Традиционность", color: "#9C27B0" },
   { name: "Гедонизм", color: "#FF69B4" },
-  { name: "Гибкость", color: "#BOBECS" },
+  { name: "Гибкость", color: "#888888" },
   { name: "Власть", color: "#212121" },
 ];
 
