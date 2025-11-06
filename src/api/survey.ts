@@ -23,3 +23,12 @@ export const getTestResultShort = () =>
 
 export const pay = (body: IPayBody) =>
   api.post<IPayResponse>(Urls.surveyUrls.pay, body);
+
+export interface IDownloadPdfBody {
+  email: string;
+  userId: number;
+  testResultId: number;
+}
+
+export const downloadPdf = (body: IDownloadPdfBody) =>
+  api.post(Urls.surveyUrls.downloadPdf, body);

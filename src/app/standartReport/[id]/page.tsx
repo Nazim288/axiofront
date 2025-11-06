@@ -22,6 +22,10 @@ import { ITestResult } from "@/types/survey";
 import { useEffect, useState } from "react";
 import { getYandexDiskFileUrl } from "@/api/yandexDisk";
 import ReviewForm from "@/components/review/reviewForm";
+import { useParams } from "next/navigation";
+import { useCurrentUser } from "@/hooks/useCurrentUser";
+import { downloadPdf } from "@/api/survey";
+import { toast } from "sonner";
 
 const data = {
   reports: [
@@ -147,10 +151,13 @@ const formSchema = z.object({
 });
 
 const StandartReportPage = () => {
+  const params = useParams();
+  const { currentUser } = useCurrentUser();
   const [testResult, setTestResult] = useState<ITestResult | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [imageUrl, setImageUrl] = useState<string | null>(null);
   const [imageLoading, setImageLoading] = useState(false);
+  const [isSendingPdf, setIsSendingPdf] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -194,6 +201,68 @@ const StandartReportPage = () => {
   function onSubmit(values: z.infer<typeof formSchema>) {
     console.log(values);
   }
+
+  // Функция для скачивания изображения
+  const handleDownloadImage = async () => {
+    if (!imageUrl) {
+      toast.error("Изображение недоступно для скачивания");
+      return;
+    }
+
+    try {
+      const response = await fetch(imageUrl);
+      const blob = await response.blob();
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = `report-image-${
+        testResult?.colorNumber || "default"
+      }.png`;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+      toast.success("Изображение успешно скачано");
+    } catch (error) {
+      console.error("Ошибка при скачивании изображения:", error);
+      toast.error("Не удалось скачать изображение");
+    }
+  };
+
+  // Функция для отправки PDF на email
+  const handleSendPdfToEmail = async () => {
+    if (!currentUser) {
+      toast.error("Пользователь не авторизован");
+      return;
+    }
+
+    const testResultId = params?.id ? Number(params.id) : null;
+    if (!testResultId) {
+      toast.error("ID результата теста не найден");
+      return;
+    }
+
+    const email = currentUser.email;
+    if (!email) {
+      toast.error("Email пользователя не найден");
+      return;
+    }
+
+    setIsSendingPdf(true);
+    try {
+      await downloadPdf({
+        email,
+        userId: currentUser.id,
+        testResultId,
+      });
+      toast.success("PDF отчет успешно отправлен на вашу электронную почту");
+    } catch (error) {
+      console.error("Ошибка при отправке PDF:", error);
+      toast.error("Не удалось отправить PDF отчет на почту");
+    } finally {
+      setIsSendingPdf(false);
+    }
+  };
 
   // Формируем отчеты из реальных данных ni
   const getNiReports = (result: ITestResult) => {
@@ -420,7 +489,7 @@ const StandartReportPage = () => {
         </div>
         <ColorPsychology />
         <div className="w-full flex justify-center">
-          <div className="flex flex-col gap-5 w-fit">
+          <div className="flex flex-col gap-5 w-fit items-center">
             {imageLoading ? (
               <div className="flex justify-center items-center w-[900px] h-[400px] bg-gray-100 rounded">
                 <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
@@ -442,7 +511,7 @@ const StandartReportPage = () => {
                 }}
               />
             ) : (
-              <div className="flex flex-col items-center gap-4">
+              <div className="flex flex-col gap-4 items-center">
                 <Image src={data.img} alt="report" width={900} height={400} />
                 {testResult?.colorNumber && (
                   <p className="text-sm text-gray-500">
@@ -452,13 +521,28 @@ const StandartReportPage = () => {
                 )}
               </div>
             )}
-            <Button
-              variant={"outline"}
-              color="primary"
-              className="w-full rounded-3xl"
-            >
-              Выслать на эл.почту текущую версию отчета и картинку
-            </Button>
+            <div className="flex gap-6 justify-between align-center">
+              <Button
+                variant={"outline"}
+                color="primary"
+                className="w-full rounded-3xl"
+                onClick={handleDownloadImage}
+                disabled={!imageUrl}
+              >
+                Скачать изображение
+              </Button>
+              <Button
+                variant={"outline"}
+                color="primary"
+                className="w-full rounded-3xl"
+                onClick={handleSendPdfToEmail}
+                disabled={isSendingPdf || !currentUser}
+              >
+                {isSendingPdf
+                  ? "Отправка..."
+                  : "Выслать на эл.почту текущую версию отчета"}
+              </Button>
+            </div>
           </div>
         </div>
         <div className="flex flex-col gap-4 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
