@@ -25,8 +25,8 @@ export const pay = (body: IPayBody) =>
   api.post<IPayResponse>(Urls.surveyUrls.pay, body);
 
 export interface IDownloadPdfBody {
-  email: string;
-  userId: number;
+  email?: string;
+  userId?: number;
   testResultId: number;
 }
 

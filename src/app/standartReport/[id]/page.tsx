@@ -251,8 +251,6 @@ const StandartReportPage = () => {
     setIsSendingPdf(true);
     try {
       await downloadPdf({
-        email,
-        userId: currentUser.id,
         testResultId,
       });
       toast.success("PDF отчет успешно отправлен на вашу электронную почту");
@@ -538,9 +536,7 @@ const StandartReportPage = () => {
                 onClick={handleSendPdfToEmail}
                 disabled={isSendingPdf || !currentUser}
               >
-                {isSendingPdf
-                  ? "Отправка..."
-                  : "Выслать на эл.почту текущую версию отчета"}
+                {isSendingPdf ? "Отправка..." : "Скачать текущую версию отчета"}
               </Button>
             </div>
           </div>
