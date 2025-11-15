@@ -127,7 +127,20 @@ const FreeReportPage: FC = () => {
     try {
       // Используем imageUrl если доступен, иначе дефолтное изображение
       const downloadUrl = imageUrl || defaultData.img;
-      const response = await fetch(downloadUrl);
+
+      // Для внешних URL используем API route для обхода CORS, для локальных - прямой fetch
+      const isExternalUrl =
+        downloadUrl.startsWith("http://") || downloadUrl.startsWith("https://");
+      const fetchUrl = isExternalUrl
+        ? `/api/download-image?url=${encodeURIComponent(downloadUrl)}`
+        : downloadUrl;
+
+      const response = await fetch(fetchUrl);
+
+      if (!response.ok) {
+        throw new Error("Не удалось загрузить изображение");
+      }
+
       const blob = await response.blob();
 
       // Создаем временную ссылку для скачивания

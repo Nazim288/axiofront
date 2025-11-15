@@ -94,9 +94,13 @@ const Header: React.FC = () => {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Link href="/">
-            <Image src={"/icons/logo.svg"} alt="Logo" width={43} height={43} />
+            <Image
+              src={"/icons/header.svg"}
+              alt="Logo"
+              width={200}
+              height={50}
+            />
           </Link>
-          <p>Open-me</p>
         </div>
 
         <nav className="hidden lg:block">
