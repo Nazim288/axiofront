@@ -94,12 +94,21 @@ const Header: React.FC = () => {
       <div className="flex justify-between items-center">
         <div className="flex items-center gap-2">
           <Link href="/">
-            <Image
-              src={"/icons/header.svg"}
-              alt="Logo"
-              width={200}
-              height={50}
-            />
+            <div className="flex gap-4 justify-center items-center">
+              <Image
+                src={"/icons/header.png"}
+                alt="Logo"
+                width={40}
+                height={40}
+              />
+              <Image
+                src={"/icons/axio.png"}
+                alt="Logo"
+                width={100}
+                height={30}
+                style={{ height: 30 }}
+              />
+            </div>
           </Link>
         </div>
 
