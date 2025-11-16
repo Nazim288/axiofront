@@ -31,4 +31,9 @@ export interface IDownloadPdfBody {
 }
 
 export const downloadPdf = (body: IDownloadPdfBody) =>
-  api.post(Urls.surveyUrls.downloadPdf, body);
+  api.post(Urls.surveyUrls.downloadPdf, body, {
+    headers: {
+      Accept: "application/pdf",
+    },
+    responseType: "blob",
+  });
