@@ -119,6 +119,41 @@ export const clearCurrentUserFromStorage = (): void => {
   localStorage.removeItem("currentUser");
 };
 
+interface EmailConfirmSendBody {
+  email: string;
+  code: string;
+}
+
+interface EmailConfirmBody {
+  email: string;
+  code: string;
+}
+
+export const emailConfirmSend = async (
+  body: EmailConfirmSendBody
+): Promise<string> => {
+  try {
+    const response = await api.post<string>(
+      Urls.authUrls.emailConfirmSend,
+      body
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при отправке подтверждения email:", error);
+    throw error;
+  }
+};
+
+export const emailConfirm = async (body: EmailConfirmBody): Promise<string> => {
+  try {
+    const response = await api.post<string>(Urls.authUrls.emailConfirm, body);
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при верификации email:", error);
+    throw error;
+  }
+};
+
 function convertYearRangeToDate(yearRange: string): string {
   const [startYear] = yearRange.split("-");
   return `${startYear}-01-01`;

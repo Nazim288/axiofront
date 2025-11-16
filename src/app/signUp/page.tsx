@@ -18,11 +18,12 @@ import {
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
-import { registerUser } from "@/api/auth";
+import { registerUser, emailConfirmSend } from "@/api/auth";
 import Loader from "@/components/loader/loader";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
+import { EmailVerificationModal } from "@/components/modals/emailVerificationModal";
 
 const formSchema = z
   .object({
@@ -60,6 +61,8 @@ const SignUp = () => {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState<string>("");
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -91,9 +94,21 @@ const SignUp = () => {
       setIsSuccess(true);
       toast.success("Регистрация успешна!");
 
-      setTimeout(() => {
-        router.push("/");
-      }, 1000);
+      // Вызываем emailConfirmSend для отправки кода верификации
+      try {
+        await emailConfirmSend({
+          email: values.email,
+          code: "", // Пустой код для первоначальной отправки
+        });
+        // Открываем модальное окно для верификации
+        setVerificationEmail(values.email);
+        setIsVerificationModalOpen(true);
+      } catch (emailError) {
+        // Если не удалось отправить код, все равно открываем модальное окно
+        console.error("Ошибка при отправке кода верификации:", emailError);
+        setVerificationEmail(values.email);
+        setIsVerificationModalOpen(true);
+      }
     } catch (error: unknown) {
       if (axios.isAxiosError(error) && error.response?.data) {
         const errorData = error.response.data as ErrorResponse;
@@ -110,6 +125,12 @@ const SignUp = () => {
       setIsLoading(false);
     }
   }
+
+  const handleVerificationSuccess = () => {
+    setTimeout(() => {
+      router.push("/");
+    }, 1000);
+  };
 
   return (
     <div className="w-full max-w-[670px] mx-auto pb-10 px-4 sm:px-6 md:pb-20">
@@ -333,6 +354,12 @@ const SignUp = () => {
           </Button>
         </form>
       </Form>
+      <EmailVerificationModal
+        isOpen={isVerificationModalOpen}
+        onClose={() => setIsVerificationModalOpen(false)}
+        email={verificationEmail}
+        onSuccess={handleVerificationSuccess}
+      />
     </div>
   );
 };

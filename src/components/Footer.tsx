@@ -20,9 +20,13 @@ const Footer: React.FC = () => {
       <div className="flex flex-col lg:flex-row lg:justify-between lg:items-center gap-4">
         <div className="flex items-center gap-2">
           <Link href="/">
-            <Image src={"/icons/logo.svg"} alt="Logo" width={43} height={43} />
+            <Image
+              src={"/icons/header.svg"}
+              alt="Logo"
+              width={200}
+              height={50}
+            />
           </Link>
-          <p>Open-me</p>
         </div>
 
         {/* Десктопная навигация */}

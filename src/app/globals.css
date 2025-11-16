@@ -184,3 +184,86 @@ body {
     }
   }
 }
+
+/* Стили для HTML-контента в полях recommendation и resultCongruence */
+.report-html-content h1 {
+  font-size: 13pt !important;
+  font-weight: bold !important;
+  margin-bottom: 10pt !important;
+  text-align: center !important;
+}
+
+.report-html-content h2 {
+  font-size: 12pt !important;
+  font-weight: bold !important;
+  font-style: italic !important;
+  margin-bottom: 8pt !important;
+}
+
+.report-html-content h3 {
+  font-size: 10pt !important;
+  font-weight: bold !important;
+  font-style: italic !important;
+}
+
+.report-html-content h4 {
+  font-size: 10pt !important;
+  font-weight: bold !important;
+  margin-bottom: 4pt !important;
+}
+
+.report-html-content h5 {
+  font-size: 16pt !important;
+  font-weight: bold !important;
+  margin-bottom: 16pt !important;
+  text-align: center !important;
+  color: #2e8b57 !important;
+}
+
+.report-html-content h6 {
+  font-size: 16pt !important;
+  font-weight: bold !important;
+  margin-bottom: 16pt !important;
+  text-align: center !important;
+  color: #ff9800 !important;
+}
+
+.report-html-content .h7 {
+  font-size: 12pt !important;
+  font-weight: bold !important;
+  margin-bottom: 8pt !important;
+}
+
+.report-html-content .h8 {
+  font-size: 10pt !important;
+  font-weight: bold !important;
+  font-style: italic !important;
+}
+
+.report-html-content p {
+  font-size: 11pt !important;
+  margin-bottom: 6pt !important;
+}
+
+.report-html-content ul {
+  list-style-type: disc !important;
+  margin-left: 0 !important;
+  padding-left: 0pt !important;
+  font-size: 10.5pt !important;
+  margin-top: 4pt !important;
+  margin-bottom: 8pt !important;
+  font-family: "Roboto", sans-serif !important;
+}
+
+.report-html-content li {
+  text-align: justify !important;
+  margin-bottom: 6pt !important;
+  line-height: 1.4 !important;
+  font-family: inherit !important;
+  font-size: inherit !important;
+  color: inherit !important;
+}
+
+.report-html-content small {
+  font-size: 9pt !important;
+}

@@ -14,5 +14,7 @@ export const Urls = {
     login: "/api/v1/login",
     logout: "/api/v1/logout",
     getPersonCurrent: "/api/v1/person/current",
+    emailConfirmSend: "/api/v1/email/confirm/send",
+    emailConfirm: "/api/v1/email/confirm",
   },
 };

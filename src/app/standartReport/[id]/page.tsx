@@ -166,6 +166,13 @@ const StandartReportPage = () => {
     },
   });
 
+  // Функция для удаления всех переносов строк (одиночных и сдвоенных)
+  const removeDoubleNewlines = (html: string): string => {
+    if (!html) return "";
+    // Заменяем все переносы строк (одиночные и множественные) на пустую строку
+    return html.replace(/\n+/g, "");
+  };
+
   useEffect(() => {
     // Загружаем данные из localStorage
     const savedResult = localStorage.getItem("testResult");
@@ -465,32 +472,27 @@ const StandartReportPage = () => {
         <Matches matches={testResult?.pcs || 0} values={matchesValues} />
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full ">
-            <p className="text-2xl font-semibold text-[#388E3C]">
-              Привычные модели поведения, когда ничего не понятно
-            </p>
             <div
               dangerouslySetInnerHTML={{
-                __html: testResult?.resultCongruence || "",
+                __html: removeDoubleNewlines(
+                  testResult?.resultCongruence || ""
+                ),
               }}
-              style={{
-                whiteSpace: "pre-wrap",
-              }}
-              className="prose prose-sm max-w-none prose-headings:text-[#388E3C] prose-p:my-2 prose-strong:text-[#388E3C] prose-em:text-gray-600 prose-blockquote:border-l-[#388E3C] prose-blockquote:text-gray-700"
+              // style={{
+              //   whiteSpace: "pre-wrap",
+              // }}
+              className="report-html-content prose prose-sm max-w-none prose-headings:text-[#388E3C] prose-p:my-2 prose-strong:text-[#388E3C] prose-em:text-gray-600 prose-blockquote:border-l-[#388E3C] prose-blockquote:text-gray-700"
             />
           </div>
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full">
-            <p className="text-2xl font-semibold text-[#FF9800]">
-              10 советов, как наладить эффективное общение в условиях
-              неопределенности…
-            </p>
             <div
               dangerouslySetInnerHTML={{
-                __html: testResult?.recommendation || "",
+                __html: removeDoubleNewlines(testResult?.recommendation || ""),
               }}
               style={{
                 whiteSpace: "pre-wrap",
               }}
-              className="prose prose-sm max-w-none prose-headings:text-[#FF9800] prose-p:my-2 prose-strong:text-[#FF9800] prose-em:text-gray-600 prose-blockquote:border-l-[#FF9800] prose-blockquote:text-gray-700 prose-ol:list-decimal prose-ul:list-disc prose-li:my-1"
+              className="report-html-content prose prose-sm max-w-none prose-headings:text-[#FF9800] prose-p:my-2 prose-strong:text-[#FF9800] prose-em:text-gray-600 prose-blockquote:border-l-[#FF9800] prose-blockquote:text-gray-700 prose-ol:list-decimal prose-ul:list-disc prose-li:my-1"
             />
           </div>
         </div>
