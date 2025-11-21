@@ -104,7 +104,7 @@ const Header: React.FC = () => {
               <Image
                 src={"/icons/axio.png"}
                 alt="Logo"
-                width={100}
+                width={130}
                 height={30}
                 style={{ height: 30 }}
               />

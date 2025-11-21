@@ -30,8 +30,8 @@ const Footer: React.FC = () => {
               <Image
                 src={"/icons/axio.png"}
                 alt="Logo"
-                width={100}
-                height={30}
+                width={130}
+                height={40}
                 style={{ height: 30 }}
               />
             </div>
