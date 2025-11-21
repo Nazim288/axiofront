@@ -62,7 +62,7 @@ const MainBanner = () => {
           </ul>
         </div>
         <Image
-          src={getImage("step_07")}
+          src={getImage("step_01")}
           alt="tariffs"
           width={400}
           height={358}

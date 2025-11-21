@@ -29,7 +29,7 @@ const Tariffs = ({ id }: { id: string }) => {
         </Button>
       </div>
       <Image
-        src={getImage("step_01")}
+        src={getImage("step_07")}
         alt="tariffs"
         width={560}
         height={535}
