@@ -30,7 +30,7 @@ import Loader from "@/components/loader/loader";
 import { useUser } from "@/contexts/UserContext";
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Неверный формат почты" }),
+  email: z.string().min(5, { message: "должно быть длиннее 5 символов" }),
   password: z
     .string()
     .min(8, { message: "Пароль должен быть длиннее 8 символов" }),
