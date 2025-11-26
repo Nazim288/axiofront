@@ -22,10 +22,15 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import {
+  InputOTP,
+  InputOTPGroup,
+  InputOTPSlot,
+} from "@/components/ui/input-otp";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
-import { loginUser } from "@/api/auth";
+import { loginUser, requestPasswordReset, resetPassword } from "@/api/auth";
 import Loader from "@/components/loader/loader";
 import { useUser } from "@/contexts/UserContext";
 
@@ -40,12 +45,26 @@ const forgotFormSchema = z.object({
   email: z.string().email({ message: "Неверный формат почты" }),
 });
 
+const resetFormSchema = z.object({
+  email: z.string().email({ message: "Неверный формат почты" }),
+  code: z.string().min(1, { message: "Введите код из письма" }),
+  newPassword: z
+    .string()
+    .min(8, { message: "Пароль должен быть длиннее 8 символов" }),
+});
+
 export function SignInModal() {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isForgotLoading, setIsForgotLoading] = useState(false);
+  const [isForgotSuccess, setIsForgotSuccess] = useState(false);
+  const [forgotError, setForgotError] = useState<string | null>(null);
+  const [isResetLoading, setIsResetLoading] = useState(false);
+  const [isResetSuccess, setIsResetSuccess] = useState(false);
+  const [resetError, setResetError] = useState<string | null>(null);
 
   const openDialog = () => setIsOpen(true);
   const closeDialog = () => setIsOpen(false);
@@ -62,6 +81,15 @@ export function SignInModal() {
     resolver: zodResolver(forgotFormSchema),
     defaultValues: {
       email: "",
+    },
+  });
+
+  const resetForm = useForm<z.infer<typeof resetFormSchema>>({
+    resolver: zodResolver(resetFormSchema),
+    defaultValues: {
+      email: "",
+      code: "",
+      newPassword: "",
     },
   });
 
@@ -87,8 +115,54 @@ export function SignInModal() {
     }
   }
 
-  function onSubmitForgot(values: z.infer<typeof forgotFormSchema>) {
-    console.log(values);
+  async function onSubmitForgot(values: z.infer<typeof forgotFormSchema>) {
+    setIsForgotLoading(true);
+    setIsForgotSuccess(false);
+    setForgotError(null);
+    try {
+      await requestPasswordReset(values.email);
+      setIsForgotSuccess(true);
+      resetForm.reset({
+        email: values.email,
+        code: "",
+        newPassword: "",
+      });
+      setStep(3);
+    } catch (error) {
+      console.error("Ошибка отправки запроса на восстановление пароля:", error);
+      setForgotError("Не удалось отправить письмо. Попробуйте позже.");
+    } finally {
+      setIsForgotLoading(false);
+    }
+  }
+
+  async function onSubmitReset(values: z.infer<typeof resetFormSchema>) {
+    setIsResetLoading(true);
+    setIsResetSuccess(false);
+    setResetError(null);
+    try {
+      await resetPassword({
+        email: values.email,
+        code: values.code,
+        newPassword: values.newPassword,
+      });
+      setIsResetSuccess(true);
+      setTimeout(() => {
+        setStep(1);
+        form.reset();
+        forgotForm.reset();
+        resetForm.reset();
+        setIsResetSuccess(false);
+        closeDialog();
+      }, 1500);
+    } catch (error) {
+      console.error("Ошибка при сбросе пароля:", error);
+      setResetError(
+        "Не удалось обновить пароль. Проверьте данные и попробуйте снова."
+      );
+    } finally {
+      setIsResetLoading(false);
+    }
   }
 
   const onClose = (open: boolean) => {
@@ -97,6 +171,13 @@ export function SignInModal() {
       setStep(1);
       form.reset();
       forgotForm.reset();
+      setIsForgotLoading(false);
+      setIsForgotSuccess(false);
+      setForgotError(null);
+      resetForm.reset();
+      setIsResetLoading(false);
+      setIsResetSuccess(false);
+      setResetError(null);
     }, 500);
   };
 
@@ -253,9 +334,137 @@ export function SignInModal() {
                   )}
                 />
 
-                <Button type="submit" className="rounded-[40px] w-full">
-                  Отправить
+                <Button
+                  type="submit"
+                  className="rounded-[40px] w-full"
+                  disabled={isForgotLoading}
+                >
+                  {isForgotLoading ? (
+                    <Loader isFullHeight={false} imageSize={24} />
+                  ) : isForgotSuccess ? (
+                    "Отправлено"
+                  ) : (
+                    "Отправить"
+                  )}
                 </Button>
+                {isForgotSuccess && (
+                  <p className="text-sm text-green-600 text-center">
+                    Мы отправили письмо с инструкциями на указанную почту.
+                  </p>
+                )}
+                {forgotError && (
+                  <p className="text-sm text-red-500 text-center">
+                    {forgotError}
+                  </p>
+                )}
+              </form>
+            </Form>
+          </>
+        )}
+        {step === 3 && (
+          <>
+            <DialogHeader>
+              <DialogTitle className="text-2xl font-semibold">
+                Обновление пароля
+              </DialogTitle>
+            </DialogHeader>
+            <Form {...resetForm}>
+              <form
+                onSubmit={resetForm.handleSubmit(onSubmitReset)}
+                className="space-y-4"
+              >
+                <FormField
+                  control={resetForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-normal">
+                        Почта
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="email@example.com"
+                          className="pr-10 h-12 bg-[#F3F1F1]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={resetForm.control}
+                  name="code"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-normal">
+                        Код из письма
+                      </FormLabel>
+                      <FormControl>
+                        <InputOTP
+                          maxLength={6}
+                          value={field.value}
+                          onChange={field.onChange}
+                          className="w-full justify-start"
+                        >
+                          <InputOTPGroup className="gap-2">
+                            {Array.from({ length: 6 }).map((_, index) => (
+                              <InputOTPSlot
+                                key={index}
+                                index={index}
+                                className="h-12 w-12 text-lg"
+                              />
+                            ))}
+                          </InputOTPGroup>
+                        </InputOTP>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={resetForm.control}
+                  name="newPassword"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="text-lg font-normal">
+                        Новый пароль
+                      </FormLabel>
+                      <FormControl>
+                        <Input
+                          type="password"
+                          placeholder="Новый пароль"
+                          className="pr-10 h-12 bg-[#F3F1F1]"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <Button
+                  type="submit"
+                  className="rounded-[40px] w-full"
+                  disabled={isResetLoading}
+                >
+                  {isResetLoading ? (
+                    <Loader isFullHeight={false} imageSize={24} />
+                  ) : isResetSuccess ? (
+                    "Обновлено"
+                  ) : (
+                    "Сохранить новый пароль"
+                  )}
+                </Button>
+                {isResetSuccess && (
+                  <p className="text-sm text-green-600 text-center">
+                    Пароль обновлен. Сейчас перенаправим на форму входа.
+                  </p>
+                )}
+                {resetError && (
+                  <p className="text-sm text-red-500 text-center">
+                    {resetError}
+                  </p>
+                )}
               </form>
             </Form>
           </>

@@ -129,6 +129,12 @@ interface EmailConfirmBody {
   code: string;
 }
 
+interface ResetPasswordBody {
+  email: string;
+  code: string;
+  newPassword: string;
+}
+
 export const emailConfirmSend = async (
   body: EmailConfirmSendBody
 ): Promise<string> => {
@@ -150,6 +156,34 @@ export const emailConfirm = async (body: EmailConfirmBody): Promise<string> => {
     return response.data;
   } catch (error) {
     console.error("Ошибка при верификации email:", error);
+    throw error;
+  }
+};
+
+export const requestPasswordReset = async (email: string): Promise<string> => {
+  try {
+    const response = await api.post<string>(
+      Urls.authUrls.requestPasswordReset,
+      null,
+      {
+        params: { email },
+      }
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при запросе сброса пароля:", error);
+    throw error;
+  }
+};
+
+export const resetPassword = async (
+  body: ResetPasswordBody
+): Promise<string> => {
+  try {
+    const response = await api.post<string>(Urls.authUrls.resetPassword, body);
+    return response.data;
+  } catch (error) {
+    console.error("Ошибка при сбросе пароля:", error);
     throw error;
   }
 };
