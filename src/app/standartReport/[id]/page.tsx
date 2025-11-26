@@ -266,13 +266,39 @@ const StandartReportPage = () => {
 
     setIsSendingPdf(true);
     try {
-      await downloadPdf({
+      const response = await downloadPdf({
         testResultId,
       });
-      toast.success("PDF отчет успешно отправлен на вашу электронную почту");
+
+      // Получаем blob из ответа
+      const blob = response.data as Blob;
+
+      // Пытаемся извлечь имя файла из заголовка Content-Disposition
+      let filename = `axiogram_result_${testResultId}.pdf`;
+      const contentDisposition = response.headers["content-disposition"];
+      if (contentDisposition) {
+        const filenameMatch = contentDisposition.match(
+          /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+        );
+        if (filenameMatch && filenameMatch[1]) {
+          filename = filenameMatch[1].replace(/['"]/g, "");
+        }
+      }
+
+      // Создаем URL из blob и скачиваем файл
+      const url = window.URL.createObjectURL(blob);
+      const link = document.createElement("a");
+      link.href = url;
+      link.download = filename;
+      document.body.appendChild(link);
+      link.click();
+      document.body.removeChild(link);
+      window.URL.revokeObjectURL(url);
+
+      toast.success("PDF отчет успешно скачан");
     } catch (error) {
       console.error("Ошибка при отправке PDF:", error);
-      toast.error("Не удалось отправить PDF отчет на почту");
+      toast.error("Не удалось скачать PDF отчет");
     } finally {
       setIsSendingPdf(false);
     }
