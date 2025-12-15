@@ -6,6 +6,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { Toaster } from "sonner";
 import { UserProvider } from "@/contexts/UserContext";
+import { GenderProvider } from "@/contexts/GenderContext";
 import { UserDataLoader } from "@/components/UserDataLoader";
 
 const geistSans = localFont({
@@ -41,13 +42,15 @@ export default function RootLayout({
         className={`${geistSans.variable} ${geistMono.variable} ${montserrat.variable} antialiased`}
       >
         <UserProvider>
-          <UserDataLoader />
-          <Header />
-          <div className="p-4 sm:p-6 md:p-10 max-w-[1100px] min-h-[calc(100vh-120px)] sm:min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-160px)] mx-auto">
-            {children}
-          </div>
-          <Footer />
-          <Toaster richColors position="top-center" />
+          <GenderProvider>
+            <UserDataLoader />
+            <Header />
+            <div className="p-4 sm:p-6 md:p-10 max-w-[1100px] min-h-[calc(100vh-120px)] sm:min-h-[calc(100vh-140px)] md:min-h-[calc(100vh-160px)] mx-auto">
+              {children}
+            </div>
+            <Footer />
+            <Toaster richColors position="top-center" />
+          </GenderProvider>
         </UserProvider>
       </body>
     </html>

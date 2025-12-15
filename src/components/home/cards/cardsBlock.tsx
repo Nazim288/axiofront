@@ -16,17 +16,17 @@ const getCards = (
     description: "и создать или укрепить долгосрочные отношения.",
   },
   {
-    src: getImage("step_01"),
+    src: getImage("step_04"),
     title: "свои ценности",
     description: "которые определяют ваши решения и действия.",
   },
   {
-    src: getImage("step_04"),
+    src: getImage("step_05"),
     title: "насколько гармоничны ваши ценности между собой",
     description: "узнаете, какие ценности затрудняют выбор.",
   },
   {
-    src: getImage("step_05"),
+    src: getImage("step_06"),
     title: "ценности партнёра",
     description: "для того чтобы «обходить острые углы» в общении.",
   },

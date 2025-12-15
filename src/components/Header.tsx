@@ -9,13 +9,16 @@ import { useRouter } from "next/navigation";
 import { useParams } from "next/navigation";
 import { Menu, X } from "lucide-react";
 import { useUser } from "@/contexts/UserContext";
+import { useGender } from "@/contexts/GenderContext";
 import { logoutUser } from "@/api/auth";
+import { Gender } from "@/lib/imageUtils";
 
 const Header: React.FC = () => {
   const router = useRouter();
   const params = useParams();
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const { isAuthenticated, logout } = useUser();
+  const { selectedGender, setSelectedGender } = useGender();
 
   const handleNavigation = (
     event: React.MouseEvent<HTMLButtonElement>,
@@ -89,6 +92,41 @@ const Header: React.FC = () => {
     { id: "reviews", text: "Отзывы" },
   ];
 
+  const GenderSwitcher = () => {
+    const handleGenderChange = (gender: Gender) => {
+      setSelectedGender(gender);
+    };
+
+    return (
+      <div className="flex items-center gap-2 border rounded-full p-1 bg-gray-100">
+        <Button
+          variant={selectedGender === "FEMALE" ? "default" : "ghost"}
+          size="sm"
+          className={`rounded-full ${
+            selectedGender === "FEMALE"
+              ? "bg-primary text-primary-foreground"
+              : "text-gray-600"
+          }`}
+          onClick={() => handleGenderChange("FEMALE")}
+        >
+          Ж
+        </Button>
+        <Button
+          variant={selectedGender === "MALE" ? "default" : "ghost"}
+          size="sm"
+          className={`rounded-full ${
+            selectedGender === "MALE"
+              ? "bg-primary text-primary-foreground"
+              : "text-gray-600"
+          }`}
+          onClick={() => handleGenderChange("MALE")}
+        >
+          М
+        </Button>
+      </div>
+    );
+  };
+
   return (
     <header className="text-black p-4 shadow-lg relative">
       <div className="flex justify-between items-center">
@@ -128,7 +166,8 @@ const Header: React.FC = () => {
           </ul>
         </nav>
 
-        <div className="hidden lg:flex justify-between gap-4">
+        <div className="hidden lg:flex justify-between items-center gap-4">
+          {!isAuthenticated && <GenderSwitcher />}
           <AuthButtons />
         </div>
 
@@ -158,6 +197,11 @@ const Header: React.FC = () => {
                   </Button>
                 </li>
               ))}
+              {!isAuthenticated && (
+                <li className="pt-4">
+                  <GenderSwitcher />
+                </li>
+              )}
               <li className="pt-4 flex flex-col gap-4">
                 <AuthButtons />
               </li>
