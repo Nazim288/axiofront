@@ -151,7 +151,7 @@ const Header: React.FC = () => {
         </div>
 
         <nav className="hidden lg:block">
-          <ul className="flex justify-between gap-4">
+          <ul className="flex justify-between gap-0.5">
             {navigationItems.map((item) => (
               <li key={item.id}>
                 <Button
@@ -166,7 +166,7 @@ const Header: React.FC = () => {
           </ul>
         </nav>
 
-        <div className="hidden lg:flex justify-between items-center gap-4">
+        <div className="hidden lg:flex justify-between items-center gap-1">
           {!isAuthenticated && <GenderSwitcher />}
           <AuthButtons />
         </div>
