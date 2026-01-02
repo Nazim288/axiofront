@@ -49,11 +49,11 @@ async function handleRequest(
     const targetUrl = `${API_BASE_URL}/${path}${queryString}`;
 
     // Получаем тело запроса, если есть
-    let body: any = null;
+    let body: string | null = null;
     if (method !== "GET" && method !== "DELETE") {
       try {
         body = await request.text();
-      } catch (e) {
+      } catch {
         // Тело может быть пустым
       }
     }
@@ -78,7 +78,7 @@ async function handleRequest(
 
     // Получаем ответ
     const responseData = await response.text();
-    let jsonData: any;
+    let jsonData: unknown;
     try {
       jsonData = JSON.parse(responseData);
     } catch {
