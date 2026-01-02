@@ -43,8 +43,8 @@ export const GENDER_SPECIFIC_IMAGES = {
   step_10: "/images/step_10.png",
 
   // Report images
-  report_step_06: "/images/step_06.png",
-  report_step_07: "/images/step_07.png",
+  report_step_06: "/images/step_08.png",
+  report_step_07: "/images/step_09.png",
 } as const;
 
 /**
