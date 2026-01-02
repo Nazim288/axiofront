@@ -23,15 +23,16 @@ const nextConfig = {
       },
     ],
   },
+
+  // Проксирование API запросов на внешний сервер
   async rewrites() {
     return [
       {
         source: "/api/v1/:path*",
-        destination: "https://www.axiogram.ru/api/v1/:path*",
+        destination: "https://axiogram.ru/api/v1/:path*",
       },
     ];
   },
-  // other configurations...
 };
 
 module.exports = nextConfig;
