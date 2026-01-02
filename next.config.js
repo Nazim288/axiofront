@@ -27,8 +27,7 @@ const nextConfig = {
     return [
       {
         source: "/api/v1/:path*",
-        destination: "https://open-me.onrender.com/api/v1/:path*",
-        basePath: false,
+        destination: "https://www.axiogram.ru/api/v1/:path*",
       },
     ];
   },
