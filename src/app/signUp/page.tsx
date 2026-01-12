@@ -201,9 +201,9 @@ const SignUp = () => {
                     </FormItem>
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
-                        <RadioGroupItem value="male" />
+                        <RadioGroupItem value="1964-1984" />
                       </FormControl>
-                      <FormLabel className="1964-1984">1964-1984</FormLabel>
+                      <FormLabel className="font-normal">1964-1984</FormLabel>
                     </FormItem>
                     <FormItem className="flex items-center space-x-3 space-y-0">
                       <FormControl>
