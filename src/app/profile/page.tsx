@@ -4,20 +4,92 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
 import { getTestResult, getTestResultShort } from "@/api/survey";
-import { getPersonCurrent } from "@/api/auth";
+import { getPersonCurrent, Review } from "@/api/auth";
 import { useRouter } from "next/navigation";
 import { useState, useEffect } from "react";
 import { ITestResultShort } from "@/types/survey";
 import { useGenderImage } from "@/hooks/useGenderImage";
+import { PersonCurrentResponse } from "@/api/auth";
+import { getReviews } from "@/api/review";
+import Card from "@/components/home/reviews/card";
 
 const Survey = () => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingReviews, setIsLoadingReviews] = useState(false);
+
   const [shortResult, setShortResult] = useState<ITestResultShort | null>(null);
   const [dataLoading, setDataLoading] = useState(true);
   const [userLogin, setUserLogin] = useState<string>("");
+  const [user, setUser] = useState<PersonCurrentResponse>();
   const [userDataLoading, setUserDataLoading] = useState(true);
+  const [apiReviews, setApiReviews] = useState<Review[]>([]);
+  const [errorReviews, setErrorReviews] = useState<string>("");
+
   const { getImage } = useGenderImage();
+
+  interface DisplayReview {
+    id?: number;
+    rating: number;
+    username: string;
+    reviewText: string;
+  }
+
+  // Статичные отзывы для fallback
+  const staticReviews: DisplayReview[] = [
+    {
+      id: 1,
+      rating: 5,
+      username: "Анна",
+      reviewText:
+        "Прекрасный сервис! Очень точные результаты и подробные отчеты. Рекомендую всем, кто хочет лучше понять себя.",
+    },
+    {
+      id: 2,
+      rating: 4,
+      username: "Дмитрий",
+      reviewText:
+        "Интересный и полезный тест. Помог разобраться в некоторых аспектах личности. Буду рекомендовать друзьям.",
+    },
+    {
+      id: 3,
+      rating: 5,
+      username: "Елена",
+      reviewText:
+        "Впечатляющий анализ! Многое из того, что написано в отчете, точно описывает мою личность и поведение.",
+    },
+    {
+      id: 4,
+      rating: 4,
+      username: "Максим",
+      reviewText:
+        "Хороший сервис для самопознания. Результаты помогли мне лучше понять свои сильные и слабые стороны.",
+    },
+    {
+      id: 5,
+      rating: 5,
+      username: "Ольга",
+      reviewText:
+        "Очень довольна результатом! Подробный анализ личности и полезные рекомендации для развития.",
+    },
+    {
+      id: 6,
+      rating: 4,
+      username: "Игорь",
+      reviewText:
+        "Качественный психологический анализ. Отчет оказался очень информативным и помог в понимании себя.",
+    },
+  ];
+
+  // Нормализуем данные к единому формату
+  const normalizeApiReviews = (apiData: Review[]): DisplayReview[] => {
+    return apiData.map((review) => ({
+      id: review.id,
+      rating: review.rating,
+      username: review.userName || "Анонимный пользователь",
+      reviewText: review.comment,
+    }));
+  };
 
   useEffect(() => {
     const loadData = async () => {
@@ -25,6 +97,7 @@ const Survey = () => {
         // Загружаем данные пользователя
         const userResponse = await getPersonCurrent();
         setUserLogin(userResponse.login);
+        setUser(userResponse);
       } catch (error) {
         console.error("Ошибка при загрузке данных пользователя:", error);
       } finally {
@@ -58,9 +131,7 @@ const Survey = () => {
     setIsLoading(true);
 
     try {
-      // Получаем полный результат используя ID из уже загруженного короткого ответа
       const fullResponse = await getTestResult(shortResult.id.toString());
-      // Сохраняем данные в localStorage для передачи на страницу отчета
       localStorage.setItem("testResult", JSON.stringify(fullResponse.data));
       if (shortResult.paid === true) {
         router.push(`/standartReport/${shortResult.id}`);
@@ -73,6 +144,24 @@ const Survey = () => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    const loadReviews = async () => {
+      try {
+        setIsLoadingReviews(true);
+        const data = await getReviews("KV_86", true);
+        setApiReviews(data);
+      } catch (err) {
+        console.error("Ошибка при загрузке отзывов:", err);
+        setErrorReviews("Не удалось загрузить отзывы");
+        setApiReviews([]);
+      } finally {
+        setIsLoadingReviews(false);
+      }
+    };
+
+    loadReviews();
+  }, []);
 
   return (
     <ProtectedRoute>
@@ -145,7 +234,7 @@ const Survey = () => {
           </div>
         </div>
 
-        <div className="flex justify-between gap-10 mt-36">
+        <div className="flex justify-between gap-10 mt-16">
           <div className="flex flex-col gap-8">
             <h1 className="text-3xl font-semibold">Новый вебинар</h1>
             <div className="w-full relative flex flex-col gap-2 baseShadow rounded-3xl p-5  h-fi hover:scale-105 transition-transform duration-300 ease-in-out">
@@ -175,7 +264,39 @@ const Survey = () => {
           </div>
         </div>
 
-        <div className="flex gap-4 justify-start h-[600px] rounded-[20px] baseShadow my-24  p-10">
+        {!user?.roles?.includes("ROLE_ADMIN") && (
+          <>
+            <div className="mt-16">
+              <h1 className="text-3xl font-semibold">Модерация отзывов</h1>
+            </div>
+
+            {isLoadingReviews ? (
+              <div className="flex justify-center items-center h-64">
+                <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+              </div>
+            ) : errorReviews ? (
+              <div className="flex justify-center items-center h-64">
+                <p className="text-red-500">{errorReviews}</p>
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+                {(apiReviews.length > 0
+                  ? normalizeApiReviews(apiReviews)
+                  : staticReviews
+                ).map((review, index) => (
+                  <Card
+                    key={review.id || index}
+                    rating={review.rating}
+                    username={review.username}
+                    reviewText={review.reviewText}
+                  />
+                ))}
+              </div>
+            )}
+          </>
+        )}
+
+        <div className="flex gap-4 justify-start h-[600px] rounded-[20px] baseShadow my-16  p-10">
           <div className="flex flex-col gap-4 w-[50%] justify-center">
             <p>
               Всё стремится к гармонии в этом мире, и ваши ценности тоже.

@@ -100,7 +100,6 @@ const ReviewsBlock = ({ id }: { id: string }) => {
     }));
   };
 
-  // Используем API отзывы, если есть, иначе fallback к статичным
   const displayReviews: DisplayReview[] =
     apiReviews.length > 0 ? normalizeApiReviews(apiReviews) : reviews;
 

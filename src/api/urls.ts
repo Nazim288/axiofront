@@ -7,6 +7,7 @@ export const Urls = {
     pay: "/api/v1/payments/initiate",
     setReviews: "/api/v1/reviews",
     getReviews: "/api/v1/reviews/target",
+    getReviewsToModeration: "/api/v1/reviews/target",
     downloadPdf: "/api/v1/download/pdf",
   },
   authUrls: {

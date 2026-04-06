@@ -31,12 +31,18 @@ export const createReview = async (
 };
 
 export const getReviews = async (
-  targetType: string
+  targetType: string,
+  moderation: boolean = false
 ): Promise<ReviewResponse[]> => {
   try {
-    const response = await api.get(Urls.surveyUrls.getReviews, {
-      params: { targetType },
-    });
+    const response = await api.get(
+      moderation
+        ? Urls.surveyUrls.getReviewsToModeration
+        : Urls.surveyUrls.getReviews,
+      {
+        params: { targetType },
+      }
+    );
     return response.data;
   } catch (error) {
     console.error("Ошибка при получении отзывов:", error);

@@ -41,6 +41,7 @@ export interface PersonCurrentResponse {
   status: "ACTIVE" | "INACTIVE";
   reviews: Review[];
   emailVerified: boolean;
+  roles: string[];
 }
 
 export const logoutUser = async () => {
