@@ -12,6 +12,7 @@ import { useGenderImage } from "@/hooks/useGenderImage";
 import { PersonCurrentResponse } from "@/api/auth";
 import { getReviews } from "@/api/review";
 import Card from "@/components/home/reviews/card";
+import { toast } from "sonner";
 
 const Survey = () => {
   const router = useRouter();
@@ -34,6 +35,14 @@ const Survey = () => {
     username: string;
     reviewText: string;
   }
+
+  const handleApproveReview = (review: DisplayReview) => {
+    toast.success(`Отзыв от ${review.username} одобрен`);
+  };
+
+  const handleRejectReview = (review: DisplayReview) => {
+    toast.error(`Отзыв от ${review.username} отклонен`);
+  };
 
   // Статичные отзывы для fallback
   const staticReviews: DisplayReview[] = [
@@ -289,6 +298,9 @@ const Survey = () => {
                     rating={review.rating}
                     username={review.username}
                     reviewText={review.reviewText}
+                    showModerationActions
+                    onApprove={() => handleApproveReview(review)}
+                    onReject={() => handleRejectReview(review)}
                   />
                 ))}
               </div>

@@ -24,6 +24,7 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import axios from "axios";
 import { EmailVerificationModal } from "@/components/modals/emailVerificationModal";
+import Link from "next/link";
 
 const formSchema = z
   .object({
@@ -63,6 +64,12 @@ const SignUp = () => {
   const [error, setError] = useState<string | null>(null);
   const [isVerificationModalOpen, setIsVerificationModalOpen] = useState(false);
   const [verificationEmail, setVerificationEmail] = useState<string>("");
+  const [isPersonalDataConsentChecked, setIsPersonalDataConsentChecked] =
+    useState(false);
+  const [isSiteRulesConsentChecked, setIsSiteRulesConsentChecked] =
+    useState(false);
+  const [isNewsletterConsentChecked, setIsNewsletterConsentChecked] =
+    useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -339,10 +346,67 @@ const SignUp = () => {
               </FormItem>
             )}
           />
+          <div className="flex flex-col gap-4">
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isPersonalDataConsentChecked}
+                onChange={(event) =>
+                  setIsPersonalDataConsentChecked(event.target.checked)
+                }
+                className="mt-1 h-5 w-5 shrink-0"
+              />
+              <span className="text-sm sm:text-base text-[#4E97D1] underline underline-offset-2">
+                <Link href="/consent-personal-data" target="_blank">
+                  Согласен (-на) на обработку персональных данных
+                </Link>
+                <span className="text-red-500">*</span>
+              </span>
+            </label>
+
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isSiteRulesConsentChecked}
+                onChange={(event) =>
+                  setIsSiteRulesConsentChecked(event.target.checked)
+                }
+                className="mt-1 h-5 w-5 shrink-0"
+              />
+              <span className="text-sm sm:text-base text-[#4E97D1] underline underline-offset-2">
+                <Link href="/terms-of-use" target="_blank">
+                  Согласен (-на) с правилами пользования сайтом
+                </Link>
+                <span className="text-red-500">*</span>
+              </span>
+            </label>
+
+            <label className="flex items-start gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={isNewsletterConsentChecked}
+                onChange={(event) =>
+                  setIsNewsletterConsentChecked(event.target.checked)
+                }
+                className="mt-1 h-5 w-5 shrink-0"
+              />
+              <span className="text-sm sm:text-base text-[#4E97D1] underline underline-offset-2">
+                <Link href="/consent-newsletter" target="_blank">
+                  Согласен (-на) на получение рассылок, информационных и
+                  рекламных материалов
+                </Link>
+              </span>
+            </label>
+          </div>
           <Button
             type="submit"
             className="w-full text-base sm:text-lg font-semibold rounded-full h-12 sm:h-14 mt-10 sm:mt-16 md:mt-20"
-            disabled={isLoading || isSuccess}
+            disabled={
+              isLoading ||
+              isSuccess ||
+              !isPersonalDataConsentChecked ||
+              !isSiteRulesConsentChecked
+            }
           >
             {isLoading ? (
               <Loader isFullHeight={false} />

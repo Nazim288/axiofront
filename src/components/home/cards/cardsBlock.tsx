@@ -3,32 +3,32 @@ import { useGenderImage } from "@/hooks/useGenderImage";
 import { GENDER_SPECIFIC_IMAGES } from "@/lib/imageUtils";
 
 const getCards = (
-  getImage: (key: keyof typeof GENDER_SPECIFIC_IMAGES) => string
+  getImage: (key: keyof typeof GENDER_SPECIFIC_IMAGES) => string,
 ) => [
   {
     src: getImage("step_02"),
     title: "стать ещё эффективней",
-    description: "и найти в себе силы сделать это быстрее.",
+    description: "и лучше контролировать ситуации",
   },
   {
     src: getImage("step_03"),
-    title: "узнать совместимость ценностей",
+    title: "узнать подобие ценностей",
     description: "и создать или укрепить долгосрочные отношения.",
   },
   {
     src: getImage("step_04"),
     title: "свои ценности",
-    description: "которые определяют ваши решения и действия.",
+    description: "которые определяют ваши решения",
   },
   {
     src: getImage("step_05"),
     title: "насколько гармоничны ваши ценности между собой",
-    description: "узнаете, какие ценности затрудняют выбор.",
+    description: "и какие ценности затрудняют выбор",
   },
   {
     src: getImage("step_06"),
-    title: "ценности партнёра",
-    description: "для того чтобы «обходить острые углы» в общении.",
+    title: "подобие ваших ценностей с ценностями партнёра",
+    description: "и рекомендации для продуктивного общения с ним",
   },
 ];
 

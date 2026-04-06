@@ -10,9 +10,22 @@ const Footer: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   const footerLinks = [
-    { id: "rules", text: "Правила пользования сайтом" },
-    { id: "offer", text: "Договор оферты" },
-    { id: "privacy", text: "Политика конфиденциальности" },
+    { id: "rules", text: "Правила пользования сайтом", href: "/terms-of-use" },
+    {
+      id: "privacy",
+      text: "Политика конфиденциальности",
+      href: "/privacy-policy",
+    },
+    {
+      id: "personal-data-consent",
+      text: "Согласие на обработку персональных данных",
+      href: "/consent-personal-data",
+    },
+    {
+      id: "newsletter-consent",
+      text: "Согласие на получение рассылок, информационных и рекламных материалов",
+      href: "/consent-newsletter",
+    },
   ];
 
   return (
@@ -40,11 +53,11 @@ const Footer: React.FC = () => {
 
         {/* Десктопная навигация */}
         <nav className="hidden lg:block">
-          <ul className="flex justify-between gap-4">
+          <ul className="flex flex-col items-end gap-1">
             {footerLinks.map((link) => (
               <li key={link.id}>
-                <Button variant="link" className="text-black">
-                  {link.text}
+                <Button variant="link" className="text-black h-auto p-0" asChild>
+                  <Link href={link.href}>{link.text}</Link>
                 </Button>
               </li>
             ))}
@@ -69,8 +82,9 @@ const Footer: React.FC = () => {
                     <Button
                       variant="link"
                       className="text-black w-full text-left"
+                      asChild
                     >
-                      {link.text}
+                      <Link href={link.href}>{link.text}</Link>
                     </Button>
                   </li>
                 ))}

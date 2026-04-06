@@ -14,10 +14,7 @@ const Tariffs = ({ id }: { id: string }) => {
       className="flex flex-col lg:flex-row gap-4 justify-start min-h-[600px] rounded-[20px] baseShadow mt-20 p-10"
     >
       <div className="flex flex-col gap-4 lg:w-[50%] justify-center">
-        <p>
-          Всё стремится к гармонии - ценности тоже. Вы узнаете о гармонии
-          ценностей своих и партнёра, подписавшись на услуги сервиса
-        </p>
+        <p>Получи анализ результатов опроса</p>
         <Button
           variant="default"
           className="rounded-3xl"

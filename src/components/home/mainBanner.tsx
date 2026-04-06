@@ -56,7 +56,7 @@ const MainBanner = () => {
                   width={40}
                   height={40}
                 />
-                Улучши стратегию общения
+                Улучшай стратегии общения
               </div>
             </li>
           </ul>
@@ -74,7 +74,7 @@ const MainBanner = () => {
           variant="default"
           className="w-full mt-5 rounded-[40px] h-[60px] text-lg"
         >
-          Пройти опрос
+          Заполнить опросник (10 минут)
         </Button>
       </Link>
     </div>

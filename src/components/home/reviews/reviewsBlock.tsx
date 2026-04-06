@@ -8,6 +8,8 @@ import {
 } from "@/components/ui/carousel";
 import { useState, useEffect } from "react";
 import { getReviews } from "@/api/review";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 const reviews = [
   {
@@ -105,7 +107,7 @@ const ReviewsBlock = ({ id }: { id: string }) => {
 
   return (
     <div id={id} className="flex flex-col gap-6 mt-32">
-      <h1 className="text-4xl font-semibold">Отзывы наших клиентов</h1>
+      <h1 className="text-4xl font-semibold">Отзывы</h1>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
@@ -135,6 +137,14 @@ const ReviewsBlock = ({ id }: { id: string }) => {
           <CarouselNext />
         </Carousel>
       )}
+      <Link href="/survey">
+        <Button
+          variant="default"
+          className="w-full mt-12 rounded-[40px] h-[60px] text-lg "
+        >
+          Заполнить опросник (10 минут)
+        </Button>
+      </Link>
     </div>
   );
 };
