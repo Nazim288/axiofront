@@ -8,6 +8,8 @@ export const Urls = {
     setReviews: "/api/v1/reviews",
     getReviews: "/api/v1/reviews/target",
     getReviewsToModeration: "/api/v1/reviews/target",
+    approveReview: (reviewId: number) => `/api/v1/reviews/${reviewId}/approve`,
+    blockReview: (reviewId: number) => `/api/v1/reviews/${reviewId}/blocked`,
     downloadPdf: "/api/v1/download/pdf",
   },
   authUrls: {

@@ -10,7 +10,7 @@ import { useState, useEffect } from "react";
 import { ITestResultShort } from "@/types/survey";
 import { useGenderImage } from "@/hooks/useGenderImage";
 import { PersonCurrentResponse } from "@/api/auth";
-import { getReviews } from "@/api/review";
+import { approveReview, blockReview, getReviews } from "@/api/review";
 import Card from "@/components/home/reviews/card";
 import { toast } from "sonner";
 
@@ -36,12 +36,36 @@ const Survey = () => {
     reviewText: string;
   }
 
-  const handleApproveReview = (review: DisplayReview) => {
-    toast.success(`Отзыв от ${review.username} одобрен`);
+  const handleApproveReview = async (review: DisplayReview) => {
+    if (!review.id) {
+      toast.error("Невозможно одобрить отзыв: отсутствует reviewId");
+      return;
+    }
+
+    try {
+      await approveReview(review.id);
+      setApiReviews((prev) => prev.filter((item) => item.id !== review.id));
+      toast.success(`Отзыв от ${review.username} одобрен`);
+    } catch (error) {
+      console.error("Ошибка при одобрении отзыва:", error);
+      toast.error("Не удалось одобрить отзыв");
+    }
   };
 
-  const handleRejectReview = (review: DisplayReview) => {
-    toast.error(`Отзыв от ${review.username} отклонен`);
+  const handleRejectReview = async (review: DisplayReview) => {
+    if (!review.id) {
+      toast.error("Невозможно отклонить отзыв: отсутствует reviewId");
+      return;
+    }
+
+    try {
+      await blockReview(review.id);
+      setApiReviews((prev) => prev.filter((item) => item.id !== review.id));
+      toast.success(`Отзыв от ${review.username} отклонен`);
+    } catch (error) {
+      console.error("Ошибка при отклонении отзыва:", error);
+      toast.error("Не удалось отклонить отзыв");
+    }
   };
 
   // Статичные отзывы для fallback

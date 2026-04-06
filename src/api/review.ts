@@ -49,3 +49,21 @@ export const getReviews = async (
     throw error;
   }
 };
+
+export const approveReview = async (reviewId: number): Promise<void> => {
+  try {
+    await api.post(Urls.surveyUrls.approveReview(reviewId));
+  } catch (error) {
+    console.error("Ошибка при одобрении отзыва:", error);
+    throw error;
+  }
+};
+
+export const blockReview = async (reviewId: number): Promise<void> => {
+  try {
+    await api.post(Urls.surveyUrls.blockReview(reviewId));
+  } catch (error) {
+    console.error("Ошибка при блокировке отзыва:", error);
+    throw error;
+  }
+};
