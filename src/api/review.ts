@@ -19,7 +19,7 @@ interface ReviewResponse {
 }
 
 export const createReview = async (
-  body: CreateReviewBody
+  body: CreateReviewBody,
 ): Promise<ReviewResponse> => {
   try {
     const response = await api.post(Urls.surveyUrls.setReviews, body);
@@ -32,7 +32,7 @@ export const createReview = async (
 
 export const getReviews = async (
   targetType: string,
-  moderation: boolean = false
+  moderation: boolean = false,
 ): Promise<ReviewResponse[]> => {
   try {
     const response = await api.get(
@@ -41,7 +41,7 @@ export const getReviews = async (
         : Urls.surveyUrls.getReviews,
       {
         params: { targetType },
-      }
+      },
     );
     return response.data;
   } catch (error) {
@@ -52,7 +52,7 @@ export const getReviews = async (
 
 export const approveReview = async (reviewId: number): Promise<void> => {
   try {
-    await api.post(Urls.surveyUrls.approveReview(reviewId));
+    await api.put(Urls.surveyUrls.approveReview(reviewId));
   } catch (error) {
     console.error("Ошибка при одобрении отзыва:", error);
     throw error;
@@ -61,7 +61,7 @@ export const approveReview = async (reviewId: number): Promise<void> => {
 
 export const blockReview = async (reviewId: number): Promise<void> => {
   try {
-    await api.post(Urls.surveyUrls.blockReview(reviewId));
+    await api.put(Urls.surveyUrls.blockReview(reviewId));
   } catch (error) {
     console.error("Ошибка при блокировке отзыва:", error);
     throw error;

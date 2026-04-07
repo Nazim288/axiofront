@@ -297,7 +297,7 @@ const Survey = () => {
           </div>
         </div>
 
-        {!user?.roles?.includes("ROLE_ADMIN") && (
+        {user?.roles?.includes("ROLE_ADMIN") && (
           <>
             <div className="mt-16">
               <h1 className="text-3xl font-semibold">Модерация отзывов</h1>

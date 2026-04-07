@@ -38,7 +38,7 @@ const formSchema = z.object({
   email: z.string().min(5, { message: "должно быть длиннее 5 символов" }),
   password: z
     .string()
-    .min(8, { message: "Пароль должен быть длиннее 8 символов" }),
+    .min(5, { message: "Пароль должен быть длиннее 5 символов" }),
 });
 
 const forgotFormSchema = z.object({
@@ -158,7 +158,7 @@ export function SignInModal() {
     } catch (error) {
       console.error("Ошибка при сбросе пароля:", error);
       setResetError(
-        "Не удалось обновить пароль. Проверьте данные и попробуйте снова."
+        "Не удалось обновить пароль. Проверьте данные и попробуйте снова.",
       );
     } finally {
       setIsResetLoading(false);
