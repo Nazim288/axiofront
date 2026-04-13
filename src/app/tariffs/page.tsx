@@ -37,14 +37,14 @@ const Survey = () => {
             для Вас и рекомендации для гармоничного саморазвития и улучшения
             взаимодействия с другими людьми.
           </p>
-          <Button className="rounded-[40px] mt-auto">900 ₽</Button>
+          <Button className="rounded-[40px] mt-auto">1700 ₽</Button>
         </div>
 
         {/* Колонка 3 - Совместимость ценностей */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
           <div className="flex justify-between h-[100px]">
             <h2 className="text-2xl font-semibold text-[#FF9800]">
-              Совместимость ценностей
+              Совместимость по ценностям
             </h2>
           </div>
           <p className="text-gray-600 text-sm leading-relaxed">
@@ -53,11 +53,11 @@ const Survey = () => {
             для улучшения взаимодействия с партнёром в семейных и рабочих
             условиях.
           </p>
-          <Button className="rounded-[40px] mt-auto">900 ₽</Button>
+          <Button className="rounded-[40px] mt-auto">1700 ₽</Button>
         </div>
 
         {/* Колонка 4 - Комбинированный пакет */}
-        <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out border-2 border-[#FF6B35]">
+        {/* <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out border-2 border-[#FF6B35]">
           <div className="flex justify-between h-[100px]">
             <h2 className="text-2xl font-semibold text-[#FF6B35]">
               Расширенный отчет + Совместимость
@@ -79,7 +79,7 @@ const Survey = () => {
           <Button className="rounded-[40px] mt-auto bg-[#FF6B35] hover:bg-[#E55A2B]">
             1500 ₽
           </Button>
-        </div>
+        </div> */}
       </div>
     </div>
   );

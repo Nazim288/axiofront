@@ -16,8 +16,8 @@ const Contacts = ({ id }: { id: string }) => {
       <div>
         <h1 className="text-3xl lg:text-4xl font-semibold mb-4">Контакты</h1>
         <p>Адрес</p>
-        <p>+7 (123) 12-34-567</p>
-        <p>info@axiogram.ru</p>
+        <p>+7 (915) 293 — 52-37</p>
+        <p>AG@Tarbastaev.ru</p>
       </div>
     </div>
   );

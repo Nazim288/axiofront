@@ -297,7 +297,8 @@ const Survey = () => {
           </div>
         </div>
 
-        {user?.roles?.includes("ROLE_ADMIN") && (
+        {/* {user?.roles?.includes("ROLE_ADMIN") && ( */}
+        {true && apiReviews.length > 0 && (
           <>
             <div className="mt-16">
               <h1 className="text-3xl font-semibold">Модерация отзывов</h1>
@@ -315,7 +316,7 @@ const Survey = () => {
               <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
                 {(apiReviews.length > 0
                   ? normalizeApiReviews(apiReviews)
-                  : staticReviews
+                  : []
                 ).map((review, index) => (
                   <Card
                     key={review.id || index}
