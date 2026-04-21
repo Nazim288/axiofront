@@ -69,50 +69,50 @@ const Survey = () => {
   };
 
   // Статичные отзывы для fallback
-  const staticReviews: DisplayReview[] = [
-    {
-      id: 1,
-      rating: 5,
-      username: "Анна",
-      reviewText:
-        "Прекрасный сервис! Очень точные результаты и подробные отчеты. Рекомендую всем, кто хочет лучше понять себя.",
-    },
-    {
-      id: 2,
-      rating: 4,
-      username: "Дмитрий",
-      reviewText:
-        "Интересный и полезный тест. Помог разобраться в некоторых аспектах личности. Буду рекомендовать друзьям.",
-    },
-    {
-      id: 3,
-      rating: 5,
-      username: "Елена",
-      reviewText:
-        "Впечатляющий анализ! Многое из того, что написано в отчете, точно описывает мою личность и поведение.",
-    },
-    {
-      id: 4,
-      rating: 4,
-      username: "Максим",
-      reviewText:
-        "Хороший сервис для самопознания. Результаты помогли мне лучше понять свои сильные и слабые стороны.",
-    },
-    {
-      id: 5,
-      rating: 5,
-      username: "Ольга",
-      reviewText:
-        "Очень довольна результатом! Подробный анализ личности и полезные рекомендации для развития.",
-    },
-    {
-      id: 6,
-      rating: 4,
-      username: "Игорь",
-      reviewText:
-        "Качественный психологический анализ. Отчет оказался очень информативным и помог в понимании себя.",
-    },
-  ];
+  // const staticReviews: DisplayReview[] = [
+  //   {
+  //     id: 1,
+  //     rating: 5,
+  //     username: "Анна",
+  //     reviewText:
+  //       "Прекрасный сервис! Очень точные результаты и подробные отчеты. Рекомендую всем, кто хочет лучше понять себя.",
+  //   },
+  //   {
+  //     id: 2,
+  //     rating: 4,
+  //     username: "Дмитрий",
+  //     reviewText:
+  //       "Интересный и полезный тест. Помог разобраться в некоторых аспектах личности. Буду рекомендовать друзьям.",
+  //   },
+  //   {
+  //     id: 3,
+  //     rating: 5,
+  //     username: "Елена",
+  //     reviewText:
+  //       "Впечатляющий анализ! Многое из того, что написано в отчете, точно описывает мою личность и поведение.",
+  //   },
+  //   {
+  //     id: 4,
+  //     rating: 4,
+  //     username: "Максим",
+  //     reviewText:
+  //       "Хороший сервис для самопознания. Результаты помогли мне лучше понять свои сильные и слабые стороны.",
+  //   },
+  //   {
+  //     id: 5,
+  //     rating: 5,
+  //     username: "Ольга",
+  //     reviewText:
+  //       "Очень довольна результатом! Подробный анализ личности и полезные рекомендации для развития.",
+  //   },
+  //   {
+  //     id: 6,
+  //     rating: 4,
+  //     username: "Игорь",
+  //     reviewText:
+  //       "Качественный психологический анализ. Отчет оказался очень информативным и помог в понимании себя.",
+  //   },
+  // ];
 
   // Нормализуем данные к единому формату
   const normalizeApiReviews = (apiData: Review[]): DisplayReview[] => {
@@ -123,6 +123,7 @@ const Survey = () => {
       reviewText: review.comment,
     }));
   };
+  const isAdmin = user?.roles?.includes("ROLE_ADMIN");
 
   useEffect(() => {
     const loadData = async () => {
@@ -179,6 +180,16 @@ const Survey = () => {
   };
 
   useEffect(() => {
+    if (userDataLoading) {
+      return;
+    }
+
+    if (!isAdmin) {
+      setApiReviews([]);
+      setErrorReviews("");
+      return;
+    }
+
     const loadReviews = async () => {
       try {
         setIsLoadingReviews(true);
@@ -194,7 +205,7 @@ const Survey = () => {
     };
 
     loadReviews();
-  }, []);
+  }, [isAdmin, userDataLoading]);
 
   return (
     <ProtectedRoute>
@@ -297,8 +308,7 @@ const Survey = () => {
           </div>
         </div>
 
-        {/* {user?.roles?.includes("ROLE_ADMIN") && ( */}
-        {true && apiReviews.length > 0 && (
+        {isAdmin && (
           <>
             <div className="mt-16">
               <h1 className="text-3xl font-semibold">Модерация отзывов</h1>
