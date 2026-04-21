@@ -12,6 +12,9 @@ export const Urls = {
     blockReview: (reviewId: number) => `/api/v1/reviews/${reviewId}/blocked`,
     downloadPdf: "/api/v1/download/pdf",
   },
+  adminUrls: {
+    redeemPromoCode: "/api/admin/promo-codes/redeem",
+  },
   authUrls: {
     register: "/api/v1/register",
     login: "/api/v1/login",

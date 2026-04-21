@@ -13,7 +13,8 @@ import { useParams } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useGenderImage } from "@/hooks/useGenderImage";
-import { pay } from "@/api/survey";
+import { redeemPromoCode } from "@/api/survey";
+import axios from "axios";
 
 const ReportTariffs = () => {
   const params = useParams();
@@ -22,41 +23,44 @@ const ReportTariffs = () => {
   const [isSubmittingPromo, setIsSubmittingPromo] = useState(false);
   const { getImage } = useGenderImage();
 
-  const handlePayment = async () => {
-    const personTestId = params.id as string;
-
-    if (!personTestId) {
-      console.error("personTestId не найден в URL");
-      toast.error("Не удалось обработать оплату");
-      return;
+  const getPromoErrorMessage = (error: unknown) => {
+    if (axios.isAxiosError(error)) {
+      const apiMessage = (error.response?.data as { message?: string } | undefined)
+        ?.message;
+      if (apiMessage) {
+        return apiMessage;
+      }
     }
-
-    const paymentData = {
-      personTestId: parseInt(personTestId),
-      amount: 1000, // Сумма в копейках (например, 10.00 руб)
-      paymentMethod: "CREDIT_CARD" as const,
-      currency: "RUB",
-    };
-
-    await pay(paymentData);
+    return "Не удалось применить промокод. Попробуйте еще раз.";
   };
 
   const handleApplyPromoCode = async () => {
     const normalizedPromoCode = promoCode.trim();
+    const personTestIdFromUrl = Array.isArray(params.id) ? params.id[0] : params.id;
+    const personTestId = Number(personTestIdFromUrl);
+
     if (!normalizedPromoCode) {
       toast.error("Введите промокод");
       return;
     }
 
+    if (!personTestIdFromUrl || Number.isNaN(personTestId)) {
+      toast.error("Не удалось определить тест из URL");
+      return;
+    }
+
     setIsSubmittingPromo(true);
     try {
-      await handlePayment();
+      await redeemPromoCode({
+        code: normalizedPromoCode,
+        personTestId,
+      });
       toast.success("Промокод применен");
       setPromoCode("");
       setIsPromoModalOpen(false);
     } catch (error) {
       console.error("Ошибка применения промокода:", error);
-      toast.error("Не удалось применить промокод. Попробуйте еще раз.");
+      toast.error(getPromoErrorMessage(error));
     } finally {
       setIsSubmittingPromo(false);
     }

@@ -24,6 +24,14 @@ export const getTestResultShort = () =>
 export const pay = (body: IPayBody) =>
   api.post<IPayResponse>(Urls.surveyUrls.pay, body);
 
+export interface IRedeemPromoCodeBody {
+  code: string;
+  personTestId: number;
+}
+
+export const redeemPromoCode = (body: IRedeemPromoCodeBody) =>
+  api.post(Urls.adminUrls.redeemPromoCode, body);
+
 export interface IDownloadPdfBody {
   email?: string;
   userId?: number;

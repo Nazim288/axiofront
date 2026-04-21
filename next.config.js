@@ -31,6 +31,10 @@ const nextConfig = {
         source: "/api/v1/:path*",
         destination: "https://axiogram.ru/api/v1/:path*",
       },
+      {
+        source: "/api/admin/:path*",
+        destination: "https://axiogram.ru/api/admin/:path*",
+      },
     ];
   },
 };
