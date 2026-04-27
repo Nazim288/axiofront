@@ -6,9 +6,9 @@ interface IFreeReportCard {
 
 const FreeReportCard: FC<IFreeReportCard> = ({ title, description }) => {
   return (
-    <div className="flex flex-col gap-1 bg-white rounded-3xl p-5 border-primary border relative">
-      <h1 className="text-2xl font-semibold">{title}</h1>
-      <p className="text-md font-normal">{description}</p>
+    <div className="flex flex-col gap-2 bg-card rounded-3xl p-5 sm:p-6 border border-primary/30 relative">
+      <h1 className="text-xl sm:text-2xl font-semibold">{title}</h1>
+      <p className="text-base font-normal text-muted-foreground">{description}</p>
     </div>
   );
 };

@@ -102,7 +102,7 @@ export function EmailVerificationModal({
 
   return (
     <Dialog open={isOpen} onOpenChange={handleClose}>
-      <DialogContent className="rounded-2xl">
+      <DialogContent className="rounded-3xl p-6 sm:p-7">
         <DialogHeader>
           <DialogTitle className="text-2xl font-semibold">
             Подтверждение email
@@ -125,7 +125,7 @@ export function EmailVerificationModal({
                   <FormControl>
                     <Input
                       placeholder="Введите код"
-                      className="pr-10 h-12 bg-[#F3F1F1]"
+                      className="pr-10 bg-muted"
                       {...field}
                     />
                   </FormControl>
@@ -135,7 +135,8 @@ export function EmailVerificationModal({
             />
             <Button
               type="submit"
-              className="rounded-[40px] w-full"
+              size="cta"
+              className="w-full"
               disabled={isLoading || isSuccess}
             >
               {isLoading ? (

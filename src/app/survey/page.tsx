@@ -62,7 +62,7 @@ const Survey = () => {
   const handleAnswer = (questionNumber: number, answer: number) => {
     setAnswers((prevAnswers) => {
       const updatedAnswers = prevAnswers.filter(
-        (a) => a.questionPosition !== questionNumber
+        (a) => a.questionPosition !== questionNumber,
       );
       const newAnswers = [
         ...updatedAnswers,
@@ -73,7 +73,7 @@ const Survey = () => {
 
     setAnswersStep((prevAnswers) => {
       const updatedAnswers = prevAnswers.filter(
-        (a) => a.questionPosition !== questionNumber
+        (a) => a.questionPosition !== questionNumber,
       );
       const newAnswers = [
         ...updatedAnswers,
@@ -84,7 +84,7 @@ const Survey = () => {
     // Переход к следующему вопросу
     setActiveQuestion(questionNumber + 1);
     const nextQuestionElement = document.getElementById(
-      `question-${questionNumber + 1}`
+      `question-${questionNumber + 1}`,
     );
     if (nextQuestionElement) {
       nextQuestionElement.scrollIntoView({
@@ -100,14 +100,14 @@ const Survey = () => {
       const unansweredQuestion = questions.find(
         (question) =>
           !answers.some(
-            (answer) => answer.questionPosition === question.position
-          )
+            (answer) => answer.questionPosition === question.position,
+          ),
       );
 
       if (unansweredQuestion) {
         // Получаем элемент вопроса
         const questionElement = document.getElementById(
-          `question-${unansweredQuestion.position}`
+          `question-${unansweredQuestion.position}`,
         );
 
         // Проверяем, существует ли элемент и выполняем к нему скролл
@@ -162,7 +162,7 @@ const Survey = () => {
           };
           if (
             serverError.response?.data?.status?.includes(
-              "Данные заполнены некорректно"
+              "Данные заполнены некорректно",
             )
           ) {
             setShowRetakeSurvey(true);
@@ -232,7 +232,7 @@ const Survey = () => {
           </div>
         ) : (
           <>
-            <div className="sticky top-0 z-20 h-auto md:h-[271px] py-4">
+            <div className="sticky top-[50px] z-20 h-auto md:h-[271px] py-3">
               <SurveyTitle data={data} step={currentStep} />
             </div>
             <div className="flex flex-col gap-8 md:gap-10 z-10 mt-4 md:mt-0">

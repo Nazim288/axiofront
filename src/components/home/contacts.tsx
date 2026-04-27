@@ -2,16 +2,16 @@ const Contacts = ({ id }: { id: string }) => {
   return (
     <div
       id={id}
-      className="flex flex-col lg:flex-row justify-start gap-10 lg:gap-40 mt-32 mb-20"
+      className="flex flex-col lg:flex-row justify-start gap-10 lg:gap-24 mt-16 lg:mt-24 mb-12 lg:mb-20"
     >
       <div>
         <h1 className="text-3xl lg:text-4xl font-semibold mb-4">
           Обратная связь
         </h1>
         <p className="font-semibold">
-          Для записи на вебинар и иным предложениям или комментариям пишите нам:
+          Для записи на вебинар и иным предложениям или комментариям пишите нам
+          на email: AG@Tarbastaev.ru
         </p>
-        <p> info@axiogram.ru</p>
       </div>
       <div>
         <h1 className="text-3xl lg:text-4xl font-semibold mb-4">Контакты</h1>

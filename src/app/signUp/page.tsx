@@ -241,7 +241,7 @@ const SignUp = () => {
                 <FormControl>
                   <Input
                     placeholder="username123"
-                    className="pr-10 h-10 sm:h-12 bg-[#F3F1F1] text-sm sm:text-base"
+                    className="pr-10 h-10 sm:h-12 bg-muted text-sm sm:text-base"
                     {...field}
                   />
                 </FormControl>
@@ -260,7 +260,7 @@ const SignUp = () => {
                 <FormControl>
                   <Input
                     placeholder="email@example.com"
-                    className="pr-10 h-10 sm:h-12 bg-[#F3F1F1] text-sm sm:text-base"
+                    className="pr-10 h-10 sm:h-12 bg-muted text-sm sm:text-base"
                     {...field}
                   />
                 </FormControl>
@@ -280,7 +280,7 @@ const SignUp = () => {
                   <div className="relative">
                     <Input
                       type={showPassword ? "text" : "password"}
-                      className="pr-10 h-10 sm:h-12 bg-[#F3F1F1] text-sm sm:text-base"
+                      className="pr-10 h-10 sm:h-12 bg-muted text-sm sm:text-base"
                       placeholder="пароль"
                       {...field}
                     />
@@ -318,7 +318,7 @@ const SignUp = () => {
                   <div className="relative">
                     <Input
                       type={showConfirmPassword ? "text" : "password"}
-                      className="pr-10 h-10 sm:h-12 bg-[#F3F1F1] text-sm sm:text-base"
+                      className="pr-10 h-10 sm:h-12 bg-muted text-sm sm:text-base"
                       placeholder="подтверждение пароля"
                       {...field}
                     />
@@ -356,7 +356,7 @@ const SignUp = () => {
                 }
                 className="mt-1 h-5 w-5 shrink-0"
               />
-              <span className="text-sm sm:text-base text-[#4E97D1] underline underline-offset-2">
+              <span className="text-sm sm:text-base text-primary underline underline-offset-2">
                 <Link href="/consent-personal-data" target="_blank">
                   Согласен (-на) на обработку персональных данных
                 </Link>
@@ -373,7 +373,7 @@ const SignUp = () => {
                 }
                 className="mt-1 h-5 w-5 shrink-0"
               />
-              <span className="text-sm sm:text-base text-[#4E97D1] underline underline-offset-2">
+              <span className="text-sm sm:text-base text-primary underline underline-offset-2">
                 <Link href="/terms-of-use" target="_blank">
                   Согласен (-на) с правилами пользования сайтом
                 </Link>
@@ -390,7 +390,7 @@ const SignUp = () => {
                 }
                 className="mt-1 h-5 w-5 shrink-0"
               />
-              <span className="text-sm sm:text-base text-[#4E97D1] underline underline-offset-2">
+              <span className="text-sm sm:text-base text-primary underline underline-offset-2">
                 <Link href="/consent-newsletter" target="_blank">
                   Согласен (-на) на получение рассылок, информационных и
                   рекламных материалов

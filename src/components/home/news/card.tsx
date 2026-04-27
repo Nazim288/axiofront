@@ -7,10 +7,10 @@ interface CardProps {
 
 const Card = ({ date, title }: CardProps) => {
   return (
-    <div className="flex flex-col gap-1 rounded-3xl baseShadow p-5 w-full">
-      <p>{date}</p>
-      <p className="text-xl font-normal">{title}</p>
-      <Button variant="default" className="rounded-3xl">
+    <div className="flex h-full flex-col gap-2 rounded-3xl baseShadow p-5 sm:p-6 w-full">
+      <p className="text-sm text-muted-foreground">{date}</p>
+      <p className="text-lg sm:text-xl font-medium">{title}</p>
+      <Button variant="default" className="mt-auto">
         Посмотреть запись
       </Button>
     </div>

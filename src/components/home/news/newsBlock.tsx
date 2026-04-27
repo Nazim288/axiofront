@@ -28,7 +28,7 @@ const NEWS_MOCKS = [
 
 const NewsBlock = ({ id }: { id: string }) => {
   return (
-    <div id={id} className="flex flex-col gap-6 mt-20">
+    <div id={id} className="flex flex-col gap-6 mt-16 lg:mt-20">
       <p className="text-3xl font-semibold">Новости</p>
 
       <Carousel className="w-full">
@@ -39,8 +39,8 @@ const NewsBlock = ({ id }: { id: string }) => {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious />
-        <CarouselNext />
+        <CarouselPrevious className="top-auto bottom-[-44px] left-1/2 -translate-x-[calc(100%+8px)] translate-y-0" />
+        <CarouselNext className="top-auto bottom-[-44px] left-1/2 right-auto translate-x-[8px] translate-y-0" />
       </Carousel>
     </div>
   );

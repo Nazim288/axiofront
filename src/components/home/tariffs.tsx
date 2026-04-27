@@ -11,13 +11,16 @@ const Tariffs = ({ id }: { id: string }) => {
   return (
     <div
       id={id}
-      className="flex flex-col lg:flex-row gap-4 justify-start min-h-[600px] rounded-[20px] baseShadow mt-20 p-10"
+      className="flex flex-col-reverse lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow mt-12 lg:mt-20 p-4 sm:p-6 lg:p-10 lg:min-h-[560px]"
     >
-      <div className="flex flex-col gap-4 lg:w-[50%] justify-center">
-        <p>Получи анализ результатов опроса</p>
+      <div className="flex flex-col gap-4 w-full lg:w-1/2 justify-center items-center lg:items-start text-center lg:text-left">
+        <p className="text-lg sm:text-xl lg:text-2xl">
+          Получи анализ результатов опроса
+        </p>
         <Button
           variant="default"
-          className="rounded-3xl"
+          size="cta"
+          className="w-full sm:w-auto"
           onClick={() => {
             router.push("/tariffs");
           }}
@@ -25,13 +28,15 @@ const Tariffs = ({ id }: { id: string }) => {
           Выбрать тариф
         </Button>
       </div>
-      <Image
-        src={getImage("step_07")}
-        alt="tariffs"
-        width={560}
-        height={535}
-        className="mx-auto lg:mx-0"
-      />
+      <div className="w-full lg:w-1/2">
+        <Image
+          src={getImage("step_07")}
+          alt="tariffs"
+          width={560}
+          height={535}
+          className="w-full h-auto max-w-[560px] mx-auto lg:mx-0"
+        />
+      </div>
     </div>
   );
 };

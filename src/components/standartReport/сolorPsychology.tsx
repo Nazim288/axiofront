@@ -31,12 +31,12 @@ const colorValues: ColorValue[] = [
 
 const ColorPsychology = () => {
   return (
-    <div className="flex flex-col gap-1 bg-white rounded-3xl p-5 border-primary border relative pr-10">
+    <div className="flex flex-col gap-2 bg-card rounded-3xl p-5 sm:p-6 border border-primary/30 relative pr-12">
       <Dialog>
         <DialogTrigger>
           <InfoIcon className="absolute top-5 right-5 h-7 w-7 text-green-600" />
         </DialogTrigger>
-        <DialogContent className="rounded-2xl">
+        <DialogContent className="rounded-3xl">
           <DialogHeader>
             <DialogTitle>Психология цвета</DialogTitle>
             <DialogDescription>

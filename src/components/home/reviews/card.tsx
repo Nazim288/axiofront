@@ -36,14 +36,12 @@ const Card = ({
   };
 
   return (
-    <div
-      className={`flex flex-col baseShadow rounded-3xl p-5 w-80 hover:scale-105 transition-transform duration-300 ease-in-out`}
-    >
+    <div className="flex h-full flex-col baseShadow rounded-3xl p-5 sm:p-6 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
       <div className="flex items-center gap-3 mb-3">
         <div className="flex">{renderStars()}</div>
         <span className="text-gray-700 font-medium">{username}</span>
       </div>
-      <div className="text-gray-600 text-sm leading-relaxed">
+      <div className="text-muted-foreground text-sm leading-relaxed">
         <p>{reviewText}</p>
       </div>
       {showModerationActions && (

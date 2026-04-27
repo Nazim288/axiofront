@@ -106,8 +106,8 @@ const ReviewsBlock = ({ id }: { id: string }) => {
     apiReviews.length > 0 ? normalizeApiReviews(apiReviews) : reviews;
 
   return (
-    <div id={id} className="flex flex-col gap-6 mt-32">
-      <h1 className="text-4xl font-semibold">Отзывы</h1>
+    <div id={id} className="flex flex-col gap-6 mt-16 lg:mt-24">
+      <h1 className="text-3xl lg:text-4xl font-semibold">Отзывы</h1>
 
       {isLoading ? (
         <div className="flex justify-center items-center h-64">
@@ -133,15 +133,12 @@ const ReviewsBlock = ({ id }: { id: string }) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
+          <CarouselPrevious className="top-auto bottom-[-44px] left-1/2 -translate-x-[calc(100%+8px)] translate-y-0" />
+          <CarouselNext className="top-auto bottom-[-44px] left-1/2 right-auto translate-x-[8px] translate-y-0" />
         </Carousel>
       )}
-      <Link href="/survey">
-        <Button
-          variant="default"
-          className="w-full mt-12 rounded-[40px] h-[60px] text-lg "
-        >
+      <Link href="/survey" className="mt-8 lg:mt-12">
+        <Button variant="default" size="cta" className="w-full">
           Заполнить опросник (10 минут)
         </Button>
       </Link>

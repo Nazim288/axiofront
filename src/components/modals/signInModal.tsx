@@ -53,7 +53,13 @@ const resetFormSchema = z.object({
     .min(8, { message: "Пароль должен быть длиннее 8 символов" }),
 });
 
-export function SignInModal() {
+export function SignInModal({
+  triggerClassName,
+  onOpen,
+}: {
+  triggerClassName?: string;
+  onOpen?: () => void;
+}) {
   const [showPassword, setShowPassword] = useState(false);
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1);
@@ -66,7 +72,10 @@ export function SignInModal() {
   const [isResetSuccess, setIsResetSuccess] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
 
-  const openDialog = () => setIsOpen(true);
+  const openDialog = () => {
+    setIsOpen(true);
+    onOpen?.();
+  };
   const closeDialog = () => setIsOpen(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
@@ -191,14 +200,14 @@ export function SignInModal() {
       <DialogTrigger asChild>
         <Button
           variant="outline"
-          className="rounded-[40px]"
+          className={triggerClassName}
           onClick={openDialog}
           data-signin-trigger
         >
           Войти
         </Button>
       </DialogTrigger>
-      <DialogContent className="rounded-2xl">
+      <DialogContent className="rounded-3xl p-6 sm:p-7">
         {step === 1 && (
           <>
             <DialogHeader>
@@ -232,7 +241,7 @@ export function SignInModal() {
                       <FormControl>
                         <Input
                           placeholder="email@example.com"
-                          className="pr-10 h-12 bg-[#F3F1F1]"
+                          className="pr-10 bg-muted"
                           {...field}
                         />
                       </FormControl>
@@ -252,7 +261,7 @@ export function SignInModal() {
                         <div className="relative">
                           <Input
                             type={showPassword ? "text" : "password"}
-                            className="pr-10 h-12 bg-[#F3F1F1]"
+                            className="pr-10 bg-muted"
                             placeholder="пароль"
                             {...field}
                           />
@@ -280,7 +289,8 @@ export function SignInModal() {
                 />
                 <Button
                   type="submit"
-                  className="rounded-[40px] w-full"
+                  size="cta"
+                  className="w-full"
                   disabled={isLoading || isSuccess}
                 >
                   {isLoading ? (
@@ -298,7 +308,7 @@ export function SignInModal() {
               className="text-sm font-normal text-gray-500 text-center"
               onClick={() => setStep(2)}
             >
-              Забыл пароль?
+              Забыли пароль?
             </Button>
           </>
         )}
@@ -325,7 +335,7 @@ export function SignInModal() {
                       <FormControl>
                         <Input
                           placeholder="email@example.com"
-                          className="pr-10 h-12 bg-[#F3F1F1]"
+                          className="pr-10 bg-muted"
                           {...field}
                         />
                       </FormControl>
@@ -336,7 +346,8 @@ export function SignInModal() {
 
                 <Button
                   type="submit"
-                  className="rounded-[40px] w-full"
+                  size="cta"
+                  className="w-full"
                   disabled={isForgotLoading}
                 >
                   {isForgotLoading ? (
@@ -384,7 +395,7 @@ export function SignInModal() {
                       <FormControl>
                         <Input
                           placeholder="email@example.com"
-                          className="pr-10 h-12 bg-[#F3F1F1]"
+                          className="pr-10 bg-muted"
                           {...field}
                         />
                       </FormControl>
@@ -434,7 +445,7 @@ export function SignInModal() {
                         <Input
                           type="password"
                           placeholder="Новый пароль"
-                          className="pr-10 h-12 bg-[#F3F1F1]"
+                          className="pr-10 bg-muted"
                           {...field}
                         />
                       </FormControl>
@@ -444,7 +455,8 @@ export function SignInModal() {
                 />
                 <Button
                   type="submit"
-                  className="rounded-[40px] w-full"
+                  size="cta"
+                  className="w-full"
                   disabled={isResetLoading}
                 >
                   {isResetLoading ? (

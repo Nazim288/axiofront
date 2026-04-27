@@ -9,7 +9,7 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "sonner";
 import { useGenderImage } from "@/hooks/useGenderImage";
@@ -18,6 +18,7 @@ import axios from "axios";
 
 const ReportTariffs = () => {
   const params = useParams();
+  const router = useRouter();
   const [isPromoModalOpen, setIsPromoModalOpen] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [isSubmittingPromo, setIsSubmittingPromo] = useState(false);
@@ -25,8 +26,9 @@ const ReportTariffs = () => {
 
   const getPromoErrorMessage = (error: unknown) => {
     if (axios.isAxiosError(error)) {
-      const apiMessage = (error.response?.data as { message?: string } | undefined)
-        ?.message;
+      const apiMessage = (
+        error.response?.data as { message?: string } | undefined
+      )?.message;
       if (apiMessage) {
         return apiMessage;
       }
@@ -36,7 +38,9 @@ const ReportTariffs = () => {
 
   const handleApplyPromoCode = async () => {
     const normalizedPromoCode = promoCode.trim();
-    const personTestIdFromUrl = Array.isArray(params.id) ? params.id[0] : params.id;
+    const personTestIdFromUrl = Array.isArray(params.id)
+      ? params.id[0]
+      : params.id;
     const personTestId = Number(personTestIdFromUrl);
 
     if (!normalizedPromoCode) {
@@ -58,6 +62,7 @@ const ReportTariffs = () => {
       toast.success("Промокод применен");
       setPromoCode("");
       setIsPromoModalOpen(false);
+      router.push("/profile");
     } catch (error) {
       console.error("Ошибка применения промокода:", error);
       toast.error(getPromoErrorMessage(error));
@@ -68,32 +73,39 @@ const ReportTariffs = () => {
 
   return (
     <>
-      <div className="flex gap-4 justify-start h-[600px] rounded-[20px] baseShadow p-10">
-        <div className="flex flex-col gap-4 w-[50%] justify-center">
+      <div className="flex flex-col lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow p-4 sm:p-6 lg:p-10">
+        <div className="flex flex-col gap-4 w-full lg:w-1/2 justify-center">
           <p>
-            Оплатите полный отчет и попросите своих друзей тоже пройти опрос.
-            Так вы быстрее узнаете, насколько ваши ценности совпадают. Получите
-            подробный отчет о своих ценностях: что для вас самое важное, как
-            ваши ценности соотносятся с ожиданиями окружающих и советы по
-            улучшению общения.
+            Получите подробный отчет о своих ценностях: что для вас самое
+            важное, как ваши ценности соотносятся с ожиданиями окружающих и
+            советы по улучшению общения.
           </p>
+          {/* Оплатите полный отчет и попросите своих друзей тоже пройти опрос. Так
+          вы быстрее узнаете, насколько ваши ценности совпадают. Получите
+          подробный отчет о своих ценностях: что для вас самое важное, как ваши
+          ценности соотносятся с ожиданиями окружающих и советы по улучшению
+          общения. */}
           <Button
             variant="default"
-            className="rounded-3xl"
+            size="cta"
+            className="w-full sm:w-auto"
             onClick={() => setIsPromoModalOpen(true)}
           >
             Ввести промокод
           </Button>
         </div>
-        <Image
-          src={getImage("step_01")}
-          alt="tariffs"
-          width={535}
-          height={535}
-        />
+        <div className="w-full lg:w-1/2">
+          <Image
+            src={getImage("step_01")}
+            alt="tariffs"
+            width={535}
+            height={535}
+            className="w-full h-auto max-w-[535px] mx-auto"
+          />
+        </div>
       </div>
       <Dialog open={isPromoModalOpen} onOpenChange={setIsPromoModalOpen}>
-        <DialogContent className="rounded-2xl max-w-md">
+        <DialogContent className="rounded-3xl max-w-md p-6">
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold text-center">
               Введите промокод
@@ -104,16 +116,15 @@ const ReportTariffs = () => {
               value={promoCode}
               onChange={(event) => setPromoCode(event.target.value)}
               placeholder="Промокод"
-              className="h-12 bg-[#F3F1F1]"
+              className="bg-muted"
             />
             <Button
               onClick={handleApplyPromoCode}
-              className="rounded-[40px] w-full"
+              size="cta"
+              className="w-full"
               disabled={isSubmittingPromo}
             >
-              {isSubmittingPromo
-                ? "Применение..."
-                : "Использовать промокод"}
+              {isSubmittingPromo ? "Применение..." : "Использовать промокод"}
             </Button>
           </div>
         </DialogContent>

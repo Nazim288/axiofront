@@ -16,24 +16,25 @@ const Matches = ({
 
   return (
     <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
-      <h1 className="text-center font-semibold text-4xl">
+      <h1 className="text-center font-semibold text-3xl sm:text-4xl">
         <span className="!text-xl">
           {" "}
-          Согласованность ваших уровней ценностей:
+          Согласованность ваших ценностей по уровням:
         </span>
         <br /> {matches}%
       </h1>
-      <div className="flex justify-around">
+      <div className="flex flex-col lg:flex-row lg:justify-around gap-6">
         <div className="flex flex-col gap-2">
           <Image
             src={getImage("report_step_06")}
             alt="report"
             width={300}
             height={300}
+            className="w-full h-auto max-w-[300px] mx-auto"
           />
           <div className="flex flex-col gap-3">
             <p className="text-center font-semibold text-2xl">Я считаю...</p>
-            <div className="flex flex-col gap-1 w-[310px]">
+            <div className="flex flex-col gap-1 w-full max-w-[310px] mx-auto">
               <div className="flex justify-between items-center gap-2">
                 <p>1</p>
                 <div className="text-[24px] h-[49px] w-full border shadow-lg rounded-[20px] border-primary flex items-center justify-start px-5 shake">
@@ -106,12 +107,13 @@ const Matches = ({
             alt="report"
             width={300}
             height={300}
+            className="w-full h-auto max-w-[300px] mx-auto"
           />
           <div className="flex flex-col gap-3">
             <p className="text-center font-semibold text-2xl">
               От меня ждут...
             </p>
-            <div className="flex flex-col gap-1 w-[310px]">
+            <div className="flex flex-col gap-1 w-full max-w-[310px] mx-auto">
               <div className="flex justify-between items-center gap-2">
                 <p>1</p>
                 <div className="text-[24px] h-[49px] w-full border shadow-lg rounded-[20px] border-primary flex items-center justify-start px-5 shake">

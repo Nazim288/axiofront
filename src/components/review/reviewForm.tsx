@@ -120,7 +120,7 @@ const ReviewForm = () => {
   return (
     <div className="flex flex-col gap-4 baseShadow rounded-3xl p-8 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
       <h3 className="text-2xl font-semibold mb-4">
-        Оставьте отзыв о нашем сервисе
+            Оставьте отзыв о сервисе Axiogram
       </h3>
 
       <Form {...form}>
@@ -152,7 +152,7 @@ const ReviewForm = () => {
                 <FormControl>
                   <Textarea
                     placeholder="Поделитесь вашими впечатлениями о нашем психологическом тесте..."
-                    className="min-h-[120px] bg-[#F3F1F1]"
+                    className="min-h-[120px] bg-muted"
                     {...field}
                   />
                 </FormControl>
@@ -173,7 +173,8 @@ const ReviewForm = () => {
           <Button
             type="submit"
             variant="default"
-            className="w-full rounded-3xl text-lg font-medium h-[60px]"
+            size="cta"
+            className="w-full text-lg font-medium"
             disabled={isLoading}
           >
             {isLoading ? (

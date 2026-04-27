@@ -58,14 +58,14 @@ const FreeReportPage: FC = () => {
 
   // Формируем отчеты из реальных данных
   const getReportsFromTestResult = (
-    result: ITestResult
+    result: ITestResult,
   ): Array<{ title: string; description: string }> => {
     const valueTypes = [
       { key: "adaptability", title: "Гибкость" },
       { key: "traditions", title: "Традиционность" },
       { key: "compassion", title: "Сопереживание" },
       { key: "empathy", title: "Толерантность" },
-      { key: "selfSufficiency", title: "Самостоятельность" },
+      { key: "selfSufficiency", title: "Самодостаточность" },
       { key: "activity", title: "Энергичность" },
       { key: "hedonistic", title: "Гедонизм" },
       { key: "ambition", title: "Успешность" },
@@ -95,9 +95,9 @@ const FreeReportPage: FC = () => {
       })
       .filter(
         (
-          item
+          item,
         ): item is { title: string; description: string; rating: number } =>
-          item !== null
+          item !== null,
       )
       .sort((a, b) => a.rating - b.rating)
       .map((item) => ({ title: item.title, description: item.description })); // Убираем rating из финального результата
@@ -161,11 +161,11 @@ const FreeReportPage: FC = () => {
 
   return (
     <ProtectedRoute>
-      <div className="flex flex-col gap-10">
+      <div className="flex flex-col gap-8 lg:gap-10">
         <p className="text-md font-normal">
           {testResult?.date || defaultData.date}
         </p>
-        <h1 className="text-4xl font-bold">Мои самые важные ценности</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold">Мои самые важные ценности</h1>
         <div className="flex flex-col gap-3">
           <p>Теперь давайте разберемся, что получилось.</p>
           <p>
@@ -176,13 +176,13 @@ const FreeReportPage: FC = () => {
             решения и поведение людей.
           </p>
           <p>
-            Учёные выделяют 10 основных ценностей для кого- то, какие- то
-            ценности являются важными, а для кого-то нет. Краткие определения
+            Учёные выделяют 10 основных ценностей. Для одних людей какие-то из
+            ценностей являются важными, а для других нет. Краткие определения
             основных ценностей современных людей.
           </p>
           <p>
             <span className="font-bold">Гибкость</span> - когда важно влиться в
-            команду, сообща и быть её частью
+            команду сообща и быть её частью
           </p>
           <p>
             <span className="font-bold">Традиционность</span> - когда важно
@@ -194,7 +194,8 @@ const FreeReportPage: FC = () => {
           </p>
           <p>
             <span className="font-bold">Толерантность</span> - когда важно
-            стремиться к пониманию людей и быть без опасного общения с ними
+            стремиться к пониманию людей независимо от их убеждений и взглядов
+            на окружающий мир
           </p>
           <p>
             <span className="font-bold">Самодостаточность</span> - когда важно
@@ -206,7 +207,7 @@ const FreeReportPage: FC = () => {
           </p>
           <p>
             <span className="font-bold">Гедонизм</span> - когда важно находить
-            удовольствие во всём. Чем бы не пришлось заниматься
+            удовольствие во всём, чем бы не пришлось заниматься
           </p>
           <p>
             <span className="font-bold">Успешность</span> — когда важно
@@ -223,7 +224,7 @@ const FreeReportPage: FC = () => {
         </div>
         <div className="flex flex-col gap-3">
           <p className="font-bold text-xl mb-4">
-            В результате обработки ответов опросника, мы рассчитали наиболее
+            В результате обработки ответов опросника мы рассчитали наиболее
             важные ценности для Вас:
           </p>
           {reports.length > 0 ? (
@@ -268,14 +269,14 @@ const FreeReportPage: FC = () => {
           супруга, коллегу по работе ). Так вы быстрее увидите, насколько вы на
           одной волне.{" "}
           <Link href={"/tariffs"} className="text-primary underline">
-            Оформить подписку
+            В раздел тарифы
           </Link>
         </p>
         <ColorPsychology />
         <div className="w-full flex justify-center">
-          <div className="flex flex-col gap-5 w-fit">
+          <div className="flex flex-col gap-5 w-full max-w-[900px]">
             {imageLoading ? (
-              <div className="flex justify-center items-center w-[900px] h-[400px] bg-gray-100 rounded">
+              <div className="flex justify-center items-center w-full aspect-[2/1] bg-gray-100 rounded-3xl">
                 <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
               </div>
             ) : imageUrl ? (
@@ -283,8 +284,8 @@ const FreeReportPage: FC = () => {
                 src={imageUrl}
                 alt="report"
                 width={900}
-                height={400}
-                style={{ maxWidth: "100%", height: "auto" }}
+                height={450}
+                className="w-full aspect-[2/1] object-cover rounded-3xl"
                 onError={(e) => {
                   console.error("Ошибка загрузки изображения:", imageUrl);
                   // Fallback на локальное изображение при ошибке
@@ -297,7 +298,8 @@ const FreeReportPage: FC = () => {
                   src={defaultData.img}
                   alt="report"
                   width={900}
-                  height={400}
+                  height={450}
+                  className="w-full aspect-[2/1] object-cover rounded-3xl"
                 />
                 {testResult?.colorNumber && (
                   <p className="text-sm text-gray-500">
@@ -309,8 +311,8 @@ const FreeReportPage: FC = () => {
             )}
             <Button
               variant={"outline"}
-              color="primary"
-              className="w-full rounded-3xl"
+              size="cta"
+              className="w-full"
               onClick={handleDownload}
               disabled={downloadLoading || imageLoading}
             >

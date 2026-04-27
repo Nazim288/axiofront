@@ -219,7 +219,7 @@ const StandartReportPage = () => {
     try {
       // Используем API route для обхода CORS ограничений
       const proxyUrl = `/api/download-image?url=${encodeURIComponent(
-        imageUrl
+        imageUrl,
       )}`;
       const response = await fetch(proxyUrl);
 
@@ -278,7 +278,7 @@ const StandartReportPage = () => {
       const contentDisposition = response.headers["content-disposition"];
       if (contentDisposition) {
         const filenameMatch = contentDisposition.match(
-          /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/
+          /filename[^;=\n]*=((['"]).*?\2|[^;\n]*)/,
         );
         if (filenameMatch && filenameMatch[1]) {
           filename = filenameMatch[1].replace(/['"]/g, "");
@@ -419,6 +419,15 @@ const StandartReportPage = () => {
     <ProtectedRoute>
       <div className="flex flex-col gap-10">
         <p className="text-md font-normal">{testResult?.date || data.date}</p>
+        <Button
+          variant={"outline"}
+          color="primary"
+          className="w-fit rounded-3xl"
+          onClick={handleSendPdfToEmail}
+          disabled={isSendingPdf || !currentUser}
+        >
+          {isSendingPdf ? "Отправка..." : "Скачать текущую версию отчета"}
+        </Button>
         <Report />
         <div className="flex flex-col gap-3">
           <p className="text-2xl font-semibold">
@@ -501,13 +510,13 @@ const StandartReportPage = () => {
             <div
               dangerouslySetInnerHTML={{
                 __html: removeDoubleNewlines(
-                  testResult?.resultCongruence || ""
+                  testResult?.resultCongruence || "",
                 ),
               }}
               // style={{
               //   whiteSpace: "pre-wrap",
               // }}
-              className="report-html-content prose prose-sm max-w-none prose-headings:text-[#388E3C] prose-p:my-2 prose-strong:text-[#388E3C] prose-em:text-gray-600 prose-blockquote:border-l-[#388E3C] prose-blockquote:text-gray-700"
+              className="report-html-content prose prose-sm max-w-none prose-headings:text-green-700 prose-p:my-2 prose-strong:text-green-700 prose-em:text-gray-600 prose-blockquote:border-l-green-700 prose-blockquote:text-gray-700"
             />
           </div>
           <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full">
@@ -518,15 +527,15 @@ const StandartReportPage = () => {
               style={{
                 whiteSpace: "pre-wrap",
               }}
-              className="report-html-content prose prose-sm max-w-none prose-headings:text-[#FF9800] prose-p:my-2 prose-strong:text-[#FF9800] prose-em:text-gray-600 prose-blockquote:border-l-[#FF9800] prose-blockquote:text-gray-700 prose-ol:list-decimal prose-ul:list-disc prose-li:my-1"
+              className="report-html-content prose prose-sm max-w-none prose-headings:text-orange-500 prose-p:my-2 prose-strong:text-orange-500 prose-em:text-gray-600 prose-blockquote:border-l-orange-500 prose-blockquote:text-gray-700 prose-ol:list-decimal prose-ul:list-disc prose-li:my-1"
             />
           </div>
         </div>
         <ColorPsychology />
         <div className="w-full flex justify-center">
-          <div className="flex flex-col gap-5 w-fit items-center">
+          <div className="flex flex-col gap-5 w-full max-w-[900px] items-center">
             {imageLoading ? (
-              <div className="flex justify-center items-center w-[900px] h-[400px] bg-gray-100 rounded">
+              <div className="flex justify-center items-center w-full aspect-[9/4] bg-gray-100 rounded">
                 <div className="w-8 h-8 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
               </div>
             ) : imageUrl ? (
@@ -535,19 +544,21 @@ const StandartReportPage = () => {
                 alt="report"
                 width={900}
                 height={400}
-                style={{
-                  maxWidth: "100%",
-                  height: "400px",
-                  borderRadius: "10px",
-                }}
+                className="w-full h-auto rounded-[10px]"
                 onError={(e) => {
                   console.error("Ошибка загрузки изображения:", imageUrl);
                   e.currentTarget.src = data.img;
                 }}
               />
             ) : (
-              <div className="flex flex-col gap-4 items-center">
-                <Image src={data.img} alt="report" width={900} height={400} />
+              <div className="flex flex-col gap-4 items-center w-full">
+                <Image
+                  src={data.img}
+                  alt="report"
+                  width={900}
+                  height={400}
+                  className="w-full h-auto rounded-[10px]"
+                />
                 {testResult?.colorNumber && (
                   <p className="text-sm text-gray-500">
                     Изображение для номера {testResult.colorNumber} недоступно.
@@ -556,7 +567,7 @@ const StandartReportPage = () => {
                 )}
               </div>
             )}
-            <div className="flex gap-6 justify-between align-center">
+            <div className="flex flex-col sm:flex-row gap-4 sm:gap-6 w-full">
               <Button
                 variant={"outline"}
                 color="primary"
@@ -595,7 +606,7 @@ const StandartReportPage = () => {
                     <FormControl>
                       <Input
                         placeholder="email@example.com"
-                        className="pr-10 h-12 bg-[#F3F1F1]"
+                        className="pr-10 bg-muted"
                         {...field}
                       />
                     </FormControl>
@@ -606,9 +617,10 @@ const StandartReportPage = () => {
               <Button
                 variant={"default"}
                 color="primary"
+                disabled
                 className="w-full rounded-3xl text-lg font-md h-[60px]"
               >
-                Отправить заявку
+                Оставить заявку (в разработке)
               </Button>
             </form>
           </Form>

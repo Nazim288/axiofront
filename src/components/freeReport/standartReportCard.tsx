@@ -15,10 +15,10 @@ const StandartReportCard: FC<IStandartReportCard> = ({
 }) => {
   const priorityColor =
     priority === 1
-      ? "bg-[#8BC34A]"
+      ? "bg-lime-500"
       : priority === 2
-      ? "bg-[#FFC727]"
-      : "bg-[#FF9800]";
+      ? "bg-amber-400"
+      : "bg-orange-500";
 
   const priorityText =
     priority === 1
@@ -28,15 +28,15 @@ const StandartReportCard: FC<IStandartReportCard> = ({
       : "Антиценность";
 
   return (
-    <div className="flex flex-col gap-2 rounded-3xl p-5 baseShadow w-full hover:scale-105 transition-transform duration-300 ease-in-out">
+    <div className="flex flex-col gap-3 rounded-3xl p-5 sm:p-6 baseShadow w-full hover:scale-105 transition-transform duration-300 ease-in-out">
       <div className="flex justify-between">
-        <p className="text-2xl font-semibold">{number}</p>
-        <div className={`${priorityColor} rounded-full px-4 py-1 font-md`}>
+        <p className="text-xl sm:text-2xl font-semibold">{number}</p>
+        <div className={`${priorityColor} rounded-full px-4 py-1 text-sm sm:text-base font-medium`}>
           {priorityText}
         </div>
       </div>
-      <h1 className="text-2xl font-semibold">{title}</h1>
-      <p className="text-md font-normal">{description}</p>
+      <h1 className="text-xl sm:text-2xl font-semibold">{title}</h1>
+      <p className="text-base font-normal text-muted-foreground">{description}</p>
     </div>
   );
 };

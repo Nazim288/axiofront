@@ -5,8 +5,8 @@ import { Button } from "@/components/ui/button";
 const Survey = () => {
   return (
     <div className="flex flex-col">
-      <h1 className="text-5xl font-bold">Тарифы</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-20">
+      <h1 className="text-4xl sm:text-5xl font-bold">Тарифы</h1>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10 lg:mt-14">
         {/* Колонка 1 - Пробный (бесплатно) */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
           <div className="flex justify-between h-[100px]">
@@ -20,7 +20,7 @@ const Survey = () => {
             важные ценности именно для вас. Отличный старт для самопознания без
             затрат.
           </p>
-          <Button className="rounded-[40px] mt-auto" variant="default" disabled>
+          <Button className="mt-auto" variant="default" disabled>
             Уже у вас
           </Button>
         </div>
@@ -28,7 +28,7 @@ const Survey = () => {
         {/* Колонка 2 - Расширенный отчет о ценностях */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
           <div className="flex justify-between h-[100px]">
-            <h2 className="text-2xl font-semibold text-[#FFC727]">
+            <h2 className="text-2xl font-semibold text-amber-400">
               Расширенный отчет о ценностях
             </h2>
           </div>
@@ -37,13 +37,24 @@ const Survey = () => {
             для Вас и рекомендации для гармоничного саморазвития и улучшения
             взаимодействия с другими людьми.
           </p>
-          <Button className="rounded-[40px] mt-auto">1700 ₽</Button>
+          <Button
+            className="mt-auto"
+            onClick={() =>
+              window.open(
+                "https://tarbastaev.ru/Контакты/",
+                "_blank",
+                "noopener,noreferrer",
+              )
+            }
+          >
+            1700 ₽
+          </Button>
         </div>
 
         {/* Колонка 3 - Совместимость ценностей */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
           <div className="flex justify-between h-[100px]">
-            <h2 className="text-2xl font-semibold text-[#FF9800]">
+            <h2 className="text-2xl font-semibold text-orange-500">
               Совместимость по ценностям
             </h2>
           </div>
@@ -53,7 +64,9 @@ const Survey = () => {
             для улучшения взаимодействия с партнёром в семейных и рабочих
             условиях.
           </p>
-          <Button className="rounded-[40px] mt-auto">1700 ₽</Button>
+          <Button className="mt-auto" disabled>
+            В разработке
+          </Button>
         </div>
 
         {/* Колонка 4 - Комбинированный пакет */}

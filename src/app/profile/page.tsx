@@ -211,7 +211,7 @@ const Survey = () => {
     <ProtectedRoute>
       <div className="flex flex-col">
         <div className="relative flex items-center gap-2">
-          <h1 className="text-5xl font-bold">Профиль</h1>
+          <h1 className="text-4xl sm:text-5xl font-bold">Профиль</h1>
           {userDataLoading ? (
             <p className="text-xl text-gray-400 mt-2">Загрузка...</p>
           ) : userLogin ? (
@@ -228,13 +228,13 @@ const Survey = () => {
           /> */}
         </div>
 
-        <div className="flex flex-col gap-4 mt-20">
+        <div className="flex flex-col gap-4 mt-10 lg:mt-14">
           <h2 className=" text-3xl font-semibold mb-5">Отчеты</h2>
           <div
             onClick={
               dataLoading || !shortResult ? undefined : handleFreeReportClick
             }
-            className={`relative flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full transition-transform duration-300 ease-in-out ${
+            className={`relative flex flex-col gap-2 baseShadow rounded-3xl p-5 sm:p-6 w-full transition-transform duration-300 ease-in-out ${
               // Желтый бордер и фон только для непрочитанных отчетов
               shortResult && !shortResult.read
                 ? "border border-yellow-500 bg-yellow-50"
@@ -278,21 +278,29 @@ const Survey = () => {
           </div>
         </div>
 
-        <div className="flex justify-between gap-10 mt-16">
-          <div className="flex flex-col gap-8">
-            <h1 className="text-3xl font-semibold">Новый вебинар</h1>
-            <div className="w-full relative flex flex-col gap-2 baseShadow rounded-3xl p-5  h-fi hover:scale-105 transition-transform duration-300 ease-in-out">
-              <p className="text-xl font-normal">05.07.24</p>
-              <p className="text-xl font-semibold">
-                Куда расти дальше или зачем <br />
-                знать свои ценности{" "}
-              </p>
-              <Button variant="default" className="rounded-[40px] mt-5">
-                Записаться на вебинар
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-12 lg:mt-16">
+          <div className="flex flex-col gap-8 w-full lg:w-1/2">
+            <h1 className="text-3xl font-semibold">Вебинары</h1>
+            <div className="w-full relative flex flex-col gap-2 baseShadow rounded-3xl p-5 sm:p-6 h-fi hover:scale-105 transition-transform duration-300 ease-in-out">
+              <p className="text-xl font-normal">25.04.26</p>
+              <p className="text-xl font-semibold">Расписание вебинаров</p>
+              <Button
+                variant="default"
+                size="cta"
+                className="mt-5"
+                onClick={() =>
+                  window.open(
+                    "https://tarbastaev.ru/Вебинары-Axiogram/",
+                    "_blank",
+                    "noopener,noreferrer",
+                  )
+                }
+              >
+                Посмотреть
               </Button>
             </div>
           </div>
-          <div className="w-1/2 relative flex flex-col gap-2 justify-between baseShadow rounded-3xl p-5 hover:scale-105 transition-transform duration-300 ease-in-out">
+          <div className="w-full lg:w-1/2 relative flex flex-col gap-2 justify-between baseShadow rounded-3xl p-5 sm:p-6 hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-xl font-semibold">
               Отправь запрос на анализ <br /> совместимости и получи <br />
               результаты.
@@ -300,10 +308,10 @@ const Survey = () => {
             <Input
               type="email"
               placeholder="qwerty@gmail.com"
-              className="h-12 bg-[#F3F1F1]"
+              className="bg-muted"
             />
-            <Button variant="default" className="rounded-[40px] mt-5">
-              Отправить запрос
+            <Button variant="default" size="cta" className="mt-5" disabled>
+              Отправить запрос (в разработке)
             </Button>
           </div>
         </div>
@@ -343,26 +351,31 @@ const Survey = () => {
           </>
         )}
 
-        <div className="flex gap-4 justify-start h-[600px] rounded-[20px] baseShadow my-16  p-10">
-          <div className="flex flex-col gap-4 w-[50%] justify-center">
+        <div className="flex flex-col lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow my-12 lg:my-16 p-4 sm:p-6 lg:p-10">
+          <div className="flex flex-col gap-4 w-full lg:w-1/2 justify-center">
             <p>
-              Всё стремится к гармонии в этом мире, и ваши ценности тоже.
-              Насколько совпадают ценности, которые вы считаете важными в жизни,
-              и ценности, которые от вас ждут окружающие, как это влияет на
-              взаимоотношения с людьми, вы можете узнать подписавшисьна услуги
-              сервиса.
+              Посмотреть пример отчёта в котором проводится анализ схожести
+              ценностей у двух людей
             </p>
 
-            <Button variant="default" className="rounded-3xl" size="lg">
-              Подробнее
+            <Button
+              variant="default"
+              size="cta"
+              className="w-full sm:w-auto"
+              disabled
+            >
+              Смотреть (пока в разработке)
             </Button>
           </div>
-          <Image
-            src={getImage("step_01")}
-            alt="tariffs"
-            width={535}
-            height={535}
-          />
+          <div className="w-full lg:w-1/2">
+            <Image
+              src={getImage("step_01")}
+              alt="tariffs"
+              width={535}
+              height={535}
+              className="w-full h-auto max-w-[535px] mx-auto"
+            />
+          </div>
         </div>
       </div>
     </ProtectedRoute>
