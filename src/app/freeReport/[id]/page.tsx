@@ -132,7 +132,7 @@ const FreeReportPage: FC = () => {
       const isExternalUrl =
         downloadUrl.startsWith("http://") || downloadUrl.startsWith("https://");
       const fetchUrl = isExternalUrl
-        ? `/api/download-image?url=${encodeURIComponent(downloadUrl)}`
+        ? `/download-image?url=${encodeURIComponent(downloadUrl)}`
         : downloadUrl;
 
       const response = await fetch(fetchUrl);
