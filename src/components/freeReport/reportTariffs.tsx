@@ -8,6 +8,13 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
+import { CircleHelp } from "lucide-react";
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import { useState } from "react";
@@ -33,7 +40,7 @@ const ReportTariffs = () => {
         return apiMessage;
       }
     }
-    return "Не удалось применить промокод. Попробуйте еще раз.";
+    return "Не удалось применить код доступа. Попробуйте еще раз.";
   };
 
   const handleApplyPromoCode = async () => {
@@ -44,7 +51,7 @@ const ReportTariffs = () => {
     const personTestId = Number(personTestIdFromUrl);
 
     if (!normalizedPromoCode) {
-      toast.error("Введите промокод");
+      toast.error("Введите код доступа");
       return;
     }
 
@@ -59,12 +66,12 @@ const ReportTariffs = () => {
         code: normalizedPromoCode,
         personTestId,
       });
-      toast.success("Промокод применен");
+      toast.success("Код доступа применён");
       setPromoCode("");
       setIsPromoModalOpen(false);
       router.push("/profile");
     } catch (error) {
-      console.error("Ошибка применения промокода:", error);
+      console.error("Ошибка применения кода доступа:", error);
       toast.error(getPromoErrorMessage(error));
     } finally {
       setIsSubmittingPromo(false);
@@ -85,14 +92,34 @@ const ReportTariffs = () => {
           подробный отчет о своих ценностях: что для вас самое важное, как ваши
           ценности соотносятся с ожиданиями окружающих и советы по улучшению
           общения. */}
-          <Button
-            variant="default"
-            size="cta"
-            className="w-full sm:w-auto"
-            onClick={() => setIsPromoModalOpen(true)}
-          >
-            Ввести промокод
-          </Button>
+          <div className="flex flex-wrap items-center gap-2">
+            <Button
+              variant="default"
+              size="cta"
+              className="w-full sm:w-auto"
+              onClick={() => setIsPromoModalOpen(true)}
+            >
+              Ввести код доступа
+            </Button>
+            <TooltipProvider delayDuration={200}>
+              <Tooltip>
+                <TooltipTrigger asChild>
+                  <Button
+                    type="button"
+                    variant="ghost"
+                    size="icon"
+                    className="h-11 w-11 shrink-0 rounded-full text-muted-foreground hover:text-foreground"
+                    aria-label="Справка по коду доступа"
+                  >
+                    <CircleHelp className="h-5 w-5" />
+                  </Button>
+                </TooltipTrigger>
+                <TooltipContent side="top" className="max-w-xs text-pretty">
+                  Для получения кода доступа перейдите в раздел Тарифы.
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          </div>
         </div>
         <div className="w-full lg:w-1/2">
           <Image
@@ -108,14 +135,14 @@ const ReportTariffs = () => {
         <DialogContent className="rounded-3xl max-w-md p-6">
           <DialogHeader>
             <DialogTitle className="text-2xl font-semibold text-center">
-              Введите промокод
+              Введите код доступа
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col gap-4 py-2">
             <Input
               value={promoCode}
               onChange={(event) => setPromoCode(event.target.value)}
-              placeholder="Промокод"
+              placeholder="Код доступа"
               className="bg-muted"
             />
             <Button
@@ -124,7 +151,7 @@ const ReportTariffs = () => {
               className="w-full"
               disabled={isSubmittingPromo}
             >
-              {isSubmittingPromo ? "Применение..." : "Использовать промокод"}
+              {isSubmittingPromo ? "Применение..." : "Использовать код доступа"}
             </Button>
           </div>
         </DialogContent>

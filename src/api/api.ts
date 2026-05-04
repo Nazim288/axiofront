@@ -19,14 +19,16 @@ api.interceptors.request.use(
   }
 );
 
-// Интерцептор для обработки ответов и автоматической очистки токена при 401
+// При протухшем/невалидном токене сервер отвечает 401 — чистим сессию и
+// уведомляем UserContext (как при ручном logout), иначе UI остаётся «залогиненным» до F5.
 api.interceptors.response.use(
   (response) => response,
   (error) => {
-    if (error.response?.status === 401) {
+    if (error.response?.status === 401 && typeof window !== "undefined") {
       localStorage.removeItem("token");
-      // Можно добавить редирект на страницу входа
-      // window.location.href = '/signUp';
+      localStorage.removeItem("currentUser");
+      window.dispatchEvent(new Event("tokenChange"));
+      window.dispatchEvent(new Event("userChange"));
     }
     return Promise.reject(error);
   }

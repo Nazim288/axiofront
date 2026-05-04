@@ -10,7 +10,7 @@ const Card = ({ date, title }: CardProps) => {
     <div className="flex h-full flex-col gap-2 rounded-3xl baseShadow p-5 sm:p-6 w-full">
       <p className="text-sm text-muted-foreground">{date}</p>
       <p className="text-lg sm:text-xl font-medium">{title}</p>
-      <Button variant="default" className="mt-auto">
+      <Button type="button" disabled variant="default" className="mt-auto">
         Посмотреть запись
       </Button>
     </div>

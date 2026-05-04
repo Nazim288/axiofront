@@ -218,7 +218,7 @@ const StandartReportPage = () => {
 
     try {
       // Используем API route для обхода CORS ограничений
-      const proxyUrl = `/download-image?url=${encodeURIComponent(
+      const proxyUrl = `/api/download-image?url=${encodeURIComponent(
         imageUrl,
       )}`;
       const response = await fetch(proxyUrl);
