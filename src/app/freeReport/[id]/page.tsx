@@ -165,7 +165,9 @@ const FreeReportPage: FC = () => {
         <p className="text-md font-normal">
           {testResult?.date || defaultData.date}
         </p>
-        <h1 className="text-3xl sm:text-4xl font-bold">Мои самые важные ценности</h1>
+        <h1 className="text-3xl sm:text-4xl font-bold">
+          Мои самые важные ценности
+        </h1>
         <div className="flex flex-col gap-3">
           <p>Теперь давайте разберемся, что получилось.</p>
           <p>
@@ -265,7 +267,7 @@ const FreeReportPage: FC = () => {
         <p>
           Мы поможем вам упростить процесс понимания, насколько ваши ценности
           совпадают с другими людьми. Для этого вы можете оформить подписку и
-          попросить ближнее окружение пройти такой же опрос (подругу, другу,
+          попросить ближнее окружение пройти такой же опрос (подругу, друга,
           супруга, коллегу по работе ). Так вы быстрее увидите, насколько вы на
           одной волне.{" "}
           <Link href={"/tariffs"} className="text-primary underline">

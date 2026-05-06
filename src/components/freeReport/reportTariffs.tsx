@@ -14,10 +14,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 import { CircleHelp } from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useGenderImage } from "@/hooks/useGenderImage";
 import { redeemPromoCode } from "@/api/survey";
@@ -29,7 +35,23 @@ const ReportTariffs = () => {
   const [isPromoModalOpen, setIsPromoModalOpen] = useState(false);
   const [promoCode, setPromoCode] = useState("");
   const [isSubmittingPromo, setIsSubmittingPromo] = useState(false);
+  const [isTouchDevice, setIsTouchDevice] = useState(false);
   const { getImage } = useGenderImage();
+
+  useEffect(() => {
+    const mediaQuery = window.matchMedia("(hover: none), (pointer: coarse)");
+    const updateDeviceType = () => setIsTouchDevice(mediaQuery.matches);
+
+    updateDeviceType();
+
+    if (typeof mediaQuery.addEventListener === "function") {
+      mediaQuery.addEventListener("change", updateDeviceType);
+      return () => mediaQuery.removeEventListener("change", updateDeviceType);
+    }
+
+    mediaQuery.addListener(updateDeviceType);
+    return () => mediaQuery.removeListener(updateDeviceType);
+  }, []);
 
   const getPromoErrorMessage = (error: unknown) => {
     if (axios.isAxiosError(error)) {
@@ -92,34 +114,68 @@ const ReportTariffs = () => {
           подробный отчет о своих ценностях: что для вас самое важное, как ваши
           ценности соотносятся с ожиданиями окружающих и советы по улучшению
           общения. */}
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              variant="default"
-              size="cta"
-              className="w-full sm:w-auto"
-              onClick={() => setIsPromoModalOpen(true)}
-            >
-              Ввести код доступа
-            </Button>
-            <TooltipProvider delayDuration={200}>
-              <Tooltip>
-                <TooltipTrigger asChild>
-                  <Button
-                    type="button"
-                    variant="ghost"
-                    size="icon"
-                    className="h-11 w-11 shrink-0 rounded-full text-muted-foreground hover:text-foreground"
+          <Button
+            variant="default"
+            size="cta"
+            className="w-full sm:w-auto gap-2"
+            onClick={() => setIsPromoModalOpen(true)}
+          >
+            <span>Ввести код доступа</span>
+            {isTouchDevice ? (
+              <Popover>
+                <PopoverTrigger asChild>
+                  <span
+                    role="button"
+                    tabIndex={0}
                     aria-label="Справка по коду доступа"
+                    className="inline-flex items-center rounded-full text-primary-foreground/90 hover:text-primary-foreground"
+                    onClick={(event) => event.stopPropagation()}
                   >
                     <CircleHelp className="h-5 w-5" />
-                  </Button>
-                </TooltipTrigger>
-                <TooltipContent side="top" className="max-w-xs text-pretty">
-                  Для получения кода доступа перейдите в раздел Тарифы.
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          </div>
+                  </span>
+                </PopoverTrigger>
+                <PopoverContent side="top" className="max-w-xs text-pretty">
+                  Для получения кода доступа перейдите в раздел{" "}
+                  <Link
+                    href="/tariffs"
+                    className="font-semibold text-primary underline underline-offset-2 hover:text-primary/90"
+                  >
+                    Тарифы
+                  </Link>
+                  .
+                </PopoverContent>
+              </Popover>
+            ) : (
+              <TooltipProvider delayDuration={200}>
+                <Tooltip>
+                  <TooltipTrigger asChild>
+                    <span
+                      role="button"
+                      tabIndex={0}
+                      aria-label="Справка по коду доступа"
+                      className="inline-flex items-center rounded-full text-primary-foreground/90 hover:text-primary-foreground"
+                      onClick={(event) => event.stopPropagation()}
+                    >
+                      <CircleHelp className="h-5 w-5" />
+                    </span>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="top"
+                    className="max-w-xs text-pretty pointer-events-auto"
+                  >
+                    Для получения кода доступа перейдите в раздел{" "}
+                    <Link
+                      href="/tariffs"
+                      className="font-semibold text-primary underline underline-offset-2 hover:text-primary/90"
+                    >
+                      Тарифы
+                    </Link>
+                    .
+                  </TooltipContent>
+                </Tooltip>
+              </TooltipProvider>
+            )}
+          </Button>
         </div>
         <div className="w-full lg:w-1/2">
           <Image
