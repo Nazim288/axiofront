@@ -367,13 +367,13 @@ const Survey = () => {
               Смотреть (пока в разработке)
             </Button>
           </div>
-          <div className="w-full lg:w-1/2">
+          <div className="w-full min-w-0 lg:w-1/2">
             <Image
               src={getImage("step_01")}
               alt="tariffs"
               width={535}
               height={535}
-              className="w-full h-auto max-w-[535px] mx-auto"
+              className="w-full h-auto max-w-[min(535px,100%)] mx-auto"
             />
           </div>
         </div>

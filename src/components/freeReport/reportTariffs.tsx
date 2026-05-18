@@ -105,9 +105,10 @@ const ReportTariffs = () => {
       <div className="flex flex-col lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow p-4 sm:p-6 lg:p-10">
         <div className="flex flex-col gap-4 w-full lg:w-1/2 justify-center">
           <p>
-            Получите подробный отчет о своих ценностях: что для вас самое
-            важное, как ваши ценности соотносятся с ожиданиями окружающих и
-            советы по улучшению общения.
+            Получите подробный{" "}
+            <span className="font-semibold">полный отчет</span> о своих
+            ценностях: что для вас самое важное, как ваши ценности соотносятся с
+            ожиданиями окружающих и советы по улучшению общения.
           </p>
           {/* Оплатите полный отчет и попросите своих друзей тоже пройти опрос. Так
           вы быстрее узнаете, насколько ваши ценности совпадают. Получите
@@ -177,13 +178,13 @@ const ReportTariffs = () => {
             )}
           </Button>
         </div>
-        <div className="w-full lg:w-1/2">
+        <div className="w-full min-w-0 lg:w-1/2">
           <Image
             src={getImage("step_01")}
             alt="tariffs"
             width={535}
             height={535}
-            className="w-full h-auto max-w-[535px] mx-auto"
+            className="w-full h-auto max-w-[min(535px,100%)] mx-auto"
           />
         </div>
       </div>

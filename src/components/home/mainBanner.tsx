@@ -15,7 +15,7 @@ const MainBanner = () => {
             alt="mainBannerBadge"
             width={284}
             height={30}
-            className="mb-5 shake"
+            className="mb-5 shake w-full max-w-[284px] h-auto"
           />
           <div className="line-height-1">
             <h1 className="text-3xl lg:text-5xl font-semibold text-primary">
@@ -65,8 +65,8 @@ const MainBanner = () => {
           src={getImage("step_01")}
           alt="tariffs"
           width={400}
-          height={358}
-          className="mx-auto lg:mx-0"
+          height={400}
+          className="w-full h-auto max-w-[min(400px,100%)] mx-auto lg:mx-0"
         />
       </div>
       <Link href="/survey">

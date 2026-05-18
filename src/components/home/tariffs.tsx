@@ -28,13 +28,13 @@ const Tariffs = ({ id }: { id: string }) => {
           Выбрать тариф
         </Button>
       </div>
-      <div className="w-full lg:w-1/2">
+      <div className="w-full min-w-0 lg:w-1/2">
         <Image
           src={getImage("step_07")}
           alt="tariffs"
           width={560}
           height={535}
-          className="w-full h-auto max-w-[560px] mx-auto lg:mx-0"
+          className="w-full h-auto max-w-[min(560px,100%)] mx-auto lg:mx-0"
         />
       </div>
     </div>

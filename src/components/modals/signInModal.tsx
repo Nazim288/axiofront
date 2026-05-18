@@ -29,6 +29,7 @@ import {
 } from "@/components/ui/input-otp";
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
+import axios from "axios";
 import { useState } from "react";
 import { loginUser, requestPasswordReset, resetPassword } from "@/api/auth";
 import Loader from "@/components/loader/loader";
@@ -71,6 +72,7 @@ export function SignInModal({
   const [isResetLoading, setIsResetLoading] = useState(false);
   const [isResetSuccess, setIsResetSuccess] = useState(false);
   const [resetError, setResetError] = useState<string | null>(null);
+  const [loginError, setLoginError] = useState<string | null>(null);
 
   const openDialog = () => {
     setIsOpen(true);
@@ -107,6 +109,7 @@ export function SignInModal({
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setIsLoading(true);
     setIsSuccess(false);
+    setLoginError(null);
     try {
       const response = await loginUser({
         username: values.email,
@@ -117,8 +120,16 @@ export function SignInModal({
         setIsSuccess(true);
         closeDialog();
       }
-    } catch (error) {
+    } catch (error: unknown) {
       console.error("Ошибка входа:", error);
+      if (axios.isAxiosError(error) && error.response?.data) {
+        const data = error.response.data as { message?: string };
+        setLoginError(
+          data.message ?? "Неверный логин или пароль. Попробуйте снова.",
+        );
+      } else {
+        setLoginError("Не удалось войти. Попробуйте позже.");
+      }
     } finally {
       setIsLoading(false);
     }
@@ -187,6 +198,7 @@ export function SignInModal({
       setIsResetLoading(false);
       setIsResetSuccess(false);
       setResetError(null);
+      setLoginError(null);
     }, 500);
   };
 
@@ -301,6 +313,9 @@ export function SignInModal({
                     "Войти"
                   )}
                 </Button>
+                {loginError && (
+                  <p className="text-sm text-red-500 text-center">{loginError}</p>
+                )}
               </form>
             </Form>
             <Button

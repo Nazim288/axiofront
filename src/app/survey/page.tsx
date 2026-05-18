@@ -3,7 +3,7 @@
 import SurveyTitle from "@/components/survey/surveyTitle";
 import Question from "@/components/survey/question";
 import { Button } from "@/components/ui/button";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { IQuestion, ISurveyData } from "@/types/survey";
 import { surveyData } from "@/mocks/survey";
 import { getSurvey, sendAnswers } from "@/api/survey";
@@ -29,6 +29,68 @@ const Survey = () => {
   const [showCongratulations, setShowCongratulations] = useState(false);
   const [showRetakeSurvey, setShowRetakeSurvey] = useState(false);
   const [personTestId, setPersonTestId] = useState<number | null>(null);
+  const stickyPlaqueRef = useRef<HTMLDivElement>(null);
+
+  const getScrollOffset = useCallback(() => {
+    const header = document.querySelector("header");
+    const headerHeight = header?.getBoundingClientRect().height ?? 0;
+    const plaqueHeight =
+      stickyPlaqueRef.current?.getBoundingClientRect().height ?? 0;
+    return headerHeight + plaqueHeight + 16;
+  }, []);
+
+  const syncScrollOffset = useCallback(() => {
+    const offset = getScrollOffset();
+    document.documentElement.style.setProperty(
+      "--survey-scroll-offset",
+      `${offset}px`,
+    );
+  }, [getScrollOffset]);
+
+  const scrollToQuestion = useCallback(
+    (element: HTMLElement) => {
+      const offset = getScrollOffset();
+      const top =
+        element.getBoundingClientRect().top + window.scrollY - offset;
+      window.scrollTo({ top: Math.max(0, top), behavior: "smooth" });
+    },
+    [getScrollOffset],
+  );
+
+  useEffect(() => {
+    const syncStickyOffsets = () => {
+      const header = document.querySelector("header");
+      if (header) {
+        document.documentElement.style.setProperty(
+          "--survey-header-offset",
+          `${header.getBoundingClientRect().height}px`,
+        );
+      }
+      syncScrollOffset();
+    };
+
+    syncStickyOffsets();
+
+    const plaque = stickyPlaqueRef.current;
+    const header = document.querySelector("header");
+    const resizeObserver = new ResizeObserver(syncStickyOffsets);
+
+    if (plaque) {
+      resizeObserver.observe(plaque);
+    }
+    if (header) {
+      resizeObserver.observe(header);
+    }
+
+    window.addEventListener("resize", syncStickyOffsets);
+    window.addEventListener("scroll", syncStickyOffsets, { passive: true });
+
+    return () => {
+      resizeObserver.disconnect();
+      window.removeEventListener("resize", syncStickyOffsets);
+      window.removeEventListener("scroll", syncStickyOffsets);
+    };
+  }, [currentStep, data, isLoading, syncScrollOffset]);
 
   // Функция сброса состояния опроса
   const resetSurveyState = () => {
@@ -87,10 +149,7 @@ const Survey = () => {
       `question-${questionNumber + 1}`,
     );
     if (nextQuestionElement) {
-      nextQuestionElement.scrollIntoView({
-        behavior: "smooth",
-        block: "center",
-      });
+      requestAnimationFrame(() => scrollToQuestion(nextQuestionElement));
     }
   };
 
@@ -112,10 +171,7 @@ const Survey = () => {
 
         // Проверяем, существует ли элемент и выполняем к нему скролл
         if (questionElement) {
-          questionElement.scrollIntoView({
-            behavior: "smooth",
-            block: "center",
-          });
+          requestAnimationFrame(() => scrollToQuestion(questionElement));
           setAllAnswered(true);
         }
       }
@@ -232,14 +288,18 @@ const Survey = () => {
           </div>
         ) : (
           <>
-            <div className="sticky top-[50px] z-20 h-auto md:h-[271px] py-3">
+            <div
+              ref={stickyPlaqueRef}
+              className="sticky top-[var(--survey-header-offset,50px)] z-20 h-auto md:h-[271px] py-3 bg-background"
+            >
               <SurveyTitle data={data} step={currentStep} />
             </div>
             <div className="flex flex-col gap-8 md:gap-10 z-10 mt-4 md:mt-0">
               {questions.map((question) => (
                 <div
                   key={question.id}
-                  id={`question-${question.id}`}
+                  id={`question-${question.position}`}
+                  style={{ scrollMarginTop: "var(--survey-scroll-offset, 120px)" }}
                   className={`p-4 transition-opacity duration-300 ease-in-out 
                     ${
                       allAnswered || question.position === activeQuestion

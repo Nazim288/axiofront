@@ -7,11 +7,11 @@ const Survey = () => {
     <div className="flex flex-col">
       <h1 className="text-4xl sm:text-5xl font-bold">Тарифы</h1>
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10 lg:mt-14">
-        {/* Колонка 1 - Пробный (бесплатно) */}
+        {/* Колонка 1 - Краткий (бесплатно) */}
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
           <div className="flex justify-between h-[100px]">
             <h2 className="text-2xl font-semibold text-primary">
-              Пробный (бесплатно)
+              Краткий отчет о ценностях (бесплатно)
             </h2>
           </div>
           <p className="text-gray-600 text-sm leading-relaxed">
@@ -29,13 +29,13 @@ const Survey = () => {
         <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
           <div className="flex justify-between h-[100px]">
             <h2 className="text-2xl font-semibold text-amber-400">
-              Расширенный отчет о ценностях
+              Полный отчет о ценностях
             </h2>
           </div>
           <p className="text-gray-600 text-sm leading-relaxed">
-            Получите подробный отчет с ранжированием ценностей по их значимости
-            для Вас и рекомендации для гармоничного саморазвития и улучшения
-            взаимодействия с другими людьми.
+            Получите подробный полный отчет с ранжированием ценностей по их
+            значимости для Вас и рекомендации для гармоничного саморазвития и
+            улучшения взаимодействия с другими людьми.
           </p>
           <Button
             className="mt-auto"
@@ -47,7 +47,7 @@ const Survey = () => {
               )
             }
           >
-            1700 ₽
+            4900 ₽
           </Button>
         </div>
 
