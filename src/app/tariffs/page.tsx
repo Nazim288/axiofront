@@ -1,101 +1,88 @@
 "use client";
 
 import { Button } from "@/components/ui/button";
+import {
+  HeroReveal,
+  ScrollRevealItem,
+  ScrollRevealStagger,
+} from "@/components/motion/scroll-reveal";
+import { getScrollVariant } from "@/lib/motion";
 
-const Survey = () => {
+const TARIFFS = [
+  {
+    title: "Краткий отчет о ценностях (бесплатно)",
+    titleClass: "text-primary",
+    description:
+      "Познакомьтесь с нашим сервисом — создайте личный кабинет, пройдите опросник и получите сокращённый отчет, где представлены 3 наиболее важные ценности именно для вас. Отличный старт для самопознания без затрат.",
+    action: (
+      <Button className="mt-auto" variant="default" disabled>
+        Уже у вас
+      </Button>
+    ),
+  },
+  {
+    title: "Полный отчет о ценностях",
+    titleClass: "text-amber-400",
+    description:
+      "Получите подробный полный отчет с ранжированием ценностей по их значимости для Вас и рекомендации для гармоничного саморазвития и улучшения взаимодействия с другими людьми.",
+    action: (
+      <Button
+        className="mt-auto"
+        onClick={() =>
+          window.open(
+            "https://tarbastaev.ru/Контакты/",
+            "_blank",
+            "noopener,noreferrer",
+          )
+        }
+      >
+        4900 ₽
+      </Button>
+    ),
+  },
+  {
+    title: "Совместимость по ценностям",
+    titleClass: "text-orange-500",
+    description:
+      "Сравните свои ценности с ценностями другого пользователя. Вы узнаете о сходствах и различиях, а также получите практические рекомендации для улучшения взаимодействия с партнёром в семейных и рабочих условиях.",
+    action: (
+      <Button className="mt-auto" disabled>
+        В разработке
+      </Button>
+    ),
+  },
+] as const;
+
+const TariffsPage = () => {
   return (
-    <div className="flex flex-col">
-      <h1 className="text-4xl sm:text-5xl font-bold">Тарифы</h1>
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mt-10 lg:mt-14">
-        {/* Колонка 1 - Краткий (бесплатно) */}
-        <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
-          <div className="flex justify-between h-[100px]">
-            <h2 className="text-2xl font-semibold text-primary">
-              Краткий отчет о ценностях (бесплатно)
-            </h2>
-          </div>
-          <p className="text-gray-600 text-sm leading-relaxed">
-            Познакомьтесь с нашим сервисом — создайте личный кабинет, пройдите
-            опросник и получите сокращённый отчет, где представлены 3 наиболее
-            важные ценности именно для вас. Отличный старт для самопознания без
-            затрат.
-          </p>
-          <Button className="mt-auto" variant="default" disabled>
-            Уже у вас
-          </Button>
-        </div>
-
-        {/* Колонка 2 - Расширенный отчет о ценностях */}
-        <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
-          <div className="flex justify-between h-[100px]">
-            <h2 className="text-2xl font-semibold text-amber-400">
-              Полный отчет о ценностях
-            </h2>
-          </div>
-          <p className="text-gray-600 text-sm leading-relaxed">
-            Получите подробный полный отчет с ранжированием ценностей по их
-            значимости для Вас и рекомендации для гармоничного саморазвития и
-            улучшения взаимодействия с другими людьми.
-          </p>
-          <Button
-            className="mt-auto"
-            onClick={() =>
-              window.open(
-                "https://tarbastaev.ru/Контакты/",
-                "_blank",
-                "noopener,noreferrer",
-              )
-            }
+    <div className="flex flex-col items-center w-full">
+      <HeroReveal variant="blur-up" className="w-full text-center">
+        <h1 className="text-4xl sm:text-5xl font-bold">Тарифы</h1>
+      </HeroReveal>
+      <ScrollRevealStagger
+        className="flex flex-wrap justify-center gap-6 mt-10 lg:mt-14 w-full max-w-6xl mx-auto"
+        stagger={0.1}
+      >
+        {TARIFFS.map((tariff, index) => (
+          <ScrollRevealItem
+            key={tariff.title}
+            variant={getScrollVariant(index)}
+            className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit w-full max-w-[360px] sm:max-w-[calc(50%-12px)] lg:w-[320px] lg:max-w-[360px] hover:scale-105 transition-transform duration-300 ease-in-out"
           >
-            4900 ₽
-          </Button>
-        </div>
-
-        {/* Колонка 3 - Совместимость ценностей */}
-        <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out">
-          <div className="flex justify-between h-[100px]">
-            <h2 className="text-2xl font-semibold text-orange-500">
-              Совместимость по ценностям
-            </h2>
-          </div>
-          <p className="text-gray-600 text-sm leading-relaxed">
-            Сравните свои ценности с ценностями другого пользователя. Вы узнаете
-            о сходствах и различиях, а также получите практические рекомендации
-            для улучшения взаимодействия с партнёром в семейных и рабочих
-            условиях.
-          </p>
-          <Button className="mt-auto" disabled>
-            В разработке
-          </Button>
-        </div>
-
-        {/* Колонка 4 - Комбинированный пакет */}
-        {/* <div className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit hover:scale-105 transition-transform duration-300 ease-in-out border-2 border-[#FF6B35]">
-          <div className="flex justify-between h-[100px]">
-            <h2 className="text-2xl font-semibold text-[#FF6B35]">
-              Расширенный отчет + Совместимость
-            </h2>
-          </div>
-          <div className="text-gray-600 text-sm leading-relaxed">
-            <p className="mb-3">
-              <strong>1) Подробный отчет</strong> с ранжированием ценностей по
-              их значимости для Вас и рекомендации для гармоничного саморазвития
-              и улучшения взаимодействия с другими людьми.
+            <div className="flex justify-between h-[100px]">
+              <h2 className={`text-2xl font-semibold ${tariff.titleClass}`}>
+                {tariff.title}
+              </h2>
+            </div>
+            <p className="text-gray-600 text-sm leading-relaxed">
+              {tariff.description}
             </p>
-            <p>
-              <strong>2) Сравнение Ваших ценностей</strong> с ценностями другого
-              пользователя с выявлением сходств и различий. Практические советы
-              для гармоничного взаимодействия с партнером как в семейной, так и
-              в рабочей сфере.
-            </p>
-          </div>
-          <Button className="rounded-[40px] mt-auto bg-[#FF6B35] hover:bg-[#E55A2B]">
-            1500 ₽
-          </Button>
-        </div> */}
-      </div>
+            {tariff.action}
+          </ScrollRevealItem>
+        ))}
+      </ScrollRevealStagger>
     </div>
   );
 };
 
-export default Survey;
+export default TariffsPage;

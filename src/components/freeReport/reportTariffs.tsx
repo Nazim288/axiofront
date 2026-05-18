@@ -28,6 +28,10 @@ import { toast } from "sonner";
 import { useGenderImage } from "@/hooks/useGenderImage";
 import { redeemPromoCode } from "@/api/survey";
 import axios from "axios";
+import {
+  ScrollRevealItem,
+  ScrollRevealStagger,
+} from "@/components/motion/scroll-reveal";
 
 const ReportTariffs = () => {
   const params = useParams();
@@ -102,8 +106,11 @@ const ReportTariffs = () => {
 
   return (
     <>
-      <div className="flex flex-col lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow p-4 sm:p-6 lg:p-10">
-        <div className="flex flex-col gap-4 w-full lg:w-1/2 justify-center">
+      <ScrollRevealStagger className="flex flex-col lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow p-4 sm:p-6 lg:p-10">
+        <ScrollRevealItem
+          variant="fade-right"
+          className="flex flex-col gap-4 w-full lg:w-1/2 justify-center"
+        >
           <p>
             Получите подробный{" "}
             <span className="font-semibold">полный отчет</span> о своих
@@ -177,8 +184,8 @@ const ReportTariffs = () => {
               </TooltipProvider>
             )}
           </Button>
-        </div>
-        <div className="w-full min-w-0 lg:w-1/2">
+        </ScrollRevealItem>
+        <ScrollRevealItem variant="fade-left" className="w-full min-w-0 lg:w-1/2">
           <Image
             src={getImage("step_01")}
             alt="tariffs"
@@ -186,8 +193,8 @@ const ReportTariffs = () => {
             height={535}
             className="w-full h-auto max-w-[min(535px,100%)] mx-auto"
           />
-        </div>
-      </div>
+        </ScrollRevealItem>
+      </ScrollRevealStagger>
       <Dialog open={isPromoModalOpen} onOpenChange={setIsPromoModalOpen}>
         <DialogContent className="rounded-3xl max-w-md p-6">
           <DialogHeader>

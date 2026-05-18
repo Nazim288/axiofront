@@ -1,6 +1,14 @@
+"use client";
+
 import Card from "./card";
 import { useGenderImage } from "@/hooks/useGenderImage";
 import { GENDER_SPECIFIC_IMAGES } from "@/lib/imageUtils";
+import {
+  ScrollReveal,
+  ScrollRevealItem,
+  ScrollRevealStagger,
+} from "@/components/motion/scroll-reveal";
+import type { ScrollRevealVariant } from "@/lib/motion";
 
 const getCards = (
   getImage: (key: keyof typeof GENDER_SPECIFIC_IMAGES) => string,
@@ -32,6 +40,13 @@ const getCards = (
   },
 ];
 
+const topCardVariants: ScrollRevealVariant[] = ["fade-left", "fade-right"];
+const bottomCardVariants: ScrollRevealVariant[] = [
+  "fade-up",
+  "scale-up",
+  "fade-right",
+];
+
 const CardsBlock = ({ id }: { id: string }) => {
   const { getImage } = useGenderImage();
   const cards = getCards(getImage);
@@ -39,24 +54,41 @@ const CardsBlock = ({ id }: { id: string }) => {
   return (
     <div id={id} className="flex flex-col gap-10 lg:gap-16 mt-16 lg:mt-24">
       <div className="flex flex-col gap-4">
-        <h1 className="text-3xl lg:text-4xl font-semibold">
-          Опрос подойдет, когда вы хотите
-        </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <ScrollReveal variant="blur-up">
+          <h1 className="text-3xl lg:text-4xl font-semibold">
+            Опрос подойдет, когда вы хотите
+          </h1>
+        </ScrollReveal>
+        <ScrollRevealStagger className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {cards.slice(0, 2).map((card, index) => (
-            <Card key={index} {...card} />
+            <ScrollRevealItem
+              key={card.title}
+              variant={topCardVariants[index] ?? "fade-up"}
+            >
+              <Card {...card} />
+            </ScrollRevealItem>
           ))}
-        </div>
+        </ScrollRevealStagger>
       </div>
       <div className="flex flex-col gap-4">
-        <h1 className="text-3xl lg:text-4xl font-semibold">
-          После опроса вы узнаете
-        </h1>
-        <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+        <ScrollReveal variant="fade-up" delay={0.05}>
+          <h1 className="text-3xl lg:text-4xl font-semibold">
+            После опроса вы узнаете
+          </h1>
+        </ScrollReveal>
+        <ScrollRevealStagger
+          className="grid grid-cols-1 lg:grid-cols-3 gap-4"
+          stagger={0.1}
+        >
           {cards.slice(2).map((card, index) => (
-            <Card key={index} {...card} />
+            <ScrollRevealItem
+              key={card.title}
+              variant={bottomCardVariants[index] ?? "fade-up"}
+            >
+              <Card {...card} />
+            </ScrollRevealItem>
           ))}
-        </div>
+        </ScrollRevealStagger>
       </div>
     </div>
   );

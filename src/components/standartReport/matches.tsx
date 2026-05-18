@@ -1,5 +1,12 @@
+"use client";
+
 import Image from "next/image";
 import { useGenderImage } from "@/hooks/useGenderImage";
+import {
+  ScrollReveal,
+  ScrollRevealItem,
+  ScrollRevealStagger,
+} from "@/components/motion/scroll-reveal";
 
 const valueBoxTop =
   "text-sm sm:text-base lg:text-2xl min-h-10 sm:min-h-[49px] h-auto py-1.5 w-full min-w-0 border shadow-lg rounded-[20px] border-primary flex items-center justify-start px-3 sm:px-5 shake break-words";
@@ -43,15 +50,18 @@ const Matches = ({
   );
 
   return (
-    <div className="flex flex-col gap-2 baseShadow rounded-3xl p-4 sm:p-5 w-full min-w-0 hover:scale-105 transition-transform duration-300 ease-in-out">
+    <ScrollReveal
+      variant="blur-up"
+      className="flex flex-col gap-2 baseShadow rounded-3xl p-4 sm:p-5 w-full min-w-0 hover:scale-105 transition-transform duration-300 ease-in-out"
+    >
       <h1 className="text-center font-semibold text-2xl sm:text-3xl lg:text-4xl">
         <span className="block text-base sm:text-lg lg:text-xl font-normal">
           Согласованность ваших ценностей по уровням:
         </span>
         {matches}%
       </h1>
-      <div className="flex flex-col lg:flex-row lg:justify-around gap-6">
-        <div className="flex flex-col gap-2 w-full min-w-0">
+      <ScrollRevealStagger className="flex flex-col lg:flex-row lg:justify-around gap-6">
+        <ScrollRevealItem variant="fade-right" className="flex flex-col gap-2 w-full min-w-0">
           <Image
             src={getImage("report_step_06")}
             alt="report"
@@ -65,9 +75,9 @@ const Matches = ({
             </p>
             {renderValueRows(niValues)}
           </div>
-        </div>
+        </ScrollRevealItem>
 
-        <div className="flex flex-col gap-2 w-full min-w-0">
+        <ScrollRevealItem variant="fade-left" className="flex flex-col gap-2 w-full min-w-0">
           <Image
             src={getImage("report_step_07")}
             alt="report"
@@ -81,12 +91,12 @@ const Matches = ({
             </p>
             {renderValueRows(ipValues)}
           </div>
-        </div>
-      </div>
+        </ScrollRevealItem>
+      </ScrollRevealStagger>
       <p className="text-xs sm:text-sm text-muted-foreground">
         *от наиболее важной к наименее важной ценности
       </p>
-    </div>
+    </ScrollReveal>
   );
 };
 

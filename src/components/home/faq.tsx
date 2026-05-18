@@ -1,3 +1,5 @@
+"use client";
+
 import {
   Accordion,
   AccordionContent,
@@ -6,12 +8,20 @@ import {
 } from "@/components/ui/accordion";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import {
+  ScrollReveal,
+  ScrollRevealItem,
+  ScrollRevealStagger,
+} from "@/components/motion/scroll-reveal";
 
 const Faq = ({ id }: { id: string }) => {
   return (
     <div id={id} className="flex flex-col gap-8 mt-14 lg:mt-20">
-      <p className="text-3xl font-semibold">Часто задаваемые вопросы</p>
-      <div className="flex flex-col gap-6">
+      <ScrollReveal variant="fade-up">
+        <p className="text-3xl font-semibold">Часто задаваемые вопросы</p>
+      </ScrollReveal>
+      <ScrollRevealStagger className="flex flex-col gap-6" stagger={0.08}>
+        <ScrollRevealItem variant="fade-up">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
@@ -27,7 +37,9 @@ const Faq = ({ id }: { id: string }) => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        </ScrollRevealItem>
 
+        <ScrollRevealItem variant="fade-right">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
@@ -51,7 +63,9 @@ const Faq = ({ id }: { id: string }) => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        </ScrollRevealItem>
 
+        <ScrollRevealItem variant="fade-left">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
@@ -82,7 +96,9 @@ const Faq = ({ id }: { id: string }) => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        </ScrollRevealItem>
 
+        <ScrollRevealItem variant="scale-up">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
@@ -130,7 +146,9 @@ const Faq = ({ id }: { id: string }) => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
+        </ScrollRevealItem>
 
+        <ScrollRevealItem variant="blur-up">
         <Accordion type="single" collapsible>
           <AccordionItem value="item-1">
             <AccordionTrigger>
@@ -151,12 +169,15 @@ const Faq = ({ id }: { id: string }) => {
             </AccordionContent>
           </AccordionItem>
         </Accordion>
-      </div>
+        </ScrollRevealItem>
+      </ScrollRevealStagger>
+      <ScrollReveal variant="fade-up" delay={0.1}>
       <Link href="/survey">
         <Button variant="default" size="cta" className="w-full mt-3">
           Заполнить опросник (10 минут)
         </Button>
       </Link>
+      </ScrollReveal>
     </div>
   );
 };

@@ -10,6 +10,14 @@ import { FC, useEffect, useState } from "react";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
 import { ITestResult } from "@/types/survey";
 import { getYandexDiskFileUrl } from "@/api/yandexDisk";
+import {
+  HeroReveal,
+  ScrollReveal,
+  ScrollRevealItem,
+  ScrollRevealStagger,
+} from "@/components/motion/scroll-reveal";
+import { getScrollVariant } from "@/lib/motion";
+
 
 // Статичные данные для fallback
 const defaultData = {
@@ -162,12 +170,17 @@ const FreeReportPage: FC = () => {
   return (
     <ProtectedRoute>
       <div className="flex flex-col gap-8 lg:gap-10">
-        <p className="text-md font-normal">
-          {testResult?.date || defaultData.date}
-        </p>
-        <h1 className="text-3xl sm:text-4xl font-bold">
-          Мои самые важные ценности
-        </h1>
+        <HeroReveal variant="fade-up">
+          <p className="text-md font-normal">
+            {testResult?.date || defaultData.date}
+          </p>
+        </HeroReveal>
+        <HeroReveal variant="blur-up" delay={0.05}>
+          <h1 className="text-3xl sm:text-4xl font-bold">
+            Мои самые важные ценности
+          </h1>
+        </HeroReveal>
+        <ScrollReveal variant="fade-up">
         <div className="flex flex-col gap-3">
           <p>Теперь давайте разберемся, что получилось.</p>
           <p>
@@ -224,25 +237,35 @@ const FreeReportPage: FC = () => {
             обеспечить безопасность себя и близких людей
           </p>
         </div>
+        </ScrollReveal>
+        <ScrollReveal variant="fade-right">
         <div className="flex flex-col gap-3">
           <p className="font-bold text-xl mb-4">
             В результате обработки ответов опросника мы рассчитали наиболее
             важные ценности для Вас:
           </p>
           {reports.length > 0 ? (
-            reports.map((item) => (
-              <FreeReportCard
-                key={item.title}
-                title={item.title}
-                description={item.description}
-              />
-            ))
+            <ScrollRevealStagger className="flex flex-col gap-3" stagger={0.08}>
+              {reports.map((item, index) => (
+                <ScrollRevealItem
+                  key={item.title}
+                  variant={getScrollVariant(index)}
+                >
+                  <FreeReportCard
+                    title={item.title}
+                    description={item.description}
+                  />
+                </ScrollRevealItem>
+              ))}
+            </ScrollRevealStagger>
           ) : (
             <p>
               Результаты теста не найдены. Пожалуйста, пройдите тест заново.
             </p>
           )}
         </div>
+        </ScrollReveal>
+        <ScrollReveal variant="fade-up">
         <p>
           Понимание того, что для вас действительно важно, помогает лучше понять
           себя и окружающих. Это особенно важно для современной молодежи,
@@ -274,7 +297,9 @@ const FreeReportPage: FC = () => {
             В раздел тарифы
           </Link>
         </p>
+        </ScrollReveal>
         <ColorPsychology />
+        <ScrollReveal variant="scale-up">
         <div className="w-full flex justify-center">
           <div className="flex flex-col gap-5 w-full max-w-[900px]">
             {imageLoading ? (
@@ -322,6 +347,7 @@ const FreeReportPage: FC = () => {
             </Button>
           </div>
         </div>
+        </ScrollReveal>
         <ReportTariffs />
       </div>
     </ProtectedRoute>

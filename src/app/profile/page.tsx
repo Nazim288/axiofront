@@ -13,6 +13,14 @@ import { PersonCurrentResponse } from "@/api/auth";
 import { approveReview, blockReview, getReviews } from "@/api/review";
 import Card from "@/components/home/reviews/card";
 import { toast } from "sonner";
+import {
+  HeroRevealItem,
+  HeroStagger,
+  ScrollReveal,
+  ScrollRevealItem,
+  ScrollRevealStagger,
+} from "@/components/motion/scroll-reveal";
+import { getScrollVariant } from "@/lib/motion";
 
 const Survey = () => {
   const router = useRouter();
@@ -210,8 +218,11 @@ const Survey = () => {
   return (
     <ProtectedRoute>
       <div className="flex flex-col">
-        <div className="relative flex items-center gap-2">
-          <h1 className="text-4xl sm:text-5xl font-bold">Профиль</h1>
+        <HeroStagger className="relative flex flex-wrap items-center gap-2">
+          <HeroRevealItem variant="blur-up">
+            <h1 className="text-4xl sm:text-5xl font-bold">Профиль</h1>
+          </HeroRevealItem>
+          <HeroRevealItem variant="fade-up">
           {userDataLoading ? (
             <p className="text-xl text-gray-400 mt-2">Загрузка...</p>
           ) : userLogin ? (
@@ -219,17 +230,12 @@ const Survey = () => {
           ) : (
             <p className="text-xl text-red-500 mt-2">Данные недоступны</p>
           )}
-          {/* <Image
-            src={"/icons/profileBadge.svg"}
-            alt="profile badge"
-            width={133}
-            height={38}
-            className="absolute -top-5 left-60"
-          /> */}
-        </div>
+          </HeroRevealItem>
+        </HeroStagger>
 
-        <div className="flex flex-col gap-4 mt-10 lg:mt-14">
+        <ScrollReveal variant="fade-up" className="flex flex-col gap-4 mt-10 lg:mt-14">
           <h2 className=" text-3xl font-semibold mb-5">Отчеты</h2>
+          <ScrollReveal variant="scale-up" delay={0.08}>
           <div
             onClick={
               dataLoading || !shortResult ? undefined : handleFreeReportClick
@@ -276,10 +282,11 @@ const Survey = () => {
               />
             )}
           </div>
-        </div>
+          </ScrollReveal>
+        </ScrollReveal>
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-12 lg:mt-16">
-          <div className="flex flex-col gap-8 w-full lg:w-1/2">
+        <ScrollRevealStagger className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-12 lg:mt-16">
+          <ScrollRevealItem variant="fade-right" className="flex flex-col gap-8 w-full lg:w-1/2">
             <h1 className="text-3xl font-semibold">Вебинары</h1>
             <div className="w-full relative flex flex-col gap-2 baseShadow rounded-3xl p-5 sm:p-6 h-fi hover:scale-105 transition-transform duration-300 ease-in-out">
               <p className="text-xl font-normal">25.04.26</p>
@@ -299,8 +306,8 @@ const Survey = () => {
                 Посмотреть
               </Button>
             </div>
-          </div>
-          <div className="w-full lg:w-1/2 relative flex flex-col gap-2 justify-between baseShadow rounded-3xl p-5 sm:p-6 hover:scale-105 transition-transform duration-300 ease-in-out">
+          </ScrollRevealItem>
+          <ScrollRevealItem variant="fade-left" className="w-full lg:w-1/2 relative flex flex-col gap-2 justify-between baseShadow rounded-3xl p-5 sm:p-6 hover:scale-105 transition-transform duration-300 ease-in-out">
             <p className="text-xl font-semibold">
               Отправь запрос на анализ <br /> совместимости и получи <br />
               результаты.
@@ -313,14 +320,14 @@ const Survey = () => {
             <Button variant="default" size="cta" className="mt-5" disabled>
               Отправить запрос (в разработке)
             </Button>
-          </div>
-        </div>
+          </ScrollRevealItem>
+        </ScrollRevealStagger>
 
         {isAdmin && (
           <>
-            <div className="mt-16">
+            <ScrollReveal variant="blur-up" className="mt-16">
               <h1 className="text-3xl font-semibold">Модерация отзывов</h1>
-            </div>
+            </ScrollReveal>
 
             {isLoadingReviews ? (
               <div className="flex justify-center items-center h-64">
@@ -331,13 +338,16 @@ const Survey = () => {
                 <p className="text-red-500">{errorReviews}</p>
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+              <ScrollRevealStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8" stagger={0.08}>
                 {(apiReviews.length > 0
                   ? normalizeApiReviews(apiReviews)
                   : []
                 ).map((review, index) => (
-                  <Card
+                  <ScrollRevealItem
                     key={review.id || index}
+                    variant={getScrollVariant(index)}
+                  >
+                  <Card
                     rating={review.rating}
                     username={review.username}
                     reviewText={review.reviewText}
@@ -345,14 +355,18 @@ const Survey = () => {
                     onApprove={() => handleApproveReview(review)}
                     onReject={() => handleRejectReview(review)}
                   />
+                  </ScrollRevealItem>
                 ))}
-              </div>
+              </ScrollRevealStagger>
             )}
           </>
         )}
 
-        <div className="flex flex-col lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow my-12 lg:my-16 p-4 sm:p-6 lg:p-10">
-          <div className="flex flex-col gap-4 w-full lg:w-1/2 justify-center">
+        <ScrollRevealStagger className="flex flex-col lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow my-12 lg:my-16 p-4 sm:p-6 lg:p-10">
+          <ScrollRevealItem
+            variant="fade-right"
+            className="flex flex-col gap-4 w-full lg:w-1/2 justify-center"
+          >
             <p>
               Посмотреть пример отчёта в котором проводится анализ схожести
               ценностей у двух людей
@@ -366,8 +380,8 @@ const Survey = () => {
             >
               Смотреть (пока в разработке)
             </Button>
-          </div>
-          <div className="w-full min-w-0 lg:w-1/2">
+          </ScrollRevealItem>
+          <ScrollRevealItem variant="fade-left" className="w-full min-w-0 lg:w-1/2">
             <Image
               src={getImage("step_01")}
               alt="tariffs"
@@ -375,8 +389,8 @@ const Survey = () => {
               height={535}
               className="w-full h-auto max-w-[min(535px,100%)] mx-auto"
             />
-          </div>
-        </div>
+          </ScrollRevealItem>
+        </ScrollRevealStagger>
       </div>
     </ProtectedRoute>
   );

@@ -26,6 +26,14 @@ import { useParams } from "next/navigation";
 import { useCurrentUser } from "@/hooks/useCurrentUser";
 import { downloadPdf } from "@/api/survey";
 import { toast } from "sonner";
+import {
+  HeroReveal,
+  ScrollReveal,
+  ScrollRevealItem,
+  ScrollRevealStagger,
+} from "@/components/motion/scroll-reveal";
+import { getScrollVariant } from "@/lib/motion";
+
 
 const data = {
   reports: [
@@ -418,7 +426,10 @@ const StandartReportPage = () => {
   return (
     <ProtectedRoute>
       <div className="flex flex-col gap-10">
-        <p className="text-md font-normal">{testResult?.date || data.date}</p>
+        <HeroReveal variant="fade-up">
+          <p className="text-md font-normal">{testResult?.date || data.date}</p>
+        </HeroReveal>
+        <ScrollReveal variant="fade-right">
         <Button
           variant={"outline"}
           color="primary"
@@ -428,27 +439,35 @@ const StandartReportPage = () => {
         >
           {isSendingPdf ? "Отправка..." : "Скачать текущую версию отчета"}
         </Button>
+        </ScrollReveal>
         <Report />
+        <ScrollReveal variant="blur-up">
         <div className="flex flex-col gap-3">
           <p className="text-2xl font-semibold">
             Вы так думаете (я считаю что..)
           </p>
-          <div className="flex flex-col gap-5">
+          <ScrollRevealStagger className="flex flex-col gap-5" stagger={0.08}>
             {niReports.length > 0 ? (
               niReports.map((item, index) => (
-                <StandartReportCard
-                  key={item.title}
-                  title={item.title}
-                  description={item.description}
-                  number={index + 1}
-                  priority={item.priority}
-                />
+                <ScrollRevealItem
+                  key={`ni-${item.title}`}
+                  variant={getScrollVariant(index)}
+                >
+                  <StandartReportCard
+                    title={item.title}
+                    description={item.description}
+                    number={index + 1}
+                    priority={item.priority}
+                  />
+                </ScrollRevealItem>
               ))
             ) : (
               <p>Данные отчета не найдены</p>
             )}
-          </div>
+          </ScrollRevealStagger>
         </div>
+        </ScrollReveal>
+        <ScrollReveal variant="fade-up">
         <div className="flex flex-col gap-3">
           <p>
             Теперь давайте копнём немного глубже. То, что вы считаете важным для
@@ -462,22 +481,28 @@ const StandartReportPage = () => {
             Вы так делаете (Скорее всего, моё ближнее окружение ожидает, что я
             буду делать…)
           </p>
-          <div className="flex flex-col gap-5">
+          <ScrollRevealStagger className="flex flex-col gap-5" stagger={0.08}>
             {ipReports.length > 0 ? (
               ipReports.map((item, index) => (
-                <StandartReportCard
-                  key={item.title}
-                  title={item.title}
-                  description={item.description}
-                  number={index + 1}
-                  priority={item.priority}
-                />
+                <ScrollRevealItem
+                  key={`ip-${item.title}`}
+                  variant={getScrollVariant(index + 2)}
+                >
+                  <StandartReportCard
+                    title={item.title}
+                    description={item.description}
+                    number={index + 1}
+                    priority={item.priority}
+                  />
+                </ScrollRevealItem>
               ))
             ) : (
               <p>Данные отчета не найдены</p>
             )}
-          </div>
+          </ScrollRevealStagger>
         </div>
+        </ScrollReveal>
+        <ScrollReveal variant="fade-left">
         <p>
           Иногда в жизни случается так, что поведение, которого от вас (по
           вашему мнению) ждут окружающие, не всегда соответствует вашим
@@ -504,34 +529,35 @@ const StandartReportPage = () => {
           <br />
           Величина этой согласованности находится в интервале от 0 до 100%.
         </p>
+        </ScrollReveal>
         <Matches matches={testResult?.pcs || 0} values={matchesValues} />
-        <div className="flex flex-col gap-2">
-          <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full ">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: removeDoubleNewlines(
-                  testResult?.resultCongruence || "",
-                ),
-              }}
-              // style={{
-              //   whiteSpace: "pre-wrap",
-              // }}
-              className="report-html-content prose prose-sm max-w-none prose-headings:text-green-700 prose-p:my-2 prose-strong:text-green-700 prose-em:text-gray-600 prose-blockquote:border-l-green-700 prose-blockquote:text-gray-700"
-            />
-          </div>
-          <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full">
-            <div
-              dangerouslySetInnerHTML={{
-                __html: removeDoubleNewlines(testResult?.recommendation || ""),
-              }}
-              style={{
-                whiteSpace: "pre-wrap",
-              }}
-              className="report-html-content prose prose-sm max-w-none prose-headings:text-orange-500 prose-p:my-2 prose-strong:text-orange-500 prose-em:text-gray-600 prose-blockquote:border-l-orange-500 prose-blockquote:text-gray-700 prose-ol:list-decimal prose-ul:list-disc prose-li:my-1"
-            />
-          </div>
-        </div>
+        <ScrollRevealStagger className="flex flex-col gap-2" stagger={0.12}>
+          <ScrollRevealItem variant="fade-up">
+            <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: removeDoubleNewlines(
+                    testResult?.resultCongruence || "",
+                  ),
+                }}
+                className="report-html-content prose prose-sm max-w-none prose-headings:text-green-700 prose-p:my-2 prose-strong:text-green-700 prose-em:text-gray-600 prose-blockquote:border-l-green-700 prose-blockquote:text-gray-700"
+              />
+            </div>
+          </ScrollRevealItem>
+          <ScrollRevealItem variant="scale-up">
+            <div className="flex flex-col gap-2 baseShadow rounded-3xl p-5 w-full">
+              <div
+                dangerouslySetInnerHTML={{
+                  __html: removeDoubleNewlines(testResult?.recommendation || ""),
+                }}
+                style={{ whiteSpace: "pre-wrap" }}
+                className="report-html-content prose prose-sm max-w-none prose-headings:text-orange-500 prose-p:my-2 prose-strong:text-orange-500 prose-em:text-gray-600 prose-blockquote:border-l-orange-500 prose-blockquote:text-gray-700 prose-ol:list-decimal prose-ul:list-disc prose-li:my-1"
+              />
+            </div>
+          </ScrollRevealItem>
+        </ScrollRevealStagger>
         <ColorPsychology />
+        <ScrollReveal variant="fade-up">
         <div className="w-full flex justify-center">
           <div className="flex flex-col gap-5 w-full max-w-[900px] items-center">
             {imageLoading ? (
@@ -589,6 +615,8 @@ const StandartReportPage = () => {
             </div>
           </div>
         </div>
+        </ScrollReveal>
+        <ScrollReveal variant="blur-up">
         <div className="flex flex-col gap-4 baseShadow rounded-3xl p-5 w-full hover:scale-105 transition-transform duration-300 ease-in-out">
           <p className="text-2xl font-normal">
             Хотите получить более точные советы о том, как лучше общаться с
@@ -625,7 +653,10 @@ const StandartReportPage = () => {
             </form>
           </Form>
         </div>
+        </ScrollReveal>
+        <ScrollReveal variant="scale-up">
         <ReviewForm />
+        </ScrollReveal>
       </div>
     </ProtectedRoute>
   );

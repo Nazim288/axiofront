@@ -11,6 +11,8 @@ import Loader from "@/components/loader/loader";
 import { ProtectedRoute } from "@/components/protectedRoute/ProtectedRoute";
 import { CongratulationsModal } from "@/components/modals/congratulationsModal";
 import { RetakeSurveyModal } from "@/components/modals/retakeSurveyModal";
+import { motion, useReducedMotion } from "framer-motion";
+import { motionEase } from "@/lib/motion";
 
 const Survey = () => {
   const [data, setData] = useState<ISurveyData>();
@@ -29,7 +31,9 @@ const Survey = () => {
   const [showCongratulations, setShowCongratulations] = useState(false);
   const [showRetakeSurvey, setShowRetakeSurvey] = useState(false);
   const [personTestId, setPersonTestId] = useState<number | null>(null);
+  const [entranceQuestion, setEntranceQuestion] = useState(1);
   const stickyPlaqueRef = useRef<HTMLDivElement>(null);
+  const reducedMotion = useReducedMotion();
 
   const getScrollOffset = useCallback(() => {
     const header = document.querySelector("header");
@@ -103,6 +107,7 @@ const Survey = () => {
     setShowCongratulations(false);
     setShowRetakeSurvey(false);
     setPersonTestId(null);
+    setEntranceQuestion(1);
   };
 
   useEffect(() => {
@@ -144,7 +149,9 @@ const Survey = () => {
       return newAnswers;
     });
     // Переход к следующему вопросу
-    setActiveQuestion(questionNumber + 1);
+    const nextQuestion = questionNumber + 1;
+    setActiveQuestion(nextQuestion);
+    setEntranceQuestion(nextQuestion);
     const nextQuestionElement = document.getElementById(
       `question-${questionNumber + 1}`,
     );
@@ -179,6 +186,8 @@ const Survey = () => {
     }
     if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
+      setActiveQuestion(1);
+      setEntranceQuestion(1);
       scrollTo({
         top: 0,
         left: 0,
@@ -239,6 +248,8 @@ const Survey = () => {
 
   useEffect(() => {
     setAnswersStep([]);
+    setActiveQuestion(1);
+    setEntranceQuestion(1);
     switch (currentStep) {
       case 1:
         setQuestions(data?.questionGroups[0].questions || []);
@@ -295,30 +306,45 @@ const Survey = () => {
               <SurveyTitle data={data} step={currentStep} />
             </div>
             <div className="flex flex-col gap-8 md:gap-10 z-10 mt-4 md:mt-0">
-              {questions.map((question) => (
-                <div
-                  key={question.id}
-                  id={`question-${question.position}`}
-                  style={{ scrollMarginTop: "var(--survey-scroll-offset, 120px)" }}
-                  className={`p-4 transition-opacity duration-300 ease-in-out 
-                    ${
-                      allAnswered || question.position === activeQuestion
-                        ? "opacity-100"
-                        : "opacity-50 blur-sm hover:opacity-100 hover:blur-none"
-                    }
-                  `}
-                  onMouseEnter={() => setActiveQuestion(question.position)}
-                >
-                  <Question
+              {questions.map((question) => {
+                const isFocused =
+                  allAnswered || question.position === activeQuestion;
+                const isAnswered = answersStep.some(
+                  (a) => a.questionPosition === question.position,
+                );
+
+                return (
+                  <motion.div
                     key={question.id}
-                    questionText={question.text}
-                    questionNumber={question.position}
-                    onSelect={(answer) =>
-                      handleAnswer(question.position, answer)
-                    }
-                  />
-                </div>
-              ))}
+                    id={`question-${question.position}`}
+                    style={{
+                      scrollMarginTop: "var(--survey-scroll-offset, 120px)",
+                    }}
+                    className="p-4"
+                    initial={false}
+                    animate={{
+                      opacity: isFocused ? 1 : 0.45,
+                      filter: isFocused ? "blur(0px)" : "blur(5px)",
+                      y: isFocused ? 0 : 6,
+                    }}
+                    transition={{
+                      duration: reducedMotion ? 0.15 : 0.45,
+                      ease: motionEase,
+                    }}
+                    onMouseEnter={() => setActiveQuestion(question.position)}
+                  >
+                    <Question
+                      questionText={question.text}
+                      questionNumber={question.position}
+                      animateEntrance={question.position === entranceQuestion}
+                      isAnswered={isAnswered}
+                      onSelect={(answer) =>
+                        handleAnswer(question.position, answer)
+                      }
+                    />
+                  </motion.div>
+                );
+              })}
               <Button
                 variant="default"
                 className="w-full md:w-[80%] mx-auto rounded-[40px] h-[50px] md:h-[60px] text-base md:text-lg my-10 md:my-20"

@@ -10,6 +10,7 @@ import {
   DialogTrigger,
 } from "@/components/ui/dialog";
 import { InfoIcon } from "lucide-react";
+import { ScrollReveal } from "@/components/motion/scroll-reveal";
 
 interface ColorValue {
   name: string;
@@ -31,7 +32,7 @@ const colorValues: ColorValue[] = [
 
 const ColorPsychology = () => {
   return (
-    <div className="flex flex-col gap-2 bg-card rounded-3xl p-5 sm:p-6 border border-primary/30 relative pr-12">
+    <ScrollReveal variant="scale-up" className="flex flex-col gap-2 bg-card rounded-3xl p-5 sm:p-6 border border-primary/30 relative pr-12">
       <Dialog>
         <DialogTrigger>
           <InfoIcon className="absolute top-5 right-5 h-7 w-7 text-green-600" />
@@ -70,7 +71,7 @@ const ColorPsychology = () => {
         ценности. Скачайте изображение, поделитесь им и познакомьте близких с
         нашим сервисом Аксиограм.
       </p>
-    </div>
+    </ScrollReveal>
   );
 };
 
