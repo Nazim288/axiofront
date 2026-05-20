@@ -3,7 +3,6 @@
 import Image from "next/image";
 import { useGenderImage } from "@/hooks/useGenderImage";
 import {
-  ScrollReveal,
   ScrollRevealItem,
   ScrollRevealStagger,
 } from "@/components/motion/scroll-reveal";
@@ -50,53 +49,58 @@ const Matches = ({
   );
 
   return (
-    <ScrollReveal
-      variant="blur-up"
+    <ScrollRevealStagger
       className="flex flex-col gap-2 baseShadow rounded-3xl p-4 sm:p-5 w-full min-w-0 hover:scale-105 transition-transform duration-300 ease-in-out"
+      stagger={0.1}
     >
-      <h1 className="text-center font-semibold text-2xl sm:text-3xl lg:text-4xl">
-        <span className="block text-base sm:text-lg lg:text-xl font-normal">
-          Согласованность ваших ценностей по уровням:
-        </span>
-        {matches}%
-      </h1>
-      <ScrollRevealStagger className="flex flex-col lg:flex-row lg:justify-around gap-6">
-        <ScrollRevealItem variant="fade-right" className="flex flex-col gap-2 w-full min-w-0">
-          <Image
-            src={getImage("report_step_06")}
-            alt="report"
-            width={300}
-            height={300}
-            className={genderImageClass}
-          />
-          <div className="flex flex-col gap-3">
-            <p className="text-center font-semibold text-lg sm:text-xl lg:text-2xl">
-              Я считаю...
-            </p>
-            {renderValueRows(niValues)}
+      <ScrollRevealItem variant="blur-up">
+        <h1 className="text-center font-semibold text-2xl sm:text-3xl lg:text-4xl">
+          <span className="block text-base sm:text-lg lg:text-xl font-normal">
+            Согласованность ваших ценностей по уровням:
+          </span>
+          {matches}%
+        </h1>
+      </ScrollRevealItem>
+      <ScrollRevealItem variant="fade-up">
+        <div className="flex flex-col lg:flex-row lg:justify-around gap-6">
+          <div className="flex flex-col gap-2 w-full min-w-0">
+            <Image
+              src={getImage("report_step_06")}
+              alt="report"
+              width={300}
+              height={300}
+              className={genderImageClass}
+            />
+            <div className="flex flex-col gap-3">
+              <p className="text-center font-semibold text-lg sm:text-xl lg:text-2xl">
+                Я считаю...
+              </p>
+              {renderValueRows(niValues)}
+            </div>
           </div>
-        </ScrollRevealItem>
-
-        <ScrollRevealItem variant="fade-left" className="flex flex-col gap-2 w-full min-w-0">
-          <Image
-            src={getImage("report_step_07")}
-            alt="report"
-            width={300}
-            height={300}
-            className={genderImageClass}
-          />
-          <div className="flex flex-col gap-3">
-            <p className="text-center font-semibold text-lg sm:text-xl lg:text-2xl">
-              От меня ждут...
-            </p>
-            {renderValueRows(ipValues)}
+          <div className="flex flex-col gap-2 w-full min-w-0">
+            <Image
+              src={getImage("report_step_07")}
+              alt="report"
+              width={300}
+              height={300}
+              className={genderImageClass}
+            />
+            <div className="flex flex-col gap-3">
+              <p className="text-center font-semibold text-lg sm:text-xl lg:text-2xl">
+                От меня ждут...
+              </p>
+              {renderValueRows(ipValues)}
+            </div>
           </div>
-        </ScrollRevealItem>
-      </ScrollRevealStagger>
-      <p className="text-xs sm:text-sm text-muted-foreground">
-        *от наиболее важной к наименее важной ценности
-      </p>
-    </ScrollReveal>
+        </div>
+      </ScrollRevealItem>
+      <ScrollRevealItem variant="fade-up">
+        <p className="text-xs sm:text-sm text-muted-foreground">
+          *от наиболее важной к наименее важной ценности
+        </p>
+      </ScrollRevealItem>
+    </ScrollRevealStagger>
   );
 };
 

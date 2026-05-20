@@ -20,9 +20,9 @@ const MainBanner = () => {
   ];
 
   return (
-    <div>
-      <div className="flex flex-col lg:flex-row justify-between gap-8 lg:gap-10">
-        <HeroStagger className="flex flex-col gap-5 flex-1">
+    <div className="w-full">
+      <div className="grid w-full grid-cols-1 items-center gap-8 lg:grid-cols-[minmax(0,1fr)_auto] lg:gap-10">
+        <HeroStagger className="flex min-w-0 w-full flex-col gap-5">
           <HeroRevealItem variant="blur-up">
             <Image
               src={"/icons/mainBannerBadge.svg"}
@@ -33,7 +33,7 @@ const MainBanner = () => {
             />
           </HeroRevealItem>
           <HeroRevealItem variant="fade-up">
-            <div className="line-height-1">
+            <div className="leading-tight">
               <h1 className="text-3xl lg:text-5xl font-semibold text-primary">
                 Познай себя
               </h1>
@@ -42,35 +42,43 @@ const MainBanner = () => {
               </h1>
             </div>
           </HeroRevealItem>
-          <HeroStagger className="text-base sm:text-lg" stagger={0.08}>
-            {checklist.map((text) => (
-              <HeroRevealItem key={text} variant="fade-up">
-                <div className="flex items-center gap-2 pb-4 hover:scale-105 transition-transform duration-300 ease-in-out">
+          <HeroRevealItem variant="fade-up">
+            <ul className="flex flex-col gap-1.5 sm:gap-2">
+              {checklist.map((text) => (
+                <li
+                  key={text}
+                  className="flex items-center gap-2 text-base sm:text-lg hover:scale-105 transition-transform duration-300 ease-in-out"
+                >
                   <Image
                     src={"/icons/checkmark.svg"}
                     alt="checkmark"
                     width={40}
                     height={40}
+                    className="shrink-0"
                   />
                   {text}
-                </div>
-              </HeroRevealItem>
-            ))}
-          </HeroStagger>
+                </li>
+              ))}
+            </ul>
+          </HeroRevealItem>
         </HeroStagger>
-        <HeroReveal variant="fade-left" delay={0.15} className="flex-shrink-0">
+        <HeroReveal
+          variant="fade-left"
+          delay={0.15}
+          className="w-full min-w-0 justify-self-center lg:max-w-[400px] lg:justify-self-end"
+        >
           <Image
             src={getImage("step_01")}
             alt="tariffs"
             width={400}
             height={400}
-            className="w-full h-auto max-w-[min(400px,100%)] mx-auto lg:mx-0"
+            className="h-auto w-full max-w-[min(400px,100%)]"
           />
         </HeroReveal>
       </div>
-      <HeroReveal variant="scale-up" delay={0.35}>
+      <HeroReveal variant="scale-up" delay={0.35} className="w-full">
         <Link href="/survey">
-          <Button variant="default" size="cta" className="w-full mt-5">
+          <Button variant="default" size="cta" className="mt-5 w-full">
             Заполнить опросник (10 минут)
           </Button>
         </Link>

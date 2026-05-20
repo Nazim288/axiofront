@@ -4,8 +4,7 @@ export const motionEase = [0.16, 1, 0.3, 1] as const;
 
 export const motionViewport = {
   once: true,
-  amount: 0.15,
-  margin: "0px 0px -60px 0px",
+  amount: 0,
 } as const;
 
 export type ScrollRevealVariant =
@@ -23,8 +22,8 @@ const hiddenByVariant: Record<
 > = {
   "fade-up": { opacity: 0, y: 48 },
   "fade-down": { opacity: 0, y: -48 },
-  "fade-left": { opacity: 0, y: 40 },
-  "fade-right": { opacity: 0, y: 40 },
+  "fade-left": { opacity: 0, x: -40 },
+  "fade-right": { opacity: 0, x: 40 },
   "scale-up": { opacity: 0, scale: 0.92, y: 24 },
   "blur-up": { opacity: 0, y: 40, filter: "blur(12px)" },
   fade: { opacity: 0 },

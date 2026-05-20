@@ -441,67 +441,69 @@ const StandartReportPage = () => {
         </Button>
         </ScrollReveal>
         <Report />
-        <ScrollReveal variant="blur-up">
-        <div className="flex flex-col gap-3">
-          <p className="text-2xl font-semibold">
-            Вы так думаете (я считаю что..)
-          </p>
-          <ScrollRevealStagger className="flex flex-col gap-5" stagger={0.08}>
-            {niReports.length > 0 ? (
-              niReports.map((item, index) => (
-                <ScrollRevealItem
-                  key={`ni-${item.title}`}
-                  variant={getScrollVariant(index)}
-                >
-                  <StandartReportCard
-                    title={item.title}
-                    description={item.description}
-                    number={index + 1}
-                    priority={item.priority}
-                  />
-                </ScrollRevealItem>
-              ))
-            ) : (
+        <ScrollRevealStagger className="flex flex-col gap-3" stagger={0.08}>
+          <ScrollRevealItem variant="blur-up">
+            <p className="text-2xl font-semibold">
+              Вы так думаете (я считаю что..)
+            </p>
+          </ScrollRevealItem>
+          {niReports.length > 0 ? (
+            niReports.map((item, index) => (
+              <ScrollRevealItem
+                key={`ni-${item.title}`}
+                variant={getScrollVariant(index)}
+              >
+                <StandartReportCard
+                  title={item.title}
+                  description={item.description}
+                  number={index + 1}
+                  priority={item.priority}
+                />
+              </ScrollRevealItem>
+            ))
+          ) : (
+            <ScrollRevealItem variant="fade-up">
               <p>Данные отчета не найдены</p>
-            )}
-          </ScrollRevealStagger>
-        </div>
-        </ScrollReveal>
-        <ScrollReveal variant="fade-up">
-        <div className="flex flex-col gap-3">
-          <p>
-            Теперь давайте копнём немного глубже. То, что вы считаете важным для
-            себя, может не совпадать с тем, что ценят ваши близкие. Поэтому,
-            исходя из ваших ответов, мы составили список тех ценностей, которые,
-            по вашему мнению, важны для вашего окружения. Скорее всего, они
-            ожидают от вас определённого поведения, соответствующего этим
-            ценностям.
-          </p>
-          <p className="text-2xl font-semibold">
-            Вы так делаете (Скорее всего, моё ближнее окружение ожидает, что я
-            буду делать…)
-          </p>
-          <ScrollRevealStagger className="flex flex-col gap-5" stagger={0.08}>
-            {ipReports.length > 0 ? (
-              ipReports.map((item, index) => (
-                <ScrollRevealItem
-                  key={`ip-${item.title}`}
-                  variant={getScrollVariant(index + 2)}
-                >
-                  <StandartReportCard
-                    title={item.title}
-                    description={item.description}
-                    number={index + 1}
-                    priority={item.priority}
-                  />
-                </ScrollRevealItem>
-              ))
-            ) : (
+            </ScrollRevealItem>
+          )}
+        </ScrollRevealStagger>
+        <ScrollRevealStagger className="flex flex-col gap-3" stagger={0.08}>
+          <ScrollRevealItem variant="fade-up">
+            <p>
+              Теперь давайте копнём немного глубже. То, что вы считаете важным для
+              себя, может не совпадать с тем, что ценят ваши близкие. Поэтому,
+              исходя из ваших ответов, мы составили список тех ценностей, которые,
+              по вашему мнению, важны для вашего окружения. Скорее всего, они
+              ожидают от вас определённого поведения, соответствующего этим
+              ценностям.
+            </p>
+          </ScrollRevealItem>
+          <ScrollRevealItem variant="fade-up">
+            <p className="text-2xl font-semibold">
+              Вы так делаете (Скорее всего, моё ближнее окружение ожидает, что я
+              буду делать…)
+            </p>
+          </ScrollRevealItem>
+          {ipReports.length > 0 ? (
+            ipReports.map((item, index) => (
+              <ScrollRevealItem
+                key={`ip-${item.title}`}
+                variant={getScrollVariant(index + 2)}
+              >
+                <StandartReportCard
+                  title={item.title}
+                  description={item.description}
+                  number={index + 1}
+                  priority={item.priority}
+                />
+              </ScrollRevealItem>
+            ))
+          ) : (
+            <ScrollRevealItem variant="fade-up">
               <p>Данные отчета не найдены</p>
-            )}
-          </ScrollRevealStagger>
-        </div>
-        </ScrollReveal>
+            </ScrollRevealItem>
+          )}
+        </ScrollRevealStagger>
         <ScrollReveal variant="fade-left">
         <p>
           Иногда в жизни случается так, что поведение, которого от вас (по

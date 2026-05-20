@@ -1,25 +1,25 @@
 "use client";
 
 import {
-  ScrollRevealItem,
-  ScrollRevealStagger,
+  HeroRevealItem,
+  HeroStagger,
 } from "@/components/motion/scroll-reveal";
 
 const Report = () => {
   return (
-    <ScrollRevealStagger className="flex flex-col gap-4" stagger={0.1}>
-      <ScrollRevealItem variant="blur-up">
+    <HeroStagger className="flex flex-col gap-4" stagger={0.1}>
+      <HeroRevealItem variant="blur-up">
         <h1 className="text-2xl font-bold">Полный отчёт «Мои ценности»</h1>
-      </ScrollRevealItem>
+      </HeroRevealItem>
 
-      <ScrollRevealItem variant="fade-up">
+      <HeroRevealItem variant="fade-up">
         <p>
           — это ваш индивидуальный путь к самопознанию. Вы сделали шаг к лучшему
           пониманию себя!
         </p>
-      </ScrollRevealItem>
+      </HeroRevealItem>
 
-      <ScrollRevealItem variant="fade-right">
+      <HeroRevealItem variant="fade-right">
         <div>
           <p className="italic">Что Вы найдёте в отчёте:</p>
           <ul className="list-disc pl-6 mt-2">
@@ -37,9 +37,9 @@ const Report = () => {
             </li>
           </ul>
         </div>
-      </ScrollRevealItem>
+      </HeroRevealItem>
 
-      <ScrollRevealItem variant="fade-left">
+      <HeroRevealItem variant="fade-left">
         <div>
           <p>
             <strong>Краткая справка:</strong>
@@ -50,9 +50,9 @@ const Report = () => {
             определяют ваши выборы и поведение в жизни.
           </p>
         </div>
-      </ScrollRevealItem>
+      </HeroRevealItem>
 
-      <ScrollRevealItem variant="scale-up">
+      <HeroRevealItem variant="scale-up">
         <div>
           <p>
             <strong>Зачем анализировать свою систему ценностей:</strong>
@@ -73,9 +73,9 @@ const Report = () => {
             </li>
           </ul>
         </div>
-      </ScrollRevealItem>
+      </HeroRevealItem>
 
-      <ScrollRevealItem variant="fade-up">
+      <HeroRevealItem variant="fade-up">
         <div>
           <p>
             <strong>
@@ -92,15 +92,15 @@ const Report = () => {
             которые не по Вашему мнению, соответствуют ожиданиям окружающих людей.
           </p>
         </div>
-      </ScrollRevealItem>
+      </HeroRevealItem>
 
-      <ScrollRevealItem variant="blur-up">
+      <HeroRevealItem variant="blur-up">
         <p>
           <strong>Перейдем к вашим индивидуальным результатам.</strong>
         </p>
         <p>Ваш ранг ценностей по уровню идеалов:</p>
-      </ScrollRevealItem>
-    </ScrollRevealStagger>
+      </HeroRevealItem>
+    </HeroStagger>
   );
 };
 
