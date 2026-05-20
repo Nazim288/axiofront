@@ -19,7 +19,7 @@ const Survey = () => {
   const [isLoading, setIsLoading] = useState(true);
 
   const [questions, setQuestions] = useState<IQuestion[]>([]);
-  const [activeQuestion, setActiveQuestion] = useState(1);
+  const [activeQuestion, setActiveQuestion] = useState(0);
   const [allAnswered, setAllAnswered] = useState(false);
   const [currentStep, setCurrentStep] = useState(1);
   const [answers, setAnswers] = useState<
@@ -31,7 +31,7 @@ const Survey = () => {
   const [showCongratulations, setShowCongratulations] = useState(false);
   const [showRetakeSurvey, setShowRetakeSurvey] = useState(false);
   const [personTestId, setPersonTestId] = useState<number | null>(null);
-  const [entranceQuestion, setEntranceQuestion] = useState(1);
+  const [entranceQuestion, setEntranceQuestion] = useState(0);
   const stickyPlaqueRef = useRef<HTMLDivElement>(null);
   const reducedMotion = useReducedMotion();
 
@@ -99,13 +99,14 @@ const Survey = () => {
     setCurrentStep(1);
     setAnswers([]);
     setAnswersStep([]);
-    setActiveQuestion(1);
+    const firstPosition = data?.questionGroups[0]?.questions[0]?.position ?? 0;
+    setActiveQuestion(firstPosition);
     setAllAnswered(false);
     setQuestions(data?.questionGroups[0].questions || []);
     setShowCongratulations(false);
     setShowRetakeSurvey(false);
     setPersonTestId(null);
-    setEntranceQuestion(1);
+    setEntranceQuestion(firstPosition);
   };
 
   useEffect(() => {
@@ -184,8 +185,6 @@ const Survey = () => {
     }
     if (currentStep < 3) {
       setCurrentStep(currentStep + 1);
-      setActiveQuestion(1);
-      setEntranceQuestion(1);
       scrollTo({
         top: 0,
         left: 0,
@@ -245,23 +244,19 @@ const Survey = () => {
   }, [answersStep, questions, currentStep]);
 
   useEffect(() => {
+    if (!data) return;
+
+    const stepQuestions = data.questionGroups[currentStep - 1]?.questions ?? [];
+    const firstPosition = stepQuestions[0]?.position ?? 0;
+
     setAnswersStep([]);
-    setActiveQuestion(1);
-    setEntranceQuestion(1);
-    switch (currentStep) {
-      case 1:
-        setQuestions(data?.questionGroups[0].questions || []);
-        break;
-      case 2:
-        setQuestions(data?.questionGroups[1].questions || []);
-        break;
-      case 3:
-        setQuestions(data?.questionGroups[2].questions || []);
-        break;
-    }
+    setAllAnswered(false);
+    setQuestions(stepQuestions);
+    setActiveQuestion(firstPosition);
+    setEntranceQuestion(firstPosition);
     // Сохранение текущего шага в localStorage при его изменении
     // localStorage.setItem("currentStep", currentStep.toString());
-  }, [currentStep, data, questions]);
+  }, [currentStep, data]);
 
   useEffect(() => {
     setData(surveyData);

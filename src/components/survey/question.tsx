@@ -110,7 +110,6 @@ const Question: React.FC<QuestionProps> = ({
               <motion.label
                 key={index}
                 className="inline-flex items-center"
-                title={`Значение ${value}`}
                 variants={surveyCircleItem(!!reducedMotion)}
               >
                 <input
