@@ -39,7 +39,7 @@ export function ScrollReveal({
       viewport={motionViewport}
       variants={variants}
       transition={{ delay }}
-      className={cn(className)}
+      className={cn("min-w-0 max-w-full", className)}
       {...props}
     >
       {children}
@@ -68,7 +68,7 @@ export function ScrollRevealStagger({
       whileInView="visible"
       viewport={motionViewport}
       variants={staggerContainerVariants(!!reducedMotion, stagger, delayChildren)}
-      className={cn(className)}
+      className={cn("min-w-0 max-w-full", className)}
       {...props}
     >
       {children}
@@ -91,7 +91,11 @@ export function ScrollRevealItem({
   const variants = getRevealVariants(variant, !!reducedMotion);
 
   return (
-    <motion.div variants={variants} className={cn(className)} {...props}>
+    <motion.div
+      variants={variants}
+      className={cn("min-w-0 max-w-full", className)}
+      {...props}
+    >
       {children}
     </motion.div>
   );
@@ -119,7 +123,7 @@ export function HeroReveal({
       animate="visible"
       variants={variants}
       transition={{ delay }}
-      className={cn(className)}
+      className={cn("min-w-0 max-w-full", className)}
       {...props}
     >
       {children}
@@ -145,7 +149,7 @@ export function HeroStagger({
       initial="hidden"
       animate="visible"
       variants={staggerContainerVariants(!!reducedMotion, stagger)}
-      className={cn(className)}
+      className={cn("min-w-0 max-w-full", className)}
       {...props}
     >
       {children}
@@ -163,7 +167,11 @@ export function HeroRevealItem({
   const variants = getRevealVariants(variant, !!reducedMotion);
 
   return (
-    <motion.div variants={variants} className={cn(className)} {...props}>
+    <motion.div
+      variants={variants}
+      className={cn("min-w-0 max-w-full", className)}
+      {...props}
+    >
       {children}
     </motion.div>
   );

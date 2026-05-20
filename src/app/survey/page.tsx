@@ -87,12 +87,10 @@ const Survey = () => {
     }
 
     window.addEventListener("resize", syncStickyOffsets);
-    window.addEventListener("scroll", syncStickyOffsets, { passive: true });
 
     return () => {
       resizeObserver.disconnect();
       window.removeEventListener("resize", syncStickyOffsets);
-      window.removeEventListener("scroll", syncStickyOffsets);
     };
   }, [currentStep, data, isLoading, syncScrollOffset]);
 
@@ -301,7 +299,7 @@ const Survey = () => {
           <>
             <div
               ref={stickyPlaqueRef}
-              className="sticky top-[var(--survey-header-offset,50px)] z-20 h-auto md:h-[271px] py-3 bg-background"
+              className="sticky top-[var(--survey-header-offset,50px)] z-20 h-auto py-3 bg-background"
             >
               <SurveyTitle data={data} step={currentStep} />
             </div>
@@ -332,12 +330,14 @@ const Survey = () => {
                       ease: motionEase,
                     }}
                     onMouseEnter={() => setActiveQuestion(question.position)}
+                    onClick={() => setActiveQuestion(question.position)}
                   >
                     <Question
                       questionText={question.text}
                       questionNumber={question.position}
                       animateEntrance={question.position === entranceQuestion}
                       isAnswered={isAnswered}
+                      isFocused={isFocused}
                       onSelect={(answer) =>
                         handleAnswer(question.position, answer)
                       }

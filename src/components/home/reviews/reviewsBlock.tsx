@@ -121,7 +121,7 @@ const ReviewsBlock = ({ id }: { id: string }) => {
           <p className="text-red-500">{error}</p>
         </div>
       ) : (
-        <ScrollReveal variant="fade-up">
+        <ScrollReveal variant="fade-up" className="relative z-10">
         <Carousel className="w-full">
           <CarouselContent className="-ml-1">
             {displayReviews.map((review, index) => (
@@ -137,12 +137,12 @@ const ReviewsBlock = ({ id }: { id: string }) => {
               </CarouselItem>
             ))}
           </CarouselContent>
-          <CarouselPrevious className="top-auto bottom-[-44px] left-1/2 -translate-x-[calc(100%+8px)] translate-y-0" />
-          <CarouselNext className="top-auto bottom-[-44px] left-1/2 right-auto translate-x-[8px] translate-y-0" />
+          <CarouselPrevious className="z-20 top-auto bottom-[-44px] left-1/2 -translate-x-[calc(100%+8px)] translate-y-0" />
+          <CarouselNext className="z-20 top-auto bottom-[-44px] left-1/2 right-auto translate-x-[8px] translate-y-0" />
         </Carousel>
         </ScrollReveal>
       )}
-      <ScrollReveal variant="scale-up" delay={0.1}>
+      <ScrollReveal variant="scale-up" delay={0.1} className="relative z-0">
       <Link href="/survey" className="mt-8 lg:mt-12 block">
         <Button variant="default" size="cta" className="w-full">
           Заполнить опросник (10 минут)

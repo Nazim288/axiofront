@@ -23,8 +23,8 @@ const hiddenByVariant: Record<
 > = {
   "fade-up": { opacity: 0, y: 48 },
   "fade-down": { opacity: 0, y: -48 },
-  "fade-left": { opacity: 0, x: 56 },
-  "fade-right": { opacity: 0, x: -56 },
+  "fade-left": { opacity: 0, y: 40 },
+  "fade-right": { opacity: 0, y: 40 },
   "scale-up": { opacity: 0, scale: 0.92, y: 24 },
   "blur-up": { opacity: 0, y: 40, filter: "blur(12px)" },
   fade: { opacity: 0 },

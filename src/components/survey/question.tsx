@@ -15,6 +15,7 @@ interface QuestionProps {
   onSelect: (value: number) => void;
   animateEntrance?: boolean;
   isAnswered?: boolean;
+  isFocused?: boolean;
 }
 
 const Question: React.FC<QuestionProps> = ({
@@ -23,6 +24,7 @@ const Question: React.FC<QuestionProps> = ({
   onSelect,
   animateEntrance = false,
   isAnswered = false,
+  isFocused = true,
 }) => {
   const [selectedOption, setSelectedOption] = useState<number | null>(null);
   const circleControls = useAnimation();
@@ -60,6 +62,8 @@ const Question: React.FC<QuestionProps> = ({
   }, [animateEntrance, isAnswered, circleControls]);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (!isFocused) return;
+
     const value = parseInt(event.target.value, 10);
     setSelectedOption(value);
     onSelect(value);
@@ -93,7 +97,7 @@ const Question: React.FC<QuestionProps> = ({
       </motion.h3>
       <div className="w-full px-2 md:px-0 md:w-[80%]">
         <motion.div
-          className="flex justify-between items-center w-full"
+          className={`flex justify-between items-center w-full ${!isFocused ? "pointer-events-none" : ""}`}
           variants={containerVariants}
           initial={isAnswered ? "visible" : "dimmed"}
           animate={circleControls}
@@ -114,16 +118,21 @@ const Question: React.FC<QuestionProps> = ({
                   className="hidden"
                   name={`question-${questionNumber}`}
                   value={value}
+                  disabled={!isFocused}
                   onChange={handleChange}
                 />
                 <motion.span
                   className={`w-[28px] h-[28px] sm:w-[35px] sm:h-[35px] md:w-[50px] md:h-[50px] lg:w-[60px] lg:h-[60px] 
                     inline-block rounded-full border-2 border-black shadow-inner relative 
-                    cursor-pointer
+                    ${isFocused ? "cursor-pointer" : "cursor-default"}
                     ${isSelected ? "bg-primary" : "bg-transparent"}
                   `}
-                  whileHover={reducedMotion ? undefined : { scale: 1.1 }}
-                  whileTap={reducedMotion ? undefined : { scale: 0.95 }}
+                  whileHover={
+                    isFocused && !reducedMotion ? { scale: 1.1 } : undefined
+                  }
+                  whileTap={
+                    isFocused && !reducedMotion ? { scale: 0.95 } : undefined
+                  }
                   animate={
                     isSelected && !reducedMotion
                       ? { scale: 1.08 }

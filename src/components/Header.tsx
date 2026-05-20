@@ -146,7 +146,7 @@ const Header: React.FC = () => {
   };
 
   return (
-    <header className="sticky top-0 z-40 border-b border-border/60 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/80">
+    <header className="sticky top-0 z-40 border-b border-border/60 bg-white">
       <div className="mx-auto flex w-full max-w-none items-center justify-between gap-4 xl:gap-8 px-1 py-3 sm:px-2 lg:px-4">
         <div className="flex items-center gap-2 shrink-0">
           <Link href="/" onClick={() => setIsMenuOpen(false)}>
@@ -199,7 +199,7 @@ const Header: React.FC = () => {
       </div>
 
       {isMenuOpen && (
-        <div className="xl:hidden absolute top-full left-0 right-0 bg-background border-b border-border shadow-md z-30">
+        <div className="xl:hidden absolute top-full left-0 right-0 border-b border-border/60 bg-white shadow-md z-30">
           <nav className="p-4 sm:px-6">
             <ul className="flex flex-col gap-4">
               {navigationItems.map((item) => (
