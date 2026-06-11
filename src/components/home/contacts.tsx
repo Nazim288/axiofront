@@ -1,6 +1,7 @@
 "use client";
 
 import { ScrollReveal } from "@/components/motion/scroll-reveal";
+import Link from "next/link";
 
 const Contacts = ({ id }: { id: string }) => {
   return (
@@ -14,17 +15,45 @@ const Contacts = ({ id }: { id: string }) => {
             Обратная связь
           </h1>
           <p className="font-semibold">
-            Для записи на вебинар и иным предложениям или комментариям пишите нам
-            на email: AG@Tarbastaev.ru
+            Для записи на вебинар и иным предложениям или комментариям пишите
+            нам на email: AG@Tarbastaev.ru
           </p>
         </div>
       </ScrollReveal>
       <ScrollReveal variant="fade-left" className="flex-1">
         <div>
           <h1 className="text-3xl lg:text-4xl font-semibold mb-4">Контакты</h1>
-          <p>Адрес</p>
-          <p>+7 (915) 293 — 52-37</p>
-          <p>AG@Tarbastaev.ru</p>
+          <p>
+            <Link
+              href="https://vk.com/axiogram"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "underline", color: "blue" }}
+            >
+              {" "}
+              Оффициальное сообщество в ВКонтакте
+            </Link>
+          </p>
+          <p>
+            <Link
+              href="tel:+79152935237"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "underline", color: "blue" }}
+            >
+              +7 (915) 293 52 37
+            </Link>
+          </p>
+          <p>
+            <Link
+              href="mailto:AG@Tarbastaev.ru"
+              target="_blank"
+              rel="noopener noreferrer"
+              style={{ textDecoration: "underline", color: "blue" }}
+            >
+              AG@Tarbastaev.ru
+            </Link>
+          </p>
         </div>
       </ScrollReveal>
     </div>

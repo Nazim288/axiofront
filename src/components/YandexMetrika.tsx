@@ -1,7 +1,8 @@
 import Script from "next/script";
 
-const COUNTER_ID = 109033511;
-const TAG_SRC = `https://mc.yandex.ru/metrika/tag.js?id=${COUNTER_ID}`;
+import { YANDEX_METRIKA_COUNTER_ID } from "@/lib/yandexMetrika";
+
+const TAG_SRC = `https://mc.yandex.ru/metrika/tag.js?id=${YANDEX_METRIKA_COUNTER_ID}`;
 
 export function YandexMetrika() {
   return (
@@ -18,7 +19,7 @@ export function YandexMetrika() {
   k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a)
 })(window, document, 'script', '${TAG_SRC}', 'ym');
 
-ym(${COUNTER_ID}, 'init', {
+ym(${YANDEX_METRIKA_COUNTER_ID}, 'init', {
   ssr: true,
   webvisor: true,
   clickmap: true,
@@ -35,7 +36,7 @@ ym(${COUNTER_ID}, 'init', {
         <div>
           {/* eslint-disable-next-line @next/next/no-img-element -- Yandex noscript pixel */}
           <img
-            src={`https://mc.yandex.ru/watch/${COUNTER_ID}`}
+            src={`https://mc.yandex.ru/watch/${YANDEX_METRIKA_COUNTER_ID}`}
             style={{ position: "absolute", left: "-9999px" }}
             alt=""
           />
