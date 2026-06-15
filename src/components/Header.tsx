@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { SignInModal } from "./modals/signInModal";
@@ -12,6 +11,7 @@ import { useUser } from "@/contexts/UserContext";
 import { useGender } from "@/contexts/GenderContext";
 import { logoutUser } from "@/api/auth";
 import { Gender } from "@/lib/imageUtils";
+import { LogoGif } from "@/components/LogoGif";
 
 const Header: React.FC = () => {
   const router = useRouter();
@@ -88,9 +88,7 @@ const Header: React.FC = () => {
 
     return (
       <>
-        <SignInModal
-          triggerClassName={buttonClassName}
-        />
+        <SignInModal triggerClassName={buttonClassName} />
         <Link href="/signUp" onClick={onAction} className={linkClassName}>
           <Button variant="outline" className={buttonClassName}>
             Регистрация
@@ -150,20 +148,11 @@ const Header: React.FC = () => {
       <div className="mx-auto flex w-full max-w-none items-center justify-between gap-4 xl:gap-8 px-1 py-3 sm:px-2 lg:px-4">
         <div className="flex items-center gap-2 shrink-0">
           <Link href="/" onClick={() => setIsMenuOpen(false)}>
-            <div className="flex gap-3 sm:gap-4 justify-center items-center shrink-0">
-              <Image
-                src={"/icons/header.png"}
-                alt="Logo"
-                width={44}
-                height={44}
-                className="w-8 h-8 sm:w-9 sm:h-9 xl:w-10 xl:h-10"
-              />
-              <Image
-                src={"/icons/axio.png"}
-                alt="Logo"
-                width={170}
-                height={40}
-                className="w-[105px] sm:w-[120px] xl:w-[140px] h-auto"
+            <div className="flex justify-center items-center shrink-0">
+              <LogoGif
+                className="h-8 sm:h-9 xl:h-10 w-auto"
+                fallbackWidth={170}
+                fallbackHeight={40}
               />
             </div>
           </Link>
