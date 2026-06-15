@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useState } from "react";
-import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { ChevronDown, ChevronUp } from "lucide-react";
+import { LogoGif } from "@/components/LogoGif";
 
 const Footer: React.FC = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -33,19 +33,11 @@ const Footer: React.FC = () => {
       <div className="mx-auto flex w-full max-w-none flex-col gap-4 px-1 py-6 sm:px-2 lg:flex-row lg:items-center lg:justify-between lg:gap-8 lg:px-4">
         <div className="flex items-center gap-2">
           <Link href="/">
-            <div className="flex gap-4 justify-center items-center">
-              <Image
-                src={"/icons/header.png"}
-                alt="Logo"
-                width={40}
-                height={40}
-              />
-              <Image
-                src={"/icons/axio.png"}
-                alt="Logo"
-                width={130}
-                height={40}
-                style={{ height: 30 }}
+            <div className="flex justify-center items-center">
+              <LogoGif
+                className="h-8 sm:h-9 xl:h-10 w-auto"
+                fallbackWidth={130}
+                fallbackHeight={40}
               />
             </div>
           </Link>
@@ -56,7 +48,11 @@ const Footer: React.FC = () => {
           <ul className="flex flex-col items-end gap-1">
             {footerLinks.map((link) => (
               <li key={link.id}>
-                <Button variant="link" className="text-black h-auto p-0" asChild>
+                <Button
+                  variant="link"
+                  className="text-black h-auto p-0"
+                  asChild
+                >
                   <Link href={link.href}>{link.text}</Link>
                 </Button>
               </li>
