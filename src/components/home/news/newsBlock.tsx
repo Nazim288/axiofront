@@ -12,16 +12,19 @@ import {
 
 const NEWS_MOCKS = [
   {
-    date: "07.06.2026",
+    date: "09.06.2026",
+    title: "Знакомство",
+    link: "https://vkvideo.ru/video-239162536_456239024",
+  },
+  {
+    date: "09.06.2026",
+    title: "О продукте Аксиограм",
+    link: "https://vkvideo.ru/video-239162536_456239025",
+  },
+  {
+    date: "09.06.2026",
     title: "Что такое ценности и зачем их измерять",
-  },
-  {
-    date: "14.06.2026",
-    title: "Уровни ценностей и что нужно понимать",
-  },
-  {
-    date: "21.06.2026",
-    title: "Конфликт ценностей - что делать",
+    link: "https://vkvideo.ru/video-239162536_456239026",
   },
   {
     date: "28.06.2026",
@@ -37,17 +40,20 @@ const NewsBlock = ({ id }: { id: string }) => {
       </ScrollReveal>
 
       <ScrollReveal variant="scale-up" delay={0.08}>
-      <Carousel className="w-full">
-        <CarouselContent className="-ml-1">
-          {NEWS_MOCKS.map((item, index) => (
-            <CarouselItem key={index} className="p-5 md:basis-1/2 lg:basis-1/3">
-              <Card date={item.date} title={item.title} />
-            </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious className="top-auto bottom-[-44px] left-1/2 -translate-x-[calc(100%+8px)] translate-y-0" />
-        <CarouselNext className="top-auto bottom-[-44px] left-1/2 right-auto translate-x-[8px] translate-y-0" />
-      </Carousel>
+        <Carousel className="w-full">
+          <CarouselContent className="-ml-1">
+            {NEWS_MOCKS.map((item, index) => (
+              <CarouselItem
+                key={index}
+                className="p-5 md:basis-1/2 lg:basis-1/3"
+              >
+                <Card date={item.date} title={item.title} link={item.link} />
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious className="top-auto bottom-[-44px] left-1/2 -translate-x-[calc(100%+8px)] translate-y-0" />
+          <CarouselNext className="top-auto bottom-[-44px] left-1/2 right-auto translate-x-[8px] translate-y-0" />
+        </Carousel>
       </ScrollReveal>
     </div>
   );

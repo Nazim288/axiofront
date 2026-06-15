@@ -25,6 +25,10 @@ import { toast } from "sonner";
 import axios from "axios";
 import { EmailVerificationModal } from "@/components/modals/emailVerificationModal";
 import Link from "next/link";
+import {
+  reachYandexMetrikaGoal,
+  YANDEX_METRIKA_GOALS,
+} from "@/lib/yandexMetrika";
 
 const formSchema = z
   .object({
@@ -99,6 +103,7 @@ const SignUp = () => {
       });
 
       setIsSuccess(true);
+      reachYandexMetrikaGoal(YANDEX_METRIKA_GOALS.USER_REGISTRATION);
       toast.success("Регистрация успешна!");
 
       // Вызываем emailConfirmSend для отправки кода верификации
@@ -373,9 +378,22 @@ const SignUp = () => {
                 }
                 className="mt-1 h-5 w-5 shrink-0"
               />
-              <span className="text-sm sm:text-base text-primary underline underline-offset-2">
-                <Link href="/terms-of-use" target="_blank">
-                  Согласен (-на) с правилами пользования сайтом
+              <span className="text-sm sm:text-base text-primary">
+                Согласен (-на) с{" "}
+                <Link
+                  href="/terms-of-use"
+                  target="_blank"
+                  className="underline underline-offset-2"
+                >
+                  правилами пользования сайтом
+                </Link>{" "}
+                и{" "}
+                <Link
+                  href="/privacy-policy"
+                  target="_blank"
+                  className="underline underline-offset-2"
+                >
+                  Политикой конфиденциальности
                 </Link>
                 <span className="text-red-500">*</span>
               </span>
