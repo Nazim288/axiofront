@@ -150,7 +150,7 @@ const Header: React.FC = () => {
           <Link href="/" onClick={() => setIsMenuOpen(false)}>
             <div className="flex justify-center items-center shrink-0">
               <LogoGif
-                className="h-8 sm:h-9 xl:h-10 w-auto"
+                className="h-9 sm:h-9 xl:h-10 w-auto"
                 fallbackWidth={170}
                 fallbackHeight={40}
               />

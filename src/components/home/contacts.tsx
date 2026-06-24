@@ -28,18 +28,15 @@ const Contacts = ({ id }: { id: string }) => {
               href="https://vk.com/axiogram"
               target="_blank"
               rel="noopener noreferrer"
-              style={{ textDecoration: "underline", color: "blue" }}
+              className="text-primary underline"
             >
-              {" "}
-              Оффициальное сообщество в ВКонтакте
+              Официальное сообщество в ВКонтакте
             </Link>
           </p>
           <p>
             <Link
               href="tel:+79152935237"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "underline", color: "blue" }}
+              className="text-primary underline"
             >
               +7 (915) 293 52 37
             </Link>
@@ -47,9 +44,7 @@ const Contacts = ({ id }: { id: string }) => {
           <p>
             <Link
               href="mailto:AG@Tarbastaev.ru"
-              target="_blank"
-              rel="noopener noreferrer"
-              style={{ textDecoration: "underline", color: "blue" }}
+              className="text-primary underline"
             >
               AG@Tarbastaev.ru
             </Link>
