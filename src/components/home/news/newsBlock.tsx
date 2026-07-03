@@ -32,8 +32,9 @@ const NEWS_MOCKS = [
     link: "https://vkvideo.ru/video-239162536_456239028?list=33aa3735db3d3780be&t=1m29s",
   },
   {
-    date: "21.06.2026",
+    date: "27.06.2026",
     title: "Конфликт ценностей. Что с этим делать",
+    link: "https://vkvideo.ru/video-239162536_456239040?list=d8470b458002efaeec",
   },
 ];
 
