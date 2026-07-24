@@ -22,6 +22,7 @@ jobs:
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           script_stop: true
+          command_timeout: 20m
           script: |
             set -e
 
@@ -38,4 +39,17 @@ jobs:
             systemctl restart axiofront
             systemctl is-active --quiet axiofront
 
-            curl --fail --silent --show-error http://127.0.0.1:3000 > /dev/null
+            for i in {1..30}; do
+              if curl --fail --silent http://127.0.0.1:3000 > /dev/null; then
+                echo "Production frontend is ready"
+                exit 0
+              fi
+
+              echo "Waiting for production frontend... attempt $i/30"
+              sleep 2
+            done
+
+            echo "Production frontend failed to start"
+            systemctl status axiofront --no-pager
+            journalctl -u axiofront -n 100 --no-pager
+            exit 1

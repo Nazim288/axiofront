@@ -6,6 +6,10 @@ on:
       - dev
   workflow_dispatch:
 
+concurrency:
+  group: deploy-test-frontend
+  cancel-in-progress: true
+
 jobs:
   deploy:
     runs-on: ubuntu-latest
@@ -17,10 +21,13 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
+          command_timeout: 20m
           script: |
             set -e
 
             cd /opt/axiofront-test
+
             git fetch origin
             git checkout dev
             git reset --hard origin/dev
@@ -30,3 +37,19 @@ jobs:
             npm run build
 
             systemctl restart axiofront-test
+            systemctl is-active --quiet axiofront-test
+
+            for i in {1..30}; do
+              if curl --fail --silent http://127.0.0.1:3001 > /dev/null; then
+                echo "Test frontend is ready"
+                exit 0
+              fi
+
+              echo "Waiting for test frontend... attempt $i/30"
+              sleep 2
+            done
+
+            echo "Test frontend failed to start"
+            systemctl status axiofront-test --no-pager
+            journalctl -u axiofront-test -n 100 --no-pager
+            exit 1
