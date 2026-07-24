@@ -1,7 +1,14 @@
 name: Deploy PROD Frontend
 
 on:
+  push:
+    branches:
+      - main
   workflow_dispatch:
+
+concurrency:
+  group: deploy-prod-frontend
+  cancel-in-progress: true
 
 jobs:
   deploy:
@@ -14,11 +21,21 @@ jobs:
           host: ${{ secrets.SERVER_HOST }}
           username: ${{ secrets.SERVER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
+          script_stop: true
           script: |
+            set -e
+
             cd /opt/axiofront
+
             git fetch origin
             git checkout main
-            git pull origin main
-            npm install
+            git reset --hard origin/main
+            git clean -fd
+
+            npm ci
             npm run build
+
             systemctl restart axiofront
+            systemctl is-active --quiet axiofront
+
+            curl --fail --silent --show-error http://127.0.0.1:3000 > /dev/null
