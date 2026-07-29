@@ -36,7 +36,7 @@ const TARIFFS = [
           )
         }
       >
-        2900 ₽
+        990 ₽
       </Button>
     ),
   },
