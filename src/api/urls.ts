@@ -5,6 +5,7 @@ export const Urls = {
     getResult: (id: string) => `/api/v1/person-test/result/${id}`,
     getResultShort: "/api/v1/person-test/result/short",
     pay: "/api/v1/payments/initiate",
+    paymentStatus: (paymentId: number) => `/api/v1/payments/${paymentId}`,
     setReviews: "/api/v1/reviews",
     getReviews: "/api/v1/reviews/target",
     getReviewsToModeration: "/api/v1/reviews/check",

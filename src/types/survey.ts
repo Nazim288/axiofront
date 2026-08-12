@@ -78,12 +78,7 @@ export interface ITestResultShort {
 }
 
 export interface IPayBody {
-  userId?: number;
   personTestId: number;
-  testId?: number;
-  amount: number;
-  paymentMethod: "CREDIT_CARD";
-  currency: string;
 }
 
 export interface IPayResponse {
