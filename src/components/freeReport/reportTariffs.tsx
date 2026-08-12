@@ -7,6 +7,7 @@ import {
 } from "@/components/motion/scroll-reveal";
 import { Button } from "@/components/ui/button";
 import { useGenderImage } from "@/hooks/useGenderImage";
+import { getTrustedPaymentUrl } from "@/lib/payment";
 import axios from "axios";
 import Image from "next/image";
 import { useParams } from "next/navigation";
@@ -47,11 +48,7 @@ const ReportTariffs = () => {
     try {
       const response = await pay({ personTestId });
       const { paymentId, paymentUrl } = response.data;
-      const checkoutUrl = new URL(paymentUrl);
-
-      if (!["http:", "https:"].includes(checkoutUrl.protocol)) {
-        throw new Error("Некорректная ссылка на оплату");
-      }
+      const checkoutUrl = getTrustedPaymentUrl(paymentUrl);
 
       localStorage.setItem(
         "lastPayment",

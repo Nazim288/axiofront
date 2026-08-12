@@ -2,6 +2,7 @@
 
 import { pay } from "@/api/survey";
 import { Button } from "@/components/ui/button";
+import { getTrustedPaymentUrl } from "@/lib/payment";
 import axios from "axios";
 import { XCircle } from "lucide-react";
 import Link from "next/link";
@@ -37,11 +38,7 @@ const PaymentCancelPage = () => {
     try {
       const response = await pay({ personTestId });
       const { paymentId, paymentUrl } = response.data;
-      const checkoutUrl = new URL(paymentUrl);
-
-      if (!["http:", "https:"].includes(checkoutUrl.protocol)) {
-        throw new Error("Некорректная ссылка на оплату");
-      }
+      const checkoutUrl = getTrustedPaymentUrl(paymentUrl);
 
       localStorage.setItem(
         "lastPayment",
