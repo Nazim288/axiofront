@@ -21,6 +21,7 @@ import {
   ScrollRevealStagger,
 } from "@/components/motion/scroll-reveal";
 import { getScrollVariant } from "@/lib/motion";
+import { getRegisteredUsersCount } from "@/api/admin";
 
 const Survey = () => {
   const router = useRouter();
@@ -34,6 +35,11 @@ const Survey = () => {
   const [userDataLoading, setUserDataLoading] = useState(true);
   const [apiReviews, setApiReviews] = useState<Review[]>([]);
   const [errorReviews, setErrorReviews] = useState<string>("");
+  const [registeredUsersCount, setRegisteredUsersCount] = useState<
+    number | null
+  >(null);
+  const [isUsersCountLoading, setIsUsersCountLoading] = useState(false);
+  const [usersCountError, setUsersCountError] = useState("");
 
   const { getImage } = useGenderImage();
 
@@ -215,6 +221,36 @@ const Survey = () => {
     loadReviews();
   }, [isAdmin, userDataLoading]);
 
+  useEffect(() => {
+    if (userDataLoading) return;
+
+    if (!isAdmin) {
+      setRegisteredUsersCount(null);
+      setUsersCountError("");
+      return;
+    }
+
+    const loadRegisteredUsersCount = async () => {
+      setIsUsersCountLoading(true);
+      setUsersCountError("");
+
+      try {
+        const response = await getRegisteredUsersCount();
+        setRegisteredUsersCount(response.data.count);
+      } catch (error) {
+        console.error(
+          "Ошибка при загрузке количества зарегистрированных пользователей:",
+          error,
+        );
+        setUsersCountError("Не удалось загрузить количество пользователей");
+      } finally {
+        setIsUsersCountLoading(false);
+      }
+    };
+
+    loadRegisteredUsersCount();
+  }, [isAdmin, userDataLoading]);
+
   return (
     <ProtectedRoute>
       <div className="flex flex-col">
@@ -223,70 +259,80 @@ const Survey = () => {
             <h1 className="text-4xl sm:text-5xl font-bold">Профиль</h1>
           </HeroRevealItem>
           <HeroRevealItem variant="fade-up">
-          {userDataLoading ? (
-            <p className="text-xl text-gray-400 mt-2">Загрузка...</p>
-          ) : userLogin ? (
-            <p className="text-xl text-gray-600 mt-2 font-bold">@{userLogin}</p>
-          ) : (
-            <p className="text-xl text-red-500 mt-2">Данные недоступны</p>
-          )}
+            {userDataLoading ? (
+              <p className="text-xl text-gray-400 mt-2">Загрузка...</p>
+            ) : userLogin ? (
+              <p className="text-xl text-gray-600 mt-2 font-bold">
+                @{userLogin}
+              </p>
+            ) : (
+              <p className="text-xl text-red-500 mt-2">Данные недоступны</p>
+            )}
           </HeroRevealItem>
         </HeroStagger>
 
-        <ScrollReveal variant="fade-up" className="flex flex-col gap-4 mt-10 lg:mt-14">
+        <ScrollReveal
+          variant="fade-up"
+          className="flex flex-col gap-4 mt-10 lg:mt-14"
+        >
           <h2 className=" text-3xl font-semibold mb-5">Отчеты</h2>
           <ScrollReveal variant="scale-up" delay={0.08}>
-          <div
-            onClick={
-              dataLoading || !shortResult ? undefined : handleFreeReportClick
-            }
-            className={`relative flex flex-col gap-2 baseShadow rounded-3xl p-5 sm:p-6 w-full transition-transform duration-300 ease-in-out ${
-              // Желтый бордер и фон только для непрочитанных отчетов
-              shortResult && !shortResult.read
-                ? "border border-yellow-500 bg-yellow-50"
-                : "border border-gray-200 bg-white"
-            } ${
-              dataLoading || !shortResult
-                ? "cursor-not-allowed opacity-50"
-                : "hover:scale-105 cursor-pointer"
-            }`}
-          >
-            <p className="text-xl font-semibold">Мои ценности</p>
-            <p className="text-xl font-light">
-              {shortResult?.paid ? "Полный" : "Краткий"}
-            </p>
-            {dataLoading ? (
-              <div className="text-xl font-light text-gray-400">
-                Загрузка...
-              </div>
-            ) : shortResult ? (
-              <div className="flex flex-col gap-1">
-                <p className="text-xl font-light">
-                  {new Date(shortResult.finishTime).toLocaleDateString("ru-RU")}
-                </p>
-              </div>
-            ) : (
-              <p className="text-xl font-light text-red-500">
-                Данные недоступны
+            <div
+              onClick={
+                dataLoading || !shortResult ? undefined : handleFreeReportClick
+              }
+              className={`relative flex flex-col gap-2 baseShadow rounded-3xl p-5 sm:p-6 w-full transition-transform duration-300 ease-in-out ${
+                // Желтый бордер и фон только для непрочитанных отчетов
+                shortResult && !shortResult.read
+                  ? "border border-yellow-500 bg-yellow-50"
+                  : "border border-gray-200 bg-white"
+              } ${
+                dataLoading || !shortResult
+                  ? "cursor-not-allowed opacity-50"
+                  : "hover:scale-105 cursor-pointer"
+              }`}
+            >
+              <p className="text-xl font-semibold">Мои ценности</p>
+              <p className="text-xl font-light">
+                {shortResult?.paid ? "Полный" : "Краткий"}
               </p>
-            )}
-            {isLoading ? (
-              <div className="absolute right-5 bottom-5 w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
-            ) : (
-              <Image
-                src={"/icons/profileArrow.svg"}
-                alt="arrow right"
-                width={24}
-                height={24}
-                className="absolute right-5 bottom-5"
-              />
-            )}
-          </div>
+              {dataLoading ? (
+                <div className="text-xl font-light text-gray-400">
+                  Загрузка...
+                </div>
+              ) : shortResult ? (
+                <div className="flex flex-col gap-1">
+                  <p className="text-xl font-light">
+                    {new Date(shortResult.finishTime).toLocaleDateString(
+                      "ru-RU",
+                    )}
+                  </p>
+                </div>
+              ) : (
+                <p className="text-xl font-light text-red-500">
+                  Данные недоступны
+                </p>
+              )}
+              {isLoading ? (
+                <div className="absolute right-5 bottom-5 w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+              ) : (
+                <Image
+                  src={"/icons/profileArrow.svg"}
+                  alt="arrow right"
+                  width={24}
+                  height={24}
+                  className="absolute right-5 bottom-5"
+                />
+              )}
+            </div>
           </ScrollReveal>
         </ScrollReveal>
 
         <ScrollRevealStagger className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-12 lg:mt-16">
-          <ScrollRevealItem variant="fade-right" className="flex flex-col gap-8 w-full lg:w-1/2">
+          <ScrollRevealItem
+            variant="fade-right"
+            className="flex flex-col gap-8 w-full lg:w-1/2"
+          >
             <h1 className="text-3xl font-semibold">Вебинары</h1>
             <div className="w-full relative flex flex-col gap-2 baseShadow rounded-3xl p-5 sm:p-6 h-fi hover:scale-105 transition-transform duration-300 ease-in-out">
               <p className="text-xl font-normal">25.04.26</p>
@@ -307,7 +353,10 @@ const Survey = () => {
               </Button>
             </div>
           </ScrollRevealItem>
-          <ScrollRevealItem variant="fade-left" className="w-full lg:w-1/2 relative flex flex-col gap-2 justify-between baseShadow rounded-3xl p-5 sm:p-6 hover:scale-105 transition-transform duration-300 ease-in-out">
+          <ScrollRevealItem
+            variant="fade-left"
+            className="w-full lg:w-1/2 relative flex flex-col gap-2 justify-between baseShadow rounded-3xl p-5 sm:p-6 hover:scale-105 transition-transform duration-300 ease-in-out"
+          >
             <p className="text-xl font-semibold">
               Отправь запрос на анализ <br /> совместимости и получи <br />
               результаты.
@@ -325,6 +374,26 @@ const Survey = () => {
 
         {isAdmin && (
           <>
+            <ScrollReveal variant="scale-up" className="mt-16">
+              <div className="relative max-w-md overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-6 text-primary-foreground shadow-lg sm:p-8">
+                <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/10" />
+                <p className="relative text-sm font-medium uppercase tracking-wider text-primary-foreground/80">
+                  Зарегистрированные пользователи
+                </p>
+                {isUsersCountLoading ? (
+                  <p className="relative mt-3 text-xl">Загрузка...</p>
+                ) : usersCountError ? (
+                  <p className="relative mt-3 text-sm text-red-100">
+                    {usersCountError}
+                  </p>
+                ) : (
+                  <p className="relative mt-2 text-5xl font-bold">
+                    {registeredUsersCount?.toLocaleString("ru-RU") ?? "0"}
+                  </p>
+                )}
+              </div>
+            </ScrollReveal>
+
             <ScrollReveal variant="blur-up" className="mt-16">
               <h1 className="text-3xl font-semibold">Модерация отзывов</h1>
             </ScrollReveal>
@@ -338,7 +407,10 @@ const Survey = () => {
                 <p className="text-red-500">{errorReviews}</p>
               </div>
             ) : (
-              <ScrollRevealStagger className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8" stagger={0.08}>
+              <ScrollRevealStagger
+                className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8"
+                stagger={0.08}
+              >
                 {(apiReviews.length > 0
                   ? normalizeApiReviews(apiReviews)
                   : []
@@ -347,14 +419,14 @@ const Survey = () => {
                     key={review.id || index}
                     variant={getScrollVariant(index)}
                   >
-                  <Card
-                    rating={review.rating}
-                    username={review.username}
-                    reviewText={review.reviewText}
-                    showModerationActions
-                    onApprove={() => handleApproveReview(review)}
-                    onReject={() => handleRejectReview(review)}
-                  />
+                    <Card
+                      rating={review.rating}
+                      username={review.username}
+                      reviewText={review.reviewText}
+                      showModerationActions
+                      onApprove={() => handleApproveReview(review)}
+                      onReject={() => handleRejectReview(review)}
+                    />
                   </ScrollRevealItem>
                 ))}
               </ScrollRevealStagger>
@@ -381,7 +453,10 @@ const Survey = () => {
               Смотреть (пока в разработке)
             </Button>
           </ScrollRevealItem>
-          <ScrollRevealItem variant="fade-left" className="w-full min-w-0 lg:w-1/2">
+          <ScrollRevealItem
+            variant="fade-left"
+            className="w-full min-w-0 lg:w-1/2"
+          >
             <Image
               src={getImage("step_01")}
               alt="tariffs"

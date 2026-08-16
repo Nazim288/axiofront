@@ -40,6 +40,15 @@ const TARIFFS = [
   },
 ] as const;
 
+const DiscountPrice = () => (
+  <span className="flex items-center gap-2.5">
+    <span className="text-base font-semibold">990 ₽</span>
+    <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-medium text-primary-foreground/70 line-through decoration-2 decoration-primary-foreground/70">
+      1990 ₽
+    </span>
+  </span>
+);
+
 const TariffsPage = () => {
   const router = useRouter();
   const { isAuthenticated } = useUser();
@@ -129,7 +138,7 @@ const TariffsPage = () => {
       return (
         <SignInModal
           triggerClassName="mt-auto"
-          triggerText="990 ₽"
+          triggerText={<DiscountPrice />}
           triggerVariant="default"
         />
       );
@@ -145,7 +154,7 @@ const TariffsPage = () => {
           ? "Уже у вас"
           : isResultLoading || isReportLoading
             ? "Загрузка..."
-            : "990 ₽"}
+            : <DiscountPrice />}
       </Button>
     );
   };

@@ -30,7 +30,7 @@ import {
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { loginUser, requestPasswordReset, resetPassword } from "@/api/auth";
 import Loader from "@/components/loader/loader";
 import { useUser } from "@/contexts/UserContext";
@@ -61,7 +61,7 @@ export function SignInModal({
   onOpen,
 }: {
   triggerClassName?: string;
-  triggerText?: string;
+  triggerText?: ReactNode;
   triggerVariant?: "default" | "outline";
   onOpen?: () => void;
 }) {

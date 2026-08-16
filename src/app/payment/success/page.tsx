@@ -104,7 +104,7 @@ const PaymentSuccessPage = () => {
 
         {isPaid ? (
           <Button size="cta" asChild>
-            <Link href="/profile">Перейти к полному отчёту</Link>
+            <Link href="/profile">Посмотреть оплаченный отчёт</Link>
           </Button>
         ) : isFailed ? (
           <Button size="cta" asChild>

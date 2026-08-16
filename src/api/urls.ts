@@ -15,6 +15,7 @@ export const Urls = {
   },
   adminUrls: {
     redeemPromoCode: "/api/admin/promo-codes/redeem",
+    registeredUsersCount: "/api/v1/count",
   },
   authUrls: {
     register: "/api/v1/register",
