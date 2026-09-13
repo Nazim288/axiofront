@@ -193,6 +193,32 @@ const Survey = () => {
     }
   };
 
+  const handlePurchaseExtendedReport = async (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+
+    if (!shortResult || shortResult.paid) return;
+
+    setIsLoading(true);
+
+    try {
+      const fullResponse = await getTestResult(shortResult.id.toString());
+      localStorage.setItem("testResult", JSON.stringify(fullResponse.data));
+      router.push(`/freeReport/${shortResult.id}#report-payment`);
+    } catch (error) {
+      console.error("Ошибка при переходе к покупке отчёта:", error);
+      toast.error("Не удалось перейти к покупке отчёта");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleWhatIsExtendedReport = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    router.push("/tariffs#report-comparison");
+  };
+
   useEffect(() => {
     if (userDataLoading) {
       return;
@@ -289,7 +315,7 @@ const Survey = () => {
               } ${
                 dataLoading || !shortResult
                   ? "cursor-not-allowed opacity-50"
-                  : "hover:scale-105 cursor-pointer"
+                  : "hover:scale-[1.01] cursor-pointer"
               }`}
             >
               <p className="text-xl font-semibold">Мои ценности</p>
@@ -314,49 +340,46 @@ const Survey = () => {
                 </p>
               )}
               {isLoading ? (
-                <div className="absolute right-5 bottom-5 w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
+                <div className="absolute right-5 top-5 w-6 h-6 border-2 border-gray-300 border-t-blue-600 rounded-full animate-spin"></div>
               ) : (
                 <Image
                   src={"/icons/profileArrow.svg"}
                   alt="arrow right"
                   width={24}
                   height={24}
-                  className="absolute right-5 bottom-5"
+                  className="absolute right-5 top-5"
                 />
+              )}
+              {shortResult && !shortResult.paid && (
+                <div
+                  className="mt-4 flex flex-col gap-2 sm:flex-row"
+                  onClick={(event) => event.stopPropagation()}
+                >
+                  <Button
+                    className="w-full sm:flex-1"
+                    disabled={isLoading}
+                    onClick={handlePurchaseExtendedReport}
+                  >
+                    Приобрести расширенный отчёт
+                  </Button>
+                  <Button
+                    variant="outline"
+                    className="w-full sm:flex-1"
+                    onClick={handleWhatIsExtendedReport}
+                  >
+                    Что такое расширенный отчёт
+                  </Button>
+                </div>
               )}
             </div>
           </ScrollReveal>
         </ScrollReveal>
 
-        <ScrollRevealStagger className="flex flex-col lg:flex-row gap-6 lg:gap-10 mt-12 lg:mt-16">
-          <ScrollRevealItem
-            variant="fade-right"
-            className="flex flex-col gap-8 w-full lg:w-1/2"
-          >
-            <h1 className="text-3xl font-semibold">Вебинары</h1>
-            <div className="w-full relative flex flex-col gap-2 baseShadow rounded-3xl p-5 sm:p-6 h-fi hover:scale-105 transition-transform duration-300 ease-in-out">
-              <p className="text-xl font-normal">25.04.26</p>
-              <p className="text-xl font-semibold">Расписание вебинаров</p>
-              <Button
-                variant="default"
-                size="cta"
-                className="mt-5"
-                onClick={() =>
-                  window.open(
-                    "https://tarbastaev.ru/Вебинары-Axiogram/",
-                    "_blank",
-                    "noopener,noreferrer",
-                  )
-                }
-              >
-                Посмотреть
-              </Button>
-            </div>
-          </ScrollRevealItem>
-          <ScrollRevealItem
-            variant="fade-left"
-            className="w-full lg:w-1/2 relative flex flex-col gap-2 justify-between baseShadow rounded-3xl p-5 sm:p-6 hover:scale-105 transition-transform duration-300 ease-in-out"
-          >
+        <ScrollReveal
+          variant="fade-left"
+          className="mt-12 w-full max-w-xl lg:mt-16"
+        >
+          <div className="relative flex w-full flex-col justify-between gap-2 rounded-3xl baseShadow p-5 sm:p-6">
             <p className="text-xl font-semibold">
               Отправь запрос на анализ <br /> совместимости и получи <br />
               результаты.
@@ -369,8 +392,8 @@ const Survey = () => {
             <Button variant="default" size="cta" className="mt-5" disabled>
               Отправить запрос (в разработке)
             </Button>
-          </ScrollRevealItem>
-        </ScrollRevealStagger>
+          </div>
+        </ScrollReveal>
 
         {isAdmin && (
           <>

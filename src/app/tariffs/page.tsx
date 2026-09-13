@@ -3,12 +3,14 @@
 import { Button } from "@/components/ui/button";
 import {
   HeroReveal,
+  ScrollReveal,
   ScrollRevealItem,
   ScrollRevealStagger,
 } from "@/components/motion/scroll-reveal";
 import { getScrollVariant } from "@/lib/motion";
 import { getTestResult, getTestResultShort } from "@/api/survey";
 import { SignInModal } from "@/components/modals/signInModal";
+import ReportComparison from "@/components/tariffs/reportComparison";
 import { useUser } from "@/contexts/UserContext";
 import { ITestResultShort } from "@/types/survey";
 import axios from "axios";
@@ -26,7 +28,7 @@ const TARIFFS = [
   },
   {
     title: "Полный отчет о ценностях",
-    titleClass: "text-amber-400",
+    titleClass: "text-amber-500",
     description:
       "Получите подробный полный отчет с ранжированием ценностей по их значимости для Вас и рекомендации для гармоничного саморазвития и улучшения взаимодействия с другими людьми.",
     action: "full-report",
@@ -41,12 +43,14 @@ const TARIFFS = [
 ] as const;
 
 const DiscountPrice = () => (
-  <span className="flex items-center gap-2.5">
-    <span className="text-base font-semibold">990 ₽</span>
-    <span className="rounded-full bg-white/15 px-2 py-0.5 text-xs font-medium text-primary-foreground/70 line-through decoration-2 decoration-primary-foreground/70">
+  <div className="flex items-baseline gap-3">
+    <span className="text-3xl font-bold tracking-tight text-foreground">
+      990 ₽
+    </span>
+    <span className="text-lg font-semibold text-rose-500 line-through decoration-2 decoration-rose-400/80">
       1990 ₽
     </span>
-  </span>
+  </div>
 );
 
 const TariffsPage = () => {
@@ -96,7 +100,27 @@ const TariffsPage = () => {
     };
   }, [isAuthenticated]);
 
-  const handleFullReportClick = async () => {
+  useEffect(() => {
+    if (window.location.hash !== "#report-comparison") return;
+
+    const timeoutId = window.setTimeout(() => {
+      document.getElementById("report-comparison")?.scrollIntoView({
+        behavior: "smooth",
+        block: "start",
+      });
+    }, 150);
+
+    return () => window.clearTimeout(timeoutId);
+  }, []);
+
+  const scrollToComparison = () => {
+    document.getElementById("report-comparison")?.scrollIntoView({
+      behavior: "smooth",
+      block: "start",
+    });
+  };
+
+  const handlePurchaseClick = async () => {
     if (isResultLoading || isReportLoading || shortResult?.paid) return;
 
     if (!shortResult) {
@@ -134,58 +158,75 @@ const TariffsPage = () => {
       );
     }
 
-    if (!isAuthenticated) {
+    if (shortResult?.paid) {
       return (
-        <SignInModal
-          triggerClassName="mt-auto"
-          triggerText={<DiscountPrice />}
-          triggerVariant="default"
-        />
+        <div className="mt-auto flex flex-col gap-3">
+          <DiscountPrice />
+          <Button disabled>Уже у вас</Button>
+        </div>
       );
     }
 
     return (
-      <Button
-        className="mt-auto"
-        disabled={isResultLoading || isReportLoading || shortResult?.paid}
-        onClick={handleFullReportClick}
-      >
-        {shortResult?.paid
-          ? "Уже у вас"
-          : isResultLoading || isReportLoading
-            ? "Загрузка..."
-            : <DiscountPrice />}
-      </Button>
+      <div className="mt-auto flex flex-col gap-3">
+        <DiscountPrice />
+        {!isAuthenticated ? (
+          <SignInModal
+            triggerClassName="w-full"
+            triggerText="Приобрести"
+            triggerVariant="default"
+          />
+        ) : (
+          <Button
+            className="w-full"
+            disabled={isResultLoading || isReportLoading}
+            onClick={handlePurchaseClick}
+          >
+            {isResultLoading || isReportLoading ? "Загрузка..." : "Приобрести"}
+          </Button>
+        )}
+        <Button
+          variant="outline"
+          className="w-full"
+          onClick={scrollToComparison}
+        >
+          Что такое платный отчёт
+        </Button>
+      </div>
     );
   };
 
   return (
-    <div className="flex flex-col items-center w-full">
+    <div className="flex w-full flex-col items-center">
       <HeroReveal variant="blur-up" className="w-full text-center">
-        <h1 className="text-4xl sm:text-5xl font-bold">Тарифы</h1>
+        <h1 className="text-4xl font-bold sm:text-5xl">Тарифы</h1>
       </HeroReveal>
       <ScrollRevealStagger
-        className="flex flex-wrap justify-center gap-6 mt-10 lg:mt-14 w-full max-w-6xl mx-auto"
+        className="mx-auto mt-10 flex w-full max-w-6xl flex-wrap justify-center gap-6 lg:mt-14"
         stagger={0.1}
       >
         {TARIFFS.map((tariff, index) => (
           <ScrollRevealItem
             key={tariff.title}
             variant={getScrollVariant(index)}
-            className="flex flex-col gap-5 baseShadow rounded-3xl p-5 h-fit w-full max-w-[360px] sm:max-w-[calc(50%-12px)] lg:w-[320px] lg:max-w-[360px] hover:scale-105 transition-transform duration-300 ease-in-out"
+            className="flex h-fit w-full max-w-[360px] flex-col gap-5 rounded-3xl baseShadow p-5 transition-transform duration-300 ease-in-out hover:scale-105 sm:max-w-[calc(50%-12px)] lg:w-[320px] lg:max-w-[360px]"
           >
-            <div className="flex justify-between h-[100px]">
+            <div className="flex h-[100px] justify-between">
               <h2 className={`text-2xl font-semibold ${tariff.titleClass}`}>
                 {tariff.title}
               </h2>
             </div>
-            <p className="text-gray-600 text-sm leading-relaxed">
+            <p className="text-sm leading-relaxed text-gray-600">
               {tariff.description}
             </p>
             {renderAction(tariff.action)}
           </ScrollRevealItem>
         ))}
       </ScrollRevealStagger>
+
+      <ScrollReveal variant="fade-up" className="mt-16 w-full lg:mt-20">
+        <ReportComparison />
+      </ScrollReveal>
     </div>
   );
 };

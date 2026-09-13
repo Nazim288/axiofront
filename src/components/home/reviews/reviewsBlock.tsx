@@ -145,7 +145,7 @@ const ReviewsBlock = ({ id }: { id: string }) => {
       <ScrollReveal variant="scale-up" delay={0.1} className="relative z-0">
       <Link href="/survey" className="mt-8 lg:mt-12 block">
         <Button variant="default" size="cta" className="w-full">
-          Заполнить опросник (10 минут)
+          Пройти опросник (10 минут)
         </Button>
       </Link>
       </ScrollReveal>

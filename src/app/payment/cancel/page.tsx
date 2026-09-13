@@ -75,7 +75,7 @@ const PaymentCancelPage = () => {
 
         <div className="flex w-full flex-col gap-3 sm:w-auto sm:min-w-72">
           <Button size="cta" onClick={handleRetry} disabled={isRetrying}>
-            {isRetrying ? "Переход к оплате..." : "Попробовать оплатить снова"}
+            {isRetrying ? "Переход к оплате..." : "Приобрести снова"}
           </Button>
           <Button variant="outline" asChild>
             <Link href={orderUrl}>Вернуться к заказу</Link>

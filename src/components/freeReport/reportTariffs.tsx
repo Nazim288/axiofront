@@ -10,12 +10,13 @@ import { useGenderImage } from "@/hooks/useGenderImage";
 import { getTrustedPaymentUrl } from "@/lib/payment";
 import axios from "axios";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 
 const ReportTariffs = () => {
   const params = useParams();
+  const router = useRouter();
   const [isPaymentLoading, setIsPaymentLoading] = useState(false);
   const { getImage } = useGenderImage();
 
@@ -62,31 +63,43 @@ const ReportTariffs = () => {
         ? (error.response?.data as { message?: string } | undefined)?.message
         : undefined;
 
-      toast.error(apiMessage ?? "Не удалось перейти к оплате. Попробуйте снова.");
+      toast.error(
+        apiMessage ?? "Не удалось перейти к оплате. Попробуйте снова.",
+      );
       setIsPaymentLoading(false);
     }
   };
 
   return (
-    <ScrollRevealStagger className="flex flex-col lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow p-4 sm:p-6 lg:p-10">
+    <ScrollRevealStagger className="flex flex-col justify-start gap-6 rounded-3xl baseShadow p-4 sm:p-6 lg:flex-row lg:gap-4 lg:p-10">
       <ScrollRevealItem
         variant="fade-right"
-        className="flex flex-col gap-4 w-full lg:w-1/2 justify-center"
+        className="flex w-full flex-col justify-center gap-4 lg:w-1/2"
       >
         <p>
           Получите подробный <span className="font-semibold">полный отчет</span>{" "}
           о своих ценностях: что для вас самое важное, как ваши ценности
           соотносятся с ожиданиями окружающих и советы по улучшению общения.
         </p>
-        <Button
-          variant="default"
-          size="cta"
-          className="w-full sm:w-auto"
-          onClick={handlePayment}
-          disabled={isPaymentLoading}
-        >
-          {isPaymentLoading ? "Переход к оплате..." : "Оплатить"}
-        </Button>
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center">
+          <Button
+            variant="default"
+            size="cta"
+            className="w-full sm:w-auto"
+            onClick={handlePayment}
+            disabled={isPaymentLoading}
+          >
+            {isPaymentLoading ? "Переход к оплате..." : "Приобрести"}
+          </Button>
+          <Button
+            variant="outline"
+            size="cta"
+            className="w-full sm:w-auto"
+            onClick={() => router.push("/tariffs#report-comparison")}
+          >
+            Что такое полный отчёт
+          </Button>
+        </div>
       </ScrollRevealItem>
       <ScrollRevealItem variant="fade-left" className="w-full min-w-0 lg:w-1/2">
         <Image
@@ -94,7 +107,7 @@ const ReportTariffs = () => {
           alt="Оплата полного отчета"
           width={535}
           height={535}
-          className="w-full h-auto max-w-[min(535px,100%)] mx-auto"
+          className="mx-auto h-auto w-full max-w-[min(535px,100%)]"
         />
       </ScrollRevealItem>
     </ScrollRevealStagger>
