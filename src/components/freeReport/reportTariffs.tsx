@@ -77,7 +77,7 @@ const ReportTariffs = () => {
         className="flex w-full flex-col justify-center gap-4 lg:w-1/2"
       >
         <p>
-          Получите подробный <span className="font-semibold">полный отчет</span>{" "}
+          Получите подробный <span className="font-semibold">полный отчёт</span>{" "}
           о своих ценностях: что для вас самое важное, как ваши ценности
           соотносятся с ожиданиями окружающих и советы по улучшению общения.
         </p>

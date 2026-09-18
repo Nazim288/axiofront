@@ -301,7 +301,7 @@ const Survey = () => {
           variant="fade-up"
           className="flex flex-col gap-4 mt-10 lg:mt-14"
         >
-          <h2 className=" text-3xl font-semibold mb-5">Отчеты</h2>
+          <h2 className=" text-3xl font-semibold mb-5">Отчёты</h2>
           <ScrollReveal variant="scale-up" delay={0.08}>
             <div
               onClick={
@@ -360,14 +360,14 @@ const Survey = () => {
                     disabled={isLoading}
                     onClick={handlePurchaseExtendedReport}
                   >
-                    Приобрести расширенный отчёт
+                    Приобрести полный отчёт
                   </Button>
                   <Button
                     variant="outline"
                     className="w-full sm:flex-1"
                     onClick={handleWhatIsExtendedReport}
                   >
-                    Что такое расширенный отчёт
+                    Что такое полный отчёт
                   </Button>
                 </div>
               )}

@@ -81,7 +81,7 @@ const ReportComparison = ({
           Сравнение
         </p>
         <h2 className="text-3xl font-bold sm:text-4xl">
-          Краткий и полный отчёт
+          Краткий и Полный отчёт
         </h2>
         <p className="mx-auto mt-3 max-w-2xl text-sm text-muted-foreground sm:text-base">
           Посмотрите, чем бесплатный результат отличается от полного
@@ -122,7 +122,7 @@ const ReportComparison = ({
               <div className="flex items-end gap-2">
                 <p className="text-3xl font-bold text-amber-700">990 ₽</p>
                 <p className="pb-1 text-sm font-semibold text-rose-500 line-through decoration-2">
-                  1990 ₽
+                  2500 ₽
                 </p>
               </div>
               <h3 className="mt-1 text-2xl font-semibold text-amber-800">
