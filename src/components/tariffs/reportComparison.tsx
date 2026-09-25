@@ -6,6 +6,7 @@ import {
   ScrollRevealItem,
   ScrollRevealStagger,
 } from "@/components/motion/scroll-reveal";
+import TariffPrice from "@/components/tariffs/tariffPrice";
 
 const REPORT_COMPARISON = [
   {
@@ -68,11 +69,17 @@ const FeatureCell = ({ text, tone = "muted" }: FeatureCellProps) => {
 type ReportComparisonProps = {
   id?: string;
   className?: string;
+  price?: number | null;
+  currency?: string;
+  isPriceLoading?: boolean;
 };
 
 const ReportComparison = ({
   id = "report-comparison",
   className = "",
+  price = null,
+  currency,
+  isPriceLoading = false,
 }: ReportComparisonProps) => {
   return (
     <section id={id} className={`scroll-mt-24 w-full ${className}`}>
@@ -119,12 +126,12 @@ const ReportComparison = ({
               Рекомендуем
             </div>
             <div className="border-b border-amber-200/80 bg-amber-100/70 px-5 py-5 sm:px-6">
-              <div className="flex items-end gap-2">
-                <p className="text-3xl font-bold text-amber-700">990 ₽</p>
-                <p className="pb-1 text-sm font-semibold text-rose-500 line-through decoration-2">
-                  2500 ₽
-                </p>
-              </div>
+              <TariffPrice
+                price={price}
+                currency={currency}
+                isLoading={isPriceLoading}
+                currentClassName="text-3xl font-bold text-amber-700"
+              />
               <h3 className="mt-1 text-2xl font-semibold text-amber-800">
                 Полный отчёт
               </h3>

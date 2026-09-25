@@ -17,6 +17,8 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
+import { usePaymentTariff } from "@/hooks/usePaymentTariff";
+import TariffPrice from "@/components/tariffs/tariffPrice";
 
 const TARIFFS = [
   {
@@ -42,23 +44,13 @@ const TARIFFS = [
   },
 ] as const;
 
-const DiscountPrice = () => (
-  <div className="flex items-baseline gap-3">
-    <span className="text-3xl font-bold tracking-tight text-foreground">
-      990 ₽
-    </span>
-    <span className="text-lg font-semibold text-rose-500 line-through decoration-2 decoration-rose-400/80">
-      2500 ₽
-    </span>
-  </div>
-);
-
 const TariffsPage = () => {
   const router = useRouter();
   const { isAuthenticated } = useUser();
   const [shortResult, setShortResult] = useState<ITestResultShort | null>(null);
   const [isResultLoading, setIsResultLoading] = useState(false);
   const [isReportLoading, setIsReportLoading] = useState(false);
+  const { tariff, isLoading: isPriceLoading } = usePaymentTariff();
 
   useEffect(() => {
     if (!isAuthenticated) {
@@ -161,7 +153,11 @@ const TariffsPage = () => {
     if (shortResult?.paid) {
       return (
         <div className="mt-auto flex flex-col gap-3">
-          <DiscountPrice />
+          <TariffPrice
+            price={tariff?.price ?? null}
+            currency={tariff?.currency}
+            isLoading={isPriceLoading}
+          />
           <Button disabled>Уже у вас</Button>
         </div>
       );
@@ -169,7 +165,11 @@ const TariffsPage = () => {
 
     return (
       <div className="mt-auto flex flex-col gap-3">
-        <DiscountPrice />
+        <TariffPrice
+          price={tariff?.price ?? null}
+          currency={tariff?.currency}
+          isLoading={isPriceLoading}
+        />
         {!isAuthenticated ? (
           <SignInModal
             triggerClassName="w-full"
@@ -225,7 +225,11 @@ const TariffsPage = () => {
       </ScrollRevealStagger>
 
       <ScrollReveal variant="fade-up" className="mt-16 w-full lg:mt-20">
-        <ReportComparison />
+        <ReportComparison
+          price={tariff?.price ?? null}
+          currency={tariff?.currency}
+          isPriceLoading={isPriceLoading}
+        />
       </ScrollReveal>
     </div>
   );

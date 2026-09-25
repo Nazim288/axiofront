@@ -12,10 +12,15 @@ export const Urls = {
     approveReview: (reviewId: number) => `/api/v1/reviews/${reviewId}/approve`,
     blockReview: (reviewId: number) => `/api/v1/reviews/${reviewId}/blocked`,
     downloadPdf: "/api/v1/download/pdf",
+    paymentTariff: (productType: string) =>
+      `/api/v1/payment-tariffs/${productType}`,
   },
   adminUrls: {
     redeemPromoCode: "/api/admin/promo-codes/redeem",
     registeredUsersCount: "/api/v1/count",
+    paymentTariffs: "/api/v1/admin/payment-tariffs",
+    paymentTariff: (productType: string) =>
+      `/api/v1/admin/payment-tariffs/${productType}`,
   },
   authUrls: {
     register: "/api/v1/register",

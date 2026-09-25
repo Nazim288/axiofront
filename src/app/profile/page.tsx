@@ -22,6 +22,7 @@ import {
 } from "@/components/motion/scroll-reveal";
 import { getScrollVariant } from "@/lib/motion";
 import { getRegisteredUsersCount } from "@/api/admin";
+import AdminPaymentTariff from "@/components/profile/adminPaymentTariff";
 
 const Survey = () => {
   const router = useRouter();
@@ -398,22 +399,25 @@ const Survey = () => {
         {isAdmin && (
           <>
             <ScrollReveal variant="scale-up" className="mt-16">
-              <div className="relative max-w-md overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-6 text-primary-foreground shadow-lg sm:p-8">
-                <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/10" />
-                <p className="relative text-sm font-medium uppercase tracking-wider text-primary-foreground/80">
-                  Зарегистрированные пользователи
-                </p>
-                {isUsersCountLoading ? (
-                  <p className="relative mt-3 text-xl">Загрузка...</p>
-                ) : usersCountError ? (
-                  <p className="relative mt-3 text-sm text-red-100">
-                    {usersCountError}
+              <div className="flex flex-col gap-6 lg:flex-row lg:items-stretch">
+                <div className="relative max-w-md overflow-hidden rounded-3xl bg-gradient-to-br from-primary to-emerald-700 p-6 text-primary-foreground shadow-lg sm:p-8">
+                  <div className="absolute -right-12 -top-12 h-36 w-36 rounded-full bg-white/10" />
+                  <p className="relative text-sm font-medium uppercase tracking-wider text-primary-foreground/80">
+                    Зарегистрированные пользователи
                   </p>
-                ) : (
-                  <p className="relative mt-2 text-5xl font-bold">
-                    {registeredUsersCount?.toLocaleString("ru-RU") ?? "0"}
-                  </p>
-                )}
+                  {isUsersCountLoading ? (
+                    <p className="relative mt-3 text-xl">Загрузка...</p>
+                  ) : usersCountError ? (
+                    <p className="relative mt-3 text-sm text-red-100">
+                      {usersCountError}
+                    </p>
+                  ) : (
+                    <p className="relative mt-2 text-5xl font-bold">
+                      {registeredUsersCount?.toLocaleString("ru-RU") ?? "0"}
+                    </p>
+                  )}
+                </div>
+                <AdminPaymentTariff />
               </div>
             </ScrollReveal>
 
