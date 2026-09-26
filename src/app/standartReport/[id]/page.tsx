@@ -437,7 +437,7 @@ const StandartReportPage = () => {
           onClick={handleSendPdfToEmail}
           disabled={isSendingPdf || !currentUser}
         >
-          {isSendingPdf ? "Отправка..." : "Скачать текущую версию отчета"}
+          {isSendingPdf ? "Отправка..." : "Скачать текущую версию отчёта"}
         </Button>
         </ScrollReveal>
         <Report />
@@ -612,7 +612,7 @@ const StandartReportPage = () => {
                 onClick={handleSendPdfToEmail}
                 disabled={isSendingPdf || !currentUser}
               >
-                {isSendingPdf ? "Отправка..." : "Скачать текущую версию отчета"}
+                {isSendingPdf ? "Отправка..." : "Скачать текущую версию отчёта"}
               </Button>
             </div>
           </div>

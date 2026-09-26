@@ -16,11 +16,11 @@ const Tariffs = ({ id }: { id: string }) => {
   return (
     <ScrollRevealStagger
       id={id}
-      className="flex flex-col-reverse lg:flex-row gap-6 lg:gap-4 justify-start rounded-3xl baseShadow mt-12 lg:mt-20 p-4 sm:p-6 lg:p-10 lg:min-h-[560px]"
+      className="mt-12 flex flex-col-reverse justify-start gap-6 rounded-3xl baseShadow p-4 sm:p-6 lg:mt-20 lg:min-h-[560px] lg:flex-row lg:gap-4 lg:p-10"
     >
       <ScrollRevealItem
         variant="fade-right"
-        className="flex flex-col gap-4 w-full lg:w-1/2 justify-center items-center lg:items-start text-center lg:text-left"
+        className="flex w-full flex-col items-center justify-center gap-4 text-center lg:w-1/2 lg:items-start lg:text-left"
       >
         <p className="text-lg sm:text-xl lg:text-2xl">
           Получи анализ результатов опроса
@@ -42,7 +42,7 @@ const Tariffs = ({ id }: { id: string }) => {
           alt="tariffs"
           width={560}
           height={535}
-          className="w-full h-auto max-w-[min(560px,100%)] mx-auto lg:mx-0"
+          className="mx-auto h-auto w-full max-w-[min(560px,100%)] lg:mx-0"
         />
       </ScrollRevealItem>
     </ScrollRevealStagger>

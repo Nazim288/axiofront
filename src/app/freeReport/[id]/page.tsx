@@ -348,7 +348,9 @@ const FreeReportPage: FC = () => {
           </div>
         </div>
         </ScrollReveal>
-        <ReportTariffs />
+        <div id="report-payment" className="scroll-mt-24">
+          <ReportTariffs />
+        </div>
       </div>
     </ProtectedRoute>
   );

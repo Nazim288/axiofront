@@ -15,8 +15,8 @@ const MainBanner = () => {
 
   const checklist = [
     "Узнай свои ценности",
-    "Сравни с ценностями партнера",
-    "Улучшай стратегии общения",
+    "Сравни свои убеждения и реальное поведение",
+    "Получи персональные рекомендации и улучшай стратегии общения",
   ];
 
   return (
@@ -79,7 +79,7 @@ const MainBanner = () => {
       <HeroReveal variant="scale-up" delay={0.35} className="w-full">
         <Link href="/survey">
           <Button variant="default" size="cta" className="mt-5 w-full">
-            Заполнить опросник (10 минут)
+            Пройти опросник (10 минут)
           </Button>
         </Link>
       </HeroReveal>

@@ -21,7 +21,7 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import { emailConfirm } from "@/api/auth";
+import { emailConfirm, emailConfirmSend } from "@/api/auth";
 import Loader from "@/components/loader/loader";
 import { useState } from "react";
 import { toast } from "sonner";
@@ -50,6 +50,7 @@ export function EmailVerificationModal({
 }: EmailVerificationModalProps) {
   const [isLoading, setIsLoading] = useState(false);
   const [isSuccess, setIsSuccess] = useState(false);
+  const [isResending, setIsResending] = useState(false);
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -89,6 +90,24 @@ export function EmailVerificationModal({
       setIsLoading(false);
     }
   }
+
+  const handleResendCode = async () => {
+    if (isResending || isSuccess) return;
+
+    setIsResending(true);
+    try {
+      await emailConfirmSend({
+        email,
+        code: "",
+      });
+      toast.success("Код отправлен повторно");
+    } catch (error) {
+      console.error("Ошибка при повторной отправке кода:", error);
+      toast.error("Не удалось отправить код. Попробуйте позже");
+    } finally {
+      setIsResending(false);
+    }
+  };
 
   const handleClose = (open: boolean) => {
     if (!open) {
@@ -146,6 +165,15 @@ export function EmailVerificationModal({
               ) : (
                 "Подтвердить"
               )}
+            </Button>
+            <Button
+              type="button"
+              variant="ghost"
+              className="w-full"
+              onClick={handleResendCode}
+              disabled={isResending || isLoading || isSuccess}
+            >
+              {isResending ? "Отправка..." : "Отправить код повторно"}
             </Button>
           </form>
         </Form>

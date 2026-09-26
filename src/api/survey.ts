@@ -24,6 +24,11 @@ export const getTestResultShort = () =>
 export const pay = (body: IPayBody) =>
   api.post<IPayResponse>(Urls.surveyUrls.pay, body);
 
+export const getPaymentStatus = (paymentId: number) =>
+  api.get<string | { status: string }>(
+    Urls.surveyUrls.paymentStatus(paymentId),
+  );
+
 export interface IRedeemPromoCodeBody {
   code: string;
   personTestId: number;

@@ -30,7 +30,7 @@ import {
 import { Eye, EyeOff } from "lucide-react";
 import Link from "next/link";
 import axios from "axios";
-import { useState } from "react";
+import { useState, type ReactNode } from "react";
 import { loginUser, requestPasswordReset, resetPassword } from "@/api/auth";
 import Loader from "@/components/loader/loader";
 import { useUser } from "@/contexts/UserContext";
@@ -56,9 +56,13 @@ const resetFormSchema = z.object({
 
 export function SignInModal({
   triggerClassName,
+  triggerText = "Войти",
+  triggerVariant = "outline",
   onOpen,
 }: {
   triggerClassName?: string;
+  triggerText?: ReactNode;
+  triggerVariant?: "default" | "outline";
   onOpen?: () => void;
 }) {
   const [showPassword, setShowPassword] = useState(false);
@@ -211,12 +215,12 @@ export function SignInModal({
     >
       <DialogTrigger asChild>
         <Button
-          variant="outline"
+          variant={triggerVariant}
           className={triggerClassName}
           onClick={openDialog}
           data-signin-trigger
         >
-          Войти
+          {triggerText}
         </Button>
       </DialogTrigger>
       <DialogContent className="rounded-3xl p-6 sm:p-7">

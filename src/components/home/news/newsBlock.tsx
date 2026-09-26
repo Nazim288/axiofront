@@ -36,6 +36,11 @@ const NEWS_MOCKS = [
     title: "Конфликт ценностей. Что с этим делать",
     link: "https://vkvideo.ru/video-239162536_456239040?list=d8470b458002efaeec",
   },
+  {
+    date: "13.08.2026",
+    title: "О совместимости ценностей людей",
+    link: "https://vk.ru/axiogram?z=video-239162536_456239042%2F3c92b46353daf0cc7a",
+  },
 ];
 
 const NewsBlock = ({ id }: { id: string }) => {
